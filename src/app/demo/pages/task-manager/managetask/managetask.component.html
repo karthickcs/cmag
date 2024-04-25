@@ -1,1 +1,85 @@
-<p>managetask works!</p>
+<div class="row">
+  <div class="col-md-6">
+      <div class="form-group">
+        <label for="exampleFormControlSelect1">Task ID</label>
+        
+        <select class="form-control" name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata()">
+            <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+             Task ---> {{taskmain.taskid}}
+            </option>
+        </select>
+      </div>
+   
+  </div>
+  <div class="col-md-6">
+      <div class="form-group">
+        <label for="exampleFormControlSelect2">Run ID</label>
+        <select class="form-control" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()" >
+            <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+             Run Id ---> {{dplisten.runid}}
+            </option>
+        </select>
+      </div>
+      
+    </div>
+  </div>
+  <hr>
+  <div class="table-responsive ">
+    <table class="table table-bordered table-sm">
+      <thead>
+        <tr class="table-primary">
+           
+          <th>TaskName</th>
+          <th>TaskId</th>
+          <th>Status</th>
+          <th>RunId</th>
+          <th>RowCount</th>
+          <th>Filelocation1</th>
+          <th>Filelocation2</th>
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="table-light" >
+           
+        
+          <td>{{dplistenentry.taskname}}</td>
+          <td>{{dplistenentry.taskid}}</td>
+          <td>{{dplistenentry.status}}</td>    
+          <td>{{dplistenentry.runid}}</td>
+          <td>{{dplistenentry.rowcount}}</td>
+          <td>{{dplistenentry.filelocation}}</td>
+          <td>{{dplistenentry.filelocationt2}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-responsive ">
+    <table class="table table-bordered table-sm">
+      <thead>
+        <tr class="table-primary">
+          <th>#</th>
+          <th>Oldtranid</th>
+          <th>Newtranid</th>
+          <th>Difference</th>
+
+          <th>DifferenceCount</th>
+          
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="table-light" *ngFor="let diffval of diffTableDTOArray; let i = index">
+          <td>{{i+1}}</td>
+          
+          <td>{{diffval.maintranid}}</td>
+          <td>{{diffval.newtranid}}</td>
+
+          <td>{{diffval.difference}}</td>
+          <td>{{diffval.countval}}</td>
+           
+        </tr>
+      </tbody>
+    </table>
+  </div>

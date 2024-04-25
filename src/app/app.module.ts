@@ -25,6 +25,15 @@ import { NavContentComponent } from './theme/layout/admin/navigation/nav-content
 import { NavGroupComponent } from './theme/layout/admin/navigation/nav-content/nav-group/nav-group.component'; 
 import { NavCollapseComponent } from './theme/layout/admin/navigation/nav-content/nav-collapse/nav-collapse.component';
 
+import { DiffTableControllerService } from './api/diffTableController.service';
+import { DpListenControllerService } from './api/dpListenController.service';
+import { FileControllerService } from './api/fileController.service';
+import { JwtAuthenticationControllerService } from './api/jwtAuthenticationController.service';
+import { TaskControllerService } from './api/taskController.service';
+import { AlertModule } from './alert';
+import { HomeComponent } from './home/home.component';
+ 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -41,14 +50,21 @@ import { NavCollapseComponent } from './theme/layout/admin/navigation/nav-conten
     NavGroupComponent,
     NavContentComponent,
     NavCollapseComponent,
-    AdminComponent
+    AdminComponent,
+    HomeComponent
+    
     
   ],
   imports: [
+    AlertModule,
     BrowserModule,SharedModule,
     AppRoutingModule,FormsModule,HttpClientModule, NgbModule
   ],
-  providers: [ NavigationItem,AuthGuardService,AuthService, 
+  providers: [  DiffTableControllerService,
+    DpListenControllerService,
+    FileControllerService,
+    JwtAuthenticationControllerService,
+    TaskControllerService,NavigationItem,AuthGuardService,AuthService, 
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptor,

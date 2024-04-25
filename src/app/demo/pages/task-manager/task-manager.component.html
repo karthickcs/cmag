@@ -1,1 +1,119 @@
-task manager works
+<div class="row">
+  <div class="col-xl-12">
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+        (click)="oncreate();exampleModalPopoversLabel.show()">CreateTask</button>
+    <app-card cardTitle="Task List" blockClass="table-border-style">
+      
+         
+      <div class="table-responsive ">
+        <table class="table table-bordered table-sm">
+          <thead>
+            <tr class="table-primary">
+              <th>#</th>
+              <th>Action</th>
+              <th>TaskName</th>
+              <th>TaskId</th>
+
+              <th>Status</th>
+              <th>Createdby</th>
+              <th>Shared</th>
+              <th>RowCount</th>
+              <th>Filelocation1</th>
+              <th>Filelocation2</th>
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr class="table-light" *ngFor="let taskmain of taskmainArray; let i = index">
+              <td>{{i+1}}</td>
+              <td>
+                <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                  <img src="assets/images/play.svg" (click)="onrun(taskmain.taskid)" alt="" class="img-fluid">&nbsp;
+                  <img src="assets/images/edit.svg" (click)="onedit(taskmain.taskid);exampleModalPopoversLabel.show()"
+                    alt="" class="img-fluid">&nbsp;
+                  <img src="assets/images/delete.svg" (click)="ondelete(taskmain.taskid,i)" alt=""
+                    class="img-fluid">
+
+                </div>
+              </td>
+              <td>{{taskmain.taskname}}</td>
+              <td>{{taskmain.taskid}}</td>
+
+              <td>{{taskmain.status}}</td>
+              <td>{{taskmain.createdby}}</td>
+              <td>{{taskmain.shared}}</td>
+              <td>{{taskmain.rowcount}}</td>
+              <td>{{taskmain.filelocation}}</td>
+              <td>{{taskmain.filelocation2}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+  <!-- Button trigger modal -->
+  <div class="col-xl-4 col-md-6">
+
+    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" (click)="exampleModalPopoversLabel.show()">Launch demo modal</button> -->
+    <app-ui-modal #exampleModalPopoversLabel dialogClass="modal-dialog-centered">
+      <div class="app-modal-header">
+        <h5 class="modal-title">Create/Edit Task</h5>
+        <button type="button" #myModalClose class="close basic-close" data-dismiss="modal" aria-label="Close"
+          (click)="exampleModalPopoversLabel.hide()"><span aria-hidden="true">&times;</span></button>
+      </div>
+      <div class="app-modal-body">
+        <div class="col-md-6">
+          <form action="javascript:">
+            <div class="form-group">
+              <label>Task Name</label>
+              <input type="text" name="taskname" [(ngModel)]="taskMainDTO.taskname" class="form-control"
+                placeholder="Enter Taskname">
+            </div>
+
+            <div class="form-group">
+              <label>File location system1</label>
+              <input type="text" name="filelocation" [(ngModel)]="taskMainDTO.filelocation" class="form-control"
+                placeholder="Browse filelocation" readonly>
+            </div>
+            <div class="input-group mb-3">
+              <div class="custom-file">
+                <input type="file" (change)="onFileSelected1($event)" class="custom-file-input" id="inputGroupFile01">
+
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <label>File location system2</label>
+              <input type="text" name="filelocation2" [(ngModel)]="taskMainDTO.filelocation2" class="form-control"
+                placeholder="Browse filelocation2" readonly>
+            </div>
+
+            <div class="input-group mb-3">
+              <div class="custom-file">
+                <input type="file" (change)="onFileSelected2($event)" class="custom-file-input" id="inputGroupFile02">
+
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              <label>Row count</label>
+              <input type="number" name="rowcount" [(ngModel)]="taskMainDTO.rowcount" class="form-control"
+                placeholder="Enter Row count">
+            </div>
+            <br>
+
+
+
+          </form>
+        </div>
+      </div>
+      <div class="app-modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="exampleModalPopoversLabel.hide()">Close</button>&nbsp;
+        <button type="button" (click)="createtaskmain($event)" class="btn btn-primary">Submit</button>
+      </div>
+    </app-ui-modal>
+
+  </div>

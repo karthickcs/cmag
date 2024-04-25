@@ -13,7 +13,7 @@ export class AuthSigninComponent implements OnInit {
   password: any
   constructor(private authService: AuthService , private router: Router) { }
   onSave() {
-    alert("hello")
+   // alert("hello")
   }
 
   login() {

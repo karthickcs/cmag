@@ -1,1 +1,222 @@
-<p>reports works!</p>
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Task ID</label>
+          
+          <select class="form-control" name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata()">
+              <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+               Task ---> {{taskmain.taskid}}
+              </option>
+          </select>
+        </div>
+     
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+          <label for="exampleFormControlSelect2">Run ID</label>
+          <select class="form-control" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()" >
+              <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+               Run Id ---> {{dplisten.runid}}
+              </option>
+          </select>
+        </div>
+        
+      </div>
+    </div>
+    <hr>
+    <div class="table-responsive ">
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr class="table-primary">
+             
+            <th>TaskName</th>
+            <th>TaskId</th>
+            <th>Status</th>
+            <th>RunId</th>
+            <th>RowCount</th>
+            <th>Filelocation1</th>
+            <th>Filelocation2</th>
+  
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-light" >
+             
+          
+            <td>{{dplistenentry.taskname}}</td>
+            <td>{{dplistenentry.taskid}}</td>
+            <td>{{dplistenentry.status}}</td>    
+            <td>{{dplistenentry.runid}}</td>
+            <td>{{dplistenentry.rowcount}}</td>
+            <td>{{dplistenentry.filelocation}}</td>
+            <td>{{dplistenentry.filelocationt2}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <div class="col-md-6">
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Transaction ID</label>
+          
+          <select class="form-control" name="tranid" id="tranid" [(ngModel)]="tranid" (ngModelChange)="loadtramdata()">
+              <option *ngFor="let diffval of diffTableDTOArray" [value]="diffval.maintranid">
+               TranId ---> {{diffval.maintranid}}
+              </option>
+          </select>
+        </div>
+     
+    </div>
+    <br>
+          <div class="row">
+        <div class="col-sm-12">
+            <app-card cardTitle="Comparision" [options]="false">
+              
+                <div class="row">
+                    
+                    <div class="col-md-12">
+                        <form action="javascript:">
+                          <div class="table-responsive ">
+                            <table class="table table-bordered table-sm">
+                              <thead>
+                                <tr class="table-primary">
+                                   
+                                  <th>Oldtranid</th>
+                                  <th>Newtranid</th>
+                                  <!-- <th>Difference</th> -->
+                        
+                                  <th>DifferenceCount</th>
+                                  
+                        
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr class="table-light" >
+                                  
+                                  
+                                  <td>{{diffTableDTO.maintranid}}</td>
+                                  <td>{{diffTableDTO.newtranid}}</td>
+                        
+                                  <!-- <td>{{diffTableDTO.difference}}</td> -->
+                                  <td>{{diffTableDTO.countval}}</td>
+                                   
+                                </tr>
+                              </tbody>
+                            </table>
+                          </div>
+                    
+                            <!-- <div class="form-group">
+                                <label>Transaction ID</label>
+                                <input type="text" name="TransactionId" [(ngModel)]="diffTableDTO.newtranid" class="form-control" readonly>
+                            </div>
+                            <div class="form-group">
+                                <label>NewTransaction ID</label>
+                                <input type="text" name="newTransactionId" [(ngModel)]="diffTableDTO.maintranid" class="form-control" readonly>
+                            </div>
+    
+                            <div class="form-group">
+                                <label>DifferenceCount</label>
+                                <input type="text" name="countval" [(ngModel)]="diffTableDTO.countval" class="form-control" readonly>
+                            </div> -->
+    
+                            <h6>Difference</h6>
+                           
+                            <div class="table-responsive ">
+                              <table class="table table-bordered table-sm">
+                                <thead>
+                                  <tr class="table-primary">
+                                    <th>#</th>
+                                    <th>Field</th>
+                                    <th>Old Value</th>
+                                    <th>New Value</th>
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr class="table-light" *ngFor="let diffobj  of changeDTOArray; let i = index">
+                                    <td>{{i+1}}</td>
+                                    
+                                    
+                                    <td>{{diffobj.field}}</td>
+                                    <td class="table-success">{{diffobj.oldval}}</td>
+                          
+                                    <td class="table-danger">{{diffobj.newval}}</td>
+                                    
+                                     
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+
+                            <h6>Remove</h6>
+                           
+                            <div class="table-responsive ">
+                              <table class="table table-bordered table-sm">
+                                <thead>
+                                  <tr class="table-primary">
+                                    <th>#</th>
+                                    <th>Field</th>
+                                    <th> Value</th>
+                                    
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr class="table-light" *ngFor="let removeobj  of removeDTOArray; let i = index">
+                                    <td>{{i+1}}</td>
+                                    
+                                    
+                                    <td>{{removeobj.field}}</td>
+                                    <td class="table-danger">{{removeobj.oldval}}</td>
+                           
+                                     
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+
+                            <h6>ADD</h6>
+                            
+                            <div class="table-responsive ">
+                              <table class="table table-bordered table-sm">
+                                <thead>
+                                  <tr class="table-primary">
+                                    <th>#</th>
+                                    <th>Field</th>
+                                    <th> Value</th>
+                                     
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr class="table-light" *ngFor="let addobj  of addDTOArray; let i = index">
+                                    <td>{{i+1}}</td>
+                                    
+                                    
+                                    <td>{{addobj.field}}</td>
+                                    <td class="table-success">{{addobj.oldval}}</td>
+                                                             
+                                     
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                      
+                            <!-- <div class="form-group">
+                                <label for="exampleFormControlTextarea1">ADD</label>
+                                <textarea class="form-control" name="adddifferencetxtarea" [(ngModel)] = "addfields" id="adddifferencetxtarea" rows="3"></textarea>
+                            </div> 
+                            <div class="form-group">
+                                <label for="exampleFormControlTextarea1">Remove</label>
+                                <textarea class="form-control" name="deldifferencetxtarea" [(ngModel)] = "removefields" id="deldifferencetxtarea" rows="3"></textarea>
+                            </div>  -->
+                               
+                            <!-- <div class="form-group">
+                                <label for="exampleFormControlTextarea1">Difference</label>
+                                <textarea class="form-control" name="differencetxtarea" [(ngModel)] = "diffTableDTO.difference" id="differencetxtarea" rows="10"></textarea>
+                            </div>   -->
+                            
+                        </form>
+                    </div>
+                </div>
+    
+            </app-card>
+        </div>
+    </div>

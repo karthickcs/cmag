@@ -5,6 +5,7 @@ import { HttpClient } from  '@angular/common/http';
   providedIn: 'root'
 })
 export class AuthService {
+  strtoken: String;
   helloworld() {
     return this.http.post<JSON>('http://localhost:8080/hello', {   });
   }
@@ -26,7 +27,7 @@ export class AuthService {
     }
       
     const isexpired = this.tokenExpired(""+token)
-    const user=this.currentUser(""+token)
+    //const user=this.currentUser(""+token)
     if (isexpired) {
     return false;
     }
@@ -39,9 +40,10 @@ export class AuthService {
     const expiry = (JSON.parse(atob(token.split('.')[1]))).exp;
     return (Math.floor((new Date).getTime() / 1000)) >= expiry;
   }
-  public currentUser(token: string) {
-     
-    const user = (JSON.parse(atob(token.split('.')[1]))).sub;
+  public currentUser() {
+    const token = localStorage.getItem('token');
+    this.strtoken=""+token;
+    const user = (JSON.parse(atob(this.strtoken.split('.')[1]))).sub;
     return user;
   }
 }
