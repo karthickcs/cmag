@@ -154,16 +154,16 @@ const NavigationItems = [
         type: 'item',
         url: 'javascript:',
         classes: 'nav-item disabled',
-        icon: 'feather icon-power',
+        icon: 'feather icon-sidebar',
         external: true
       },
       {
-        id: 'task-manager',
-        title: 'Task Manager',
+        id: 'LogOut',
+        title: 'Log Out',
         type: 'item',
-        url: '/task-manager',
+        url: '/auth/signin',
         classes: 'nav-item',
-        icon: 'feather icon-sidebar'
+        icon: 'feather icon-power'
       }
     ]
   }

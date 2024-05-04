@@ -30,8 +30,8 @@ import { DpListenControllerService } from './api/dpListenController.service';
 import { FileControllerService } from './api/fileController.service';
 import { JwtAuthenticationControllerService } from './api/jwtAuthenticationController.service';
 import { TaskControllerService } from './api/taskController.service';
-import { AlertModule } from './alert';
-import { HomeComponent } from './home/home.component';
+
+ 
  
 
 @NgModule({
@@ -50,13 +50,13 @@ import { HomeComponent } from './home/home.component';
     NavGroupComponent,
     NavContentComponent,
     NavCollapseComponent,
-    AdminComponent,
-    HomeComponent
+    AdminComponent
+    
     
     
   ],
   imports: [
-    AlertModule,
+   
     BrowserModule,SharedModule,
     AppRoutingModule,FormsModule,HttpClientModule, NgbModule
   ],

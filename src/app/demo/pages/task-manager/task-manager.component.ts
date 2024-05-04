@@ -7,6 +7,7 @@ import { FileControllerService } from '../../../api/fileController.service';
 import { ViewChild } from '@angular/core';
 import { DpListenDTO } from '../../../model/dpListenDTO';
 import { DpListenControllerService } from '../../../api/dpListenController.service';
+import { AlertService } from '../../../theme/shared/components/alert/alert.module';
 @Component({
   selector: 'app-task-manager',
   templateUrl: './task-manager.component.html',
@@ -22,7 +23,10 @@ export class TaskManagerComponent implements OnInit {
 
   }
 
-
+  options = {
+    autoClose: true,
+    keepAfterRouteChange: false
+};
   taskMainDTO: TaskMainDTO = {};
   dplistenentry: DpListenDTO = {};
   taskmainArray = [];
@@ -30,7 +34,7 @@ export class TaskManagerComponent implements OnInit {
   constructor(private taskControllerService: TaskControllerService,
     private dpListenControllerService: DpListenControllerService,
     private fileControllerService: FileControllerService,
-
+    private alertService: AlertService,
     private auth: AuthService,
     private router: Router) { }
 
@@ -42,7 +46,7 @@ export class TaskManagerComponent implements OnInit {
   loaddata() {
     this.taskControllerService.getTasknainUsingGET().subscribe(
       (response: any) => {
-
+        //this.alertService.success('Success load!!', this.options);
         // alert(response);
         this.taskmainArray = response;
       },
@@ -54,8 +58,8 @@ export class TaskManagerComponent implements OnInit {
   ondelete(arg0: any, i: any) {
     this.taskControllerService.deletetaskmainUsingDELETE(arg0).subscribe(
       (response: any) => {
-
-        alert("Delete success");
+        this.alertService.success( 'Delete success', this.options);
+        //alert("Delete success");
         this.loaddata();
       },
       (error) => {
@@ -79,8 +83,13 @@ export class TaskManagerComponent implements OnInit {
     this.dplistenentry.taskname = this.taskMainDTO.taskname
     this.dpListenControllerService.savedplistenUsingPOST(this.dplistenentry).subscribe(
       (response: any) => {
-
-        alert("Run created succesful");
+        this.alertService.success('Run created succesful', this.options);
+        setTimeout(() => 
+          {
+              
+              this.router.navigate(['/reports', { id: this.taskMainDTO.taskid }]);
+          },
+          1000);
          
       },
       (error) => {
@@ -95,8 +104,8 @@ export class TaskManagerComponent implements OnInit {
     const file: File = event.currentTarget['files'][0];
     this.fileControllerService.uploadFileUsingPOST(file).subscribe(
       (response: any) => {
-
-        alert(response.fname);
+        this.alertService.success(response.fname +'upload succesful', this.options);
+        //alert(response.fname);
         this.taskMainDTO.filelocation2 = response.fname;
       },
       (error) => {
@@ -109,8 +118,8 @@ export class TaskManagerComponent implements OnInit {
     const file: File = event.currentTarget['files'][0];
     this.fileControllerService.uploadFileUsingPOST(file).subscribe(
       (response: any) => {
-
-        alert(response.fname);
+        this.alertService.success(response.fname +'upload succesful', this.options);
+        //alert(response.fname);
         this.taskMainDTO.filelocation = response.fname;
       },
       (error) => {

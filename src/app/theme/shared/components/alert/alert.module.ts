@@ -10,3 +10,6 @@ import { AlertComponent } from './alert.component';
   exports: [AlertComponent]
 })
 export class AlertModule { }
+ 
+export * from './alert.service';
+export * from './alert.model';

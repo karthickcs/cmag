@@ -1,11 +1,17 @@
-<div class="row">
-    <div class="col-md-6">
+<ngb-accordion [closeOthers]="true" activeIds="static-1" class="next-accordion">
+  <ngb-panel id="static-1">
+    <ng-template ngbPanelTitle>
+      <h5><a href="javascript:">+ SEARCH PANEL</a></h5>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <div class="col-md-6">
         <div class="form-group">
           <label for="exampleFormControlSelect1">Task ID</label>
           
-          <select class="form-control" name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata()">
-              <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
-               Task ---> {{taskmain.taskid}}
+          <select class="form-select" name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+            <option value="0" disabled selected >Select Task</option>    
+            <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+                {{taskmain.taskname}} ---> {{taskmain.taskid}}
               </option>
           </select>
         </div>
@@ -14,15 +20,16 @@
     <div class="col-md-6">
         <div class="form-group">
           <label for="exampleFormControlSelect2">Run ID</label>
-          <select class="form-control" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()" >
-              <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+          <select class="form-select" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()" >
+            <option value="0" disabled selected >Select RunID</option>  
+            <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
                Run Id ---> {{dplisten.runid}}
               </option>
           </select>
         </div>
         
       </div>
-    </div>
+     
     <hr>
     <div class="table-responsive ">
       <table class="table table-bordered table-sm">
@@ -55,18 +62,29 @@
       </table>
     </div>
   
-    <div class="col-md-6">
-        <div class="form-group">
-          <label for="exampleFormControlSelect1">Transaction ID</label>
-          
-          <select class="form-control" name="tranid" id="tranid" [(ngModel)]="tranid" (ngModelChange)="loadtramdata()">
-              <option *ngFor="let diffval of diffTableDTOArray" [value]="diffval.maintranid">
-               TranId ---> {{diffval.maintranid}}
-              </option>
-          </select>
-        </div>
-     
+    
+    </ng-template>
+  </ngb-panel>
+   
+   
+</ngb-accordion>
+
+
+<div class="row">
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="exampleFormControlSelect1">Transaction ID</label>
+      <br>
+      <select class="form-select" name="tranid" id="tranid" [(ngModel)]="tranid" (ngModelChange)="loadtramdata()">
+          <option value="0" disabled selected >Select TransactionID</option>
+          <option *ngFor="let diffval of diffTableDTOArray" [value]="diffval.maintranid">
+           TranId ---> {{diffval.maintranid}}
+          </option>
+      </select>
+      
     </div>
+ 
+</div>
     <br>
           <div class="row">
         <div class="col-sm-12">
@@ -80,25 +98,24 @@
                             <table class="table table-bordered table-sm">
                               <thead>
                                 <tr class="table-primary">
-                                   
-                                  <th>Oldtranid</th>
-                                  <th>Newtranid</th>
+                                  <th>#</th>  
+                                  <th>BaseSystem -Transactionid</th>
+                                  <th>UpdatedSystem -Transactionid</th>
                                   <!-- <th>Difference</th> -->
                         
-                                  <th>DifferenceCount</th>
+                                  <th>Difference</th>
                                   
                         
                                 </tr>
                               </thead>
                               <tbody>
                                 <tr class="table-light" >
-                                  
-                                  
-                                  <td>{{diffTableDTO.maintranid}}</td>
-                                  <td>{{diffTableDTO.newtranid}}</td>
-                        
-                                  <!-- <td>{{diffTableDTO.difference}}</td> -->
-                                  <td>{{diffTableDTO.countval}}</td>
+                                  <td>1</td>
+                                  <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{diffTableDTO.maintranid}}" readonly></td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{diffTableDTO.newtranid}}" readonly></td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{diffTableDTO.countval}}" readonly></td>
+                           
+                                   
                                    
                                 </tr>
                               </tbody>
@@ -119,79 +136,112 @@
                                 <input type="text" name="countval" [(ngModel)]="diffTableDTO.countval" class="form-control" readonly>
                             </div> -->
     
-                            <h6>Difference</h6>
+                            <h4>Difference</h4>
                            
                             <div class="table-responsive ">
                               <table class="table table-bordered table-sm">
                                 <thead>
                                   <tr class="table-primary">
                                     <th>#</th>
-                                    <th>Field</th>
-                                    <th>Old Value</th>
-                                    <th>New Value</th>
+                                    <th colspan="2">Base System</th>
+                                    <th>#</th>
+                                    <th colspan="2">Updated System</th>
+                                     
+                                  </tr>
+                                  <tr class="table-primary">
+                                    <th>#</th>
+                                    <th>ColumnName</th>
+                                    <th>Value</th>
+                                    <th>#</th>
+                                    <th>ColumnName</th>
+                                    <th>Value</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr class="table-light" *ngFor="let diffobj  of changeDTOArray; let i = index">
                                     <td>{{i+1}}</td>
-                                    
-                                    
-                                    <td>{{diffobj.field}}</td>
-                                    <td class="table-success">{{diffobj.oldval}}</td>
-                          
-                                    <td class="table-danger">{{diffobj.newval}}</td>
-                                    
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{diffobj.field}}" readonly></td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: rgb(5, 92, 57);" value="{{diffobj.oldval}}" readonly></td>
+                                    <td>{{i+1}}</td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{diffobj.field}}" readonly></td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: red;" value="{{diffobj.newval}}" readonly></td>
+                           
+                                     
                                      
                                   </tr>
                                 </tbody>
                               </table>
                             </div>
 
-                            <h6>Remove</h6>
+                            <h4>Missing </h4>
                            
                             <div class="table-responsive ">
                               <table class="table table-bordered table-sm">
                                 <thead>
                                   <tr class="table-primary">
                                     <th>#</th>
-                                    <th>Field</th>
-                                    <th> Value</th>
-                                    
+                                    <th colspan="2">Base System</th>
+                                    <th>#</th> 
+                                    <th colspan="2">Updated System</th>
+                                     
+                                  </tr>
+                                  <tr class="table-primary">
+                                    <th>#</th>
+                                    <th>ColumnName</th>
+                                    <th>Value</th>
+                                    <th>#</th>
+                                    <th>ColumnName</th>
+                                    <th>Value</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr class="table-light" *ngFor="let removeobj  of removeDTOArray; let i = index">
                                     <td>{{i+1}}</td>
-                                    
-                                    
-                                    <td>{{removeobj.field}}</td>
-                                    <td class="table-danger">{{removeobj.oldval}}</td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{removeobj.field}}" readonly></td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: green;" value="{{removeobj.oldval}}" readonly></td>
+                                    <td>{{i+1}}</td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{removeobj.field}}" readonly></td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: red;" value="Missing Tags" readonly></td>
                            
+                                   
                                      
                                   </tr>
                                 </tbody>
                               </table>
                             </div>
 
-                            <h6>ADD</h6>
+                            <h4>Additional</h4>
                             
                             <div class="table-responsive ">
                               <table class="table table-bordered table-sm">
                                 <thead>
                                   <tr class="table-primary">
                                     <th>#</th>
-                                    <th>Field</th>
-                                    <th> Value</th>
+                                    <th colspan="2">Base System</th>
+                                    <th>#</th> 
+                                    <th colspan="2">Updated System</th>
                                      
+                                  </tr>
+                                  <tr class="table-primary">
+                                    <th>#</th>
+                                    <th>ColumnName</th>
+                                    <th>Value</th>
+                                    <th>#</th>
+                                    <th>ColumnName</th>
+                                    <th>Value</th>
                                   </tr>
                                 </thead>
                                 <tbody>
                                   <tr class="table-light" *ngFor="let addobj  of addDTOArray; let i = index">
                                     <td>{{i+1}}</td>
                                     
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle;  color: blue;" value="{{addobj.field}}" readonly></td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: red;" value="Missing Tags" readonly></td>
+                                    <td>{{i+1}}</td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle;  color: blue;" value="{{addobj.field}}" readonly></td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: green;" value="{{addobj.oldval}}" readonly></td>
                                     
-                                    <td>{{addobj.field}}</td>
-                                    <td class="table-success">{{addobj.oldval}}</td>
+                           
                                                              
                                      
                                   </tr>

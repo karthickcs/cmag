@@ -1,4 +1,7 @@
-<ng-container *ngIf="this.navigationList">
+<div style="display: flex; justify-content: flex-end">
+<app-alert dismiss="true" type="primary">A simple primary alert—check it out!</app-alert>
+</div>
+<!-- <ng-container *ngIf="this.navigationList">
   <ng-container *ngFor="let breadcrumb of navigationList; let last = last">
     <div class="page-header" *ngIf="last && breadcrumb.breadcrumbs !== false">
       <div class="page-block">
@@ -22,4 +25,4 @@
       </div>
     </div>
   </ng-container>
-</ng-container>
+</ng-container> -->

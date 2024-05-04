@@ -16,6 +16,10 @@ const routes: Routes = [
     canActivate: [AuthGuard] ,
     children: [
       {
+        path: '',
+        loadChildren: () => import('./demo/pages/task-manager/task-manager.module').then(module => module.TaskManagerModule)
+      },
+      {
         path: 'task-manager',
         loadChildren: () => import('./demo/pages/task-manager/task-manager.module').then(module => module.TaskManagerModule)
       },
