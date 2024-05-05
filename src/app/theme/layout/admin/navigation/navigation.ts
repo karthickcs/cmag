@@ -58,6 +58,14 @@ const NavigationItems = [
       }
       ,
       {
+        id: 'Difference',
+        title: 'Difference',
+        type: 'item',
+        url: '/difference',
+        
+        icon: 'feather icon-layout'
+      },
+      {
         id: 'Reports',
         title: 'Reports',
         type: 'item',

@@ -1,0 +1,151 @@
+<ngb-accordion [closeOthers]="true" activeIds="static-1" class="next-accordion">
+  <ngb-panel id="static-1">
+    <ng-template ngbPanelTitle>
+      <h5><a href="javascript:">+ SEARCH PANEL</a></h5>
+    </ng-template>
+    <ng-template ngbPanelContent>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="exampleFormControlSelect1">Task ID</label>
+          
+          <select class="form-select" name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+            <option value="0" disabled selected >Select Task</option>    
+            <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+                {{taskmain.taskname}} ---> {{taskmain.taskid}}
+              </option>
+          </select>
+        </div>
+     
+    </div>
+    <div class="col-md-6">
+        <div class="form-group">
+          <label for="exampleFormControlSelect2">Run ID</label>
+          <select class="form-select" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()" >
+            <option value="0" disabled selected >Select RunID</option>  
+            <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+               Run Id ---> {{dplisten.runid}}
+              </option>
+          </select>
+        </div>
+        
+      </div>
+     
+    <hr>
+    <div class="table-responsive ">
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr class="table-primary">
+             
+            <th>TaskName</th>
+            <th>TaskId</th>
+            <th>Status</th>
+            <th>RunId</th>
+            <th>RowCount</th>
+            <th>Filelocation1</th>
+            <th>Filelocation2</th>
+  
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-light" >
+             
+          
+            <td>{{dplistenentry.taskname}}</td>
+            <td>{{dplistenentry.taskid}}</td>
+            <td>{{dplistenentry.status}}</td>    
+            <td>{{dplistenentry.runid}}</td>
+            <td>{{dplistenentry.rowcount}}</td>
+            <td>{{dplistenentry.filelocation}}</td>
+            <td>{{dplistenentry.filelocationt2}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    
+    </ng-template>
+  </ngb-panel>
+   
+   
+</ngb-accordion>
+
+
+<div class="row">
+  <div class="col-md-6">
+    
+ 
+</div>
+    <br>
+          <div class="row">
+        <div class="col-sm-12">
+            <app-card cardTitle="Comparision" [options]="false">
+              
+                <div class="row">
+                    
+                    <div class="col-md-12">
+                        <form action="javascript:">
+                           <h4>Difference</h4>
+                          <div *ngFor="let item of this.grouped | keyvalue"> 
+                            
+                
+                             
+                            <div class="table-responsive ">
+                              <table class="table table-bordered table-sm">
+                                <thead>
+                                  <tr class="table-primary">
+                                    <th>#</th>
+                                    <th colspan="2">Base System</th>
+                                    <th>#</th>
+                                    <th colspan="2">Updated System</th>
+                                    <th colspan="1">Links</th>
+                                  </tr>
+                                  <!-- <tr class="table-primary">
+                                    <th>#</th>
+                                    <th>ColumnName</th>
+                                    <th>Value</th>
+                                    <th>#</th>
+                                    <th>ColumnName</th>
+                                    <th>Value</th>
+                                  </tr> -->
+                                   <tr class="table-primary">
+                                    <th colspan="7">{{item.key}}  </th>
+                                    
+                                  </tr>
+                                </thead>
+                                <tbody>
+                                  <tr class="table-light" *ngFor="let diffobj  of $any(item).value; let i = index">
+                                    
+                                      <!-- <div *ngIf="i==0 || diffobj.tname != changeDTOArray[i-1].tname">
+                                        <tr>
+                                        <td></td>
+                                        <td colspan="2">{{diffobj.tname}}</td>
+                                        <td></td>
+                                        <td colspan="2">{{diffobj.tname}}</td>
+                                      </tr>
+                                      </div> -->
+                                      
+                                    
+                                    <td>{{i+1}}</td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{diffobj.column}}" readonly></td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: rgb(5, 92, 57);" value="{{diffobj.oldval}}" readonly></td>
+                                    <td>{{i+1}}</td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{diffobj.column}}" readonly></td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: red;" value="{{diffobj.newval}}" readonly></td>
+                                    <td><a style="width:96%;text-align: left; vertical-align: middle; color: blue;" (click)="onMaintrainid(diffobj.maintranid,diffobj.runid,diffobj.taskid)"><u>{{diffobj.maintranid}}</u></a> </td>
+                                    
+                                     
+                                  </tr>
+                                </tbody>
+                              </table>
+                              </div>
+                            </div>
+
+                            
+                            
+                        </form>
+                    </div>
+                </div>
+    
+            </app-card>
+        </div>
+    </div>

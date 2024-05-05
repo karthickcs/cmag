@@ -34,6 +34,10 @@ const routes: Routes = [
       {
         path: 'reports',
         loadChildren: () => import('./demo/pages/task-manager/reports/reports.module').then(module => module.ReportsModule)
+      },
+      {
+        path: 'difference',
+        loadChildren: () => import('./demo/pages/task-manager/viewdifference/viewdifference.module').then(module => module.ViewdifferenceModule)
       }
 
     ]

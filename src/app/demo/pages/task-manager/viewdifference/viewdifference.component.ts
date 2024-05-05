@@ -8,16 +8,18 @@ import { DiffTableDTO } from '../../../../model/diffTableDTO';
 import { AlertService } from '../../../../theme/shared/components';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+
 @Component({
-  selector: 'app-reports',
-  templateUrl: './reports.component.html',
-  styleUrls: ['./reports.component.scss']
+  selector: 'app-viewdifference',
+  templateUrl: './viewdifference.component.html',
+  styleUrls: ['./viewdifference.component.scss']
 })
-export class ReportsComponent implements OnInit {
+export class ViewdifferenceComponent implements OnInit {
   options = {
     autoClose: false,
     keepAfterRouteChange: false
 };
+  oldvaltname:any="";
   changeDTO: any = {};
   changeDTOArray = [];
   addDTO: any = {};
@@ -38,39 +40,28 @@ export class ReportsComponent implements OnInit {
   addfields: any ={};
   removefields: any={};
   tabledata: any={};
+  grouped: any={};
   constructor(private taskControllerService: TaskControllerService,
     private diffTableControllerService: DiffTableControllerService,
     private dpListenControllerService: DpListenControllerService,
     private alertService: AlertService,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute
+    private router: Router
 
   ) { }
 
 
   ngOnInit() {
+    const object1 = {
+      a: 'somestring',
+      b: 42,
+      c: false,
+    };
+    
+    console.log(Object.keys(object1));
+    // Expected output: Array ["a", "b", "c
     this.loaddata();
-    this.diffTableDTO={};
-    this.route.params.subscribe(
-      (params: Params) => {
-               if(params['taskid']){
-                this.taskid= params['taskid'];
-                this.runidselect= params['runid'];
-                this.tranid= params['tranid'];
-                this.loadruniddata(true);
-                
-                this.tranid= params['tranid'];
-                this.loadtramdata();
-               
-               //  
-            
-               }
-               if (params['id']){
-                    this.taskid= params['id'];
-                    this.loadruniddata(false)
-               }
-      }
-    );
+     
     this.tabledata = require('../../../../../assets/tabledata.json');
     
   }
@@ -113,20 +104,16 @@ export class ReportsComponent implements OnInit {
     this.loaddifftable();
   }
   loaddifftable() {
-    //this.diffTableDTO.taskid = "" + this.dplistenentry.taskid;
-    //this.diffTableDTO.runid = this.dplistenentry.runid;
-    let diffTableDTO: DiffTableDTO = {
-      taskid: "" + this.dplistenentry.taskid,
-      runid: this.dplistenentry.runid,
-    };
-    this.diffTableControllerService.getDiffDataUsingPOST(diffTableDTO).subscribe(
+    this.diffTableDTO.taskid = "" + this.dplistenentry.taskid;
+    this.diffTableDTO.runid = this.dplistenentry.runid;
+    this.diffTableControllerService.getDiffDataUsingPOST(this.diffTableDTO).subscribe(
       (response: any) => {
 
         // // alert(response);
         this.diffTableDTOArray = response;
         if(this.diffTableDTOArray[0]){
-          //this.tranid=this.diffTableDTOArray[0]['maintranid'];
-          this.loadtramdata();
+          this.tranid=this.diffTableDTOArray[0]['maintranid'];
+          this.loadDifferenceTable();
         }
          
       },
@@ -135,21 +122,22 @@ export class ReportsComponent implements OnInit {
       }
     );
   }
-
-  loadtramdata() {
+  loadDifferenceTable() {
     this.addDTOArray=[];
     this.removeDTOArray=[];
     this.changeDTOArray=[];
-    //this.cdr.detectChanges();
-    this.diffTableDTO = this.diffTableDTOArray.find(diffdata => diffdata['maintranid'] == this.tranid);
+    this.cdr.detectChanges();
+    this.changeDTOArray=[];
+    for (var diff_entry of this.diffTableDTOArray) {
+    
     let a = "";
-    a = this.diffTableDTO.difference;
+    a = diff_entry.difference;
     a = a.split('(').join('[')
     a = a.split(')').join(']')
 
     this.jsondiff = JSON.parse(a);
-    this.diffTableDTO.difference = a;
-    this.changeDTOArray=[];
+    diff_entry.difference = a;
+   
     for (var val of this.jsondiff) {
       console.log(val);
       console.log(val[0]);
@@ -157,33 +145,64 @@ export class ReportsComponent implements OnInit {
 
         for (var v1 of val[2]) {
         this.addDTO ={};
-        this.addDTO['field']=this.gettname(v1[0]);
-        this.addDTO['oldval']=v1[1];
-        
-        this.addDTOArray.push(this.addDTO);
+        this.addDTO['tname']=this.gettname(v1[0]);
+        this.addDTO['column']=this.getcolumnname(v1[0]);
+        this.addDTO['oldval']="Missing Tags";
+        this.addDTO['newval']=v1[1];
+        this.addDTO['maintranid']=diff_entry.maintranid;
+        this.addDTO['runid']=diff_entry.runid;
+        this.addDTO['taskid']=diff_entry.taskid;
+        this.changeDTOArray.push(this.addDTO);
         }
       }
       if (val[0] == 'remove') {
         for (var v1 of val[2]) {
         this.removeDTO ={};
-        this.removeDTO['field']=this.gettname(v1[0]);
+        this.removeDTO['tname']=this.gettname(v1[0]);
         this.removeDTO['oldval']=v1[1];
-        
-        this.removeDTOArray.push(this.removeDTO);
+        this.removeDTO['column']=this.getcolumnname(v1[0]);
+        this.removeDTO['newval']="Missing Tags";
+        this.removeDTO['maintranid']=diff_entry.maintranid;
+        this.removeDTO['runid']=diff_entry.runid;
+        this.removeDTO['taskid']=diff_entry.taskid;
+        this.changeDTOArray.push(this.removeDTO);
       }
       }
       if (val[0] == 'change') {
         this.changeDTO ={};
-        this.changeDTO['field']=this.gettname(val[1]);
-         
+        this.changeDTO['tname']=this.gettname(val[1]);
+        this.changeDTO['column']=this.getcolumnname(val[1]);
         this.changeDTO['oldval']=val[2][0];
         this.changeDTO['newval']=val[2][1];
+        this.changeDTO['maintranid']=diff_entry.maintranid;
+        this.changeDTO['runid']=diff_entry.runid;
+        this.changeDTO['taskid']=diff_entry.taskid;
         this.changeDTOArray.push(this.changeDTO);
       }
     }
   }
+  //this.changeDTOArray.sort((a, b) => a.field.localeCompare(b.field));
+  this.grouped = this.changeDTOArray.reduce(
+    (result:any, currentValue:any) => { 
+      (result[currentValue['tname']] = result[currentValue['tname']] || []).push(currentValue);
+      return result;
+    }, {});
+  }
 
+   
   gettname(field) {
+    let a = field.replace('INSERTING on FBNK_', '');
+    a = a.replace('UPDATING on FBNK_', '');
+    a = a.replace('DELETING on FBNK_', '');
+    a = a.replace('/row/', '');
+    let ans = a.split(":");
+    let columnname = "";
+    //if (this.tabledata[ans[0].replace("_", ".").replace('001', '')]) {
+      //columnname = this.tabledata[ans[0].replace("_", ".").replace('001', '')][ans[2].toUpperCase()]
+      return ans[0].replace("_", ".").replace('001', '');
+     
+  }
+  getcolumnname(field) {
     let a = field.replace('INSERTING on FBNK_', '');
     a = a.replace('UPDATING on FBNK_', '');
     a = a.replace('DELETING on FBNK_', '');
@@ -192,9 +211,14 @@ export class ReportsComponent implements OnInit {
     let columnname = "";
     if (this.tabledata[ans[0].replace("_", ".").replace('001', '')]) {
       columnname = this.tabledata[ans[0].replace("_", ".").replace('001', '')][ans[2].toUpperCase()]
-      return ans[0].replace("_", ".").replace('001', '') + "." + columnname;
+      return  columnname;
     }
     return field;
   }
-
+  onMaintrainid(maintranid,runid,taskid){
+    this.router.navigate(['/reports', { taskid: taskid ,
+      runid: runid ,
+      tranid: maintranid 
+    }]);
+  }
 }
