@@ -8,17 +8,27 @@ import { ViewChild } from '@angular/core';
 import { DpListenDTO } from '../../../model/dpListenDTO';
 import { DpListenControllerService } from '../../../api/dpListenController.service';
 import { AlertService } from '../../../theme/shared/components/alert/alert.module';
+import { Dbtest } from '../../../model/dbtest';
+import { DbControllerService } from '../../../api/dbController.service';
 @Component({
   selector: 'app-task-manager',
   templateUrl: './task-manager.component.html',
   styleUrls: ['./task-manager.component.scss']
 })
 export class TaskManagerComponent implements OnInit {
+  test1: any;
+  test2: any;
+createtrig1: any;
+droptrigger1: any;
+
+  changeSrcType() {
+    throw new Error('Method not implemented.');
+  }
 
   @ViewChild('myModalClose') modalClose;
   oncreate() {
     this.taskMainDTO = {};
-    this.taskMainDTO.createdby=2;
+    this.taskMainDTO.createdby = 2;
     //alert(JSON.stringify(this.taskMainDTO));
 
   }
@@ -26,14 +36,15 @@ export class TaskManagerComponent implements OnInit {
   options = {
     autoClose: true,
     keepAfterRouteChange: false
-};
+  };
   taskMainDTO: TaskMainDTO = {};
   dplistenentry: DpListenDTO = {};
   taskmainArray = [];
-
+  dbtest: Dbtest={}
   constructor(private taskControllerService: TaskControllerService,
     private dpListenControllerService: DpListenControllerService,
     private fileControllerService: FileControllerService,
+    private dbtestService: DbControllerService,
     private alertService: AlertService,
     private auth: AuthService,
     private router: Router) { }
@@ -58,7 +69,7 @@ export class TaskManagerComponent implements OnInit {
   ondelete(arg0: any, i: any) {
     this.taskControllerService.deletetaskmainUsingDELETE(arg0).subscribe(
       (response: any) => {
-        this.alertService.success( 'Delete success', this.options);
+        this.alertService.success('Delete success', this.options);
         //alert("Delete success");
         this.loaddata();
       },
@@ -81,16 +92,33 @@ export class TaskManagerComponent implements OnInit {
     this.dplistenentry.status = 'CREATED'
     this.dplistenentry.taskid = this.taskMainDTO.taskid
     this.dplistenentry.taskname = this.taskMainDTO.taskname
+
+    this.dplistenentry.jdbcurlsys1 = this.taskMainDTO.jdbcurlsys1
+    this.dplistenentry.usernamesys1 = this.taskMainDTO.usernamesys1
+    this.dplistenentry.passwordsys1 = this.taskMainDTO.passwordsys1
+    this.dplistenentry.dbtypesys1 = this.taskMainDTO.dbtypesys1
+    this.dplistenentry.tablenamesys1 = this.taskMainDTO.tablenamesys1
+    this.dplistenentry.starttssys1 = this.taskMainDTO.starttssys1
+    this.dplistenentry.endtssys1 = this.taskMainDTO.endtssys1
+    this.dplistenentry.sys1type = this.taskMainDTO.sys1type
+
+    this.dplistenentry.jdbcurlsys2 = this.taskMainDTO.jdbcurlsys2
+    this.dplistenentry.usernamesys2 = this.taskMainDTO.usernamesys2
+    this.dplistenentry.passwordsys2 = this.taskMainDTO.passwordsys2
+    this.dplistenentry.dbtypesys2 = this.taskMainDTO.dbtypesys2
+    this.dplistenentry.tablenamesys2 = this.taskMainDTO.tablenamesys2
+    this.dplistenentry.starttssys2 = this.taskMainDTO.starttssys2
+    this.dplistenentry.endtssys2 = this.taskMainDTO.endtssys2
+    this.dplistenentry.sys2type = this.taskMainDTO.sys2type
     this.dpListenControllerService.savedplistenUsingPOST(this.dplistenentry).subscribe(
       (response: any) => {
         this.alertService.success('Run created succesful', this.options);
-        setTimeout(() => 
-          {
-              
-              this.router.navigate(['/reports', { id: this.taskMainDTO.taskid }]);
-          },
+        setTimeout(() => {
+
+          this.router.navigate(['/reports', { id: this.taskMainDTO.taskid }]);
+        },
           1000);
-         
+
       },
       (error) => {
         console.log(error);
@@ -104,7 +132,7 @@ export class TaskManagerComponent implements OnInit {
     const file: File = event.currentTarget['files'][0];
     this.fileControllerService.uploadFileUsingPOST(file).subscribe(
       (response: any) => {
-        this.alertService.success(response.fname +'upload succesful', this.options);
+        this.alertService.success(response.fname + 'upload succesful', this.options);
         //alert(response.fname);
         this.taskMainDTO.filelocation2 = response.fname;
       },
@@ -118,7 +146,7 @@ export class TaskManagerComponent implements OnInit {
     const file: File = event.currentTarget['files'][0];
     this.fileControllerService.uploadFileUsingPOST(file).subscribe(
       (response: any) => {
-        this.alertService.success(response.fname +'upload succesful', this.options);
+        this.alertService.success(response.fname + 'upload succesful', this.options);
         //alert(response.fname);
         this.taskMainDTO.filelocation = response.fname;
       },
@@ -144,4 +172,118 @@ export class TaskManagerComponent implements OnInit {
     );
   }
 
+  testdbsys1() {
+    this.test1="";
+    this.dbtest.jdbcurlsys1 = this.taskMainDTO.jdbcurlsys1
+    this.dbtest.usernamesys1 = this.taskMainDTO.usernamesys1
+    this.dbtest.passwordsys1 = this.taskMainDTO.passwordsys1
+    this.dbtest.dbtypesys1 = this.taskMainDTO.dbtypesys1
+    this.dbtest.tablenamesys1 = this.taskMainDTO.tablenamesys1
+    this.dbtest.starttssys1 = this.taskMainDTO.starttssys1
+    this.dbtest.endtssys1 = this.taskMainDTO.endtssys1
+    this.dbtestService.dbtestUsingPOST(this.dbtest).subscribe(
+      (response: any) => {
+        this.test1=response.status;
+      },
+      (error) => {
+        
+        this.test1="Failed";
+      }
+    );
+  }
+  testdbsys2() {
+    this.test2="";
+    this.dbtest.jdbcurlsys1 = this.taskMainDTO.jdbcurlsys2
+    this.dbtest.usernamesys1 = this.taskMainDTO.usernamesys2
+    this.dbtest.passwordsys1 = this.taskMainDTO.passwordsys2
+    this.dbtest.dbtypesys1 = this.taskMainDTO.dbtypesys2
+    this.dbtest.tablenamesys1 = this.taskMainDTO.tablenamesys2
+    this.dbtest.starttssys1 = this.taskMainDTO.starttssys2
+    this.dbtest.endtssys1 = this.taskMainDTO.endtssys2
+    this.dbtestService.dbtestUsingPOST(this.dbtest).subscribe(
+      (response: any) => {
+        this.test2=response.status;
+      },
+      (error) => {
+        this.test2="Failed";
+      }
+    );
+  }
+  craetetriggersys2() {
+    this.createtrigger2="";
+    this.dbtest.jdbcurlsys1 = this.taskMainDTO.jdbcurlsys2
+    this.dbtest.usernamesys1 = this.taskMainDTO.usernamesys2
+    this.dbtest.passwordsys1 = this.taskMainDTO.passwordsys2
+    this.dbtest.dbtypesys1 = this.taskMainDTO.dbtypesys2
+    this.dbtest.tablenamesys1 = this.taskMainDTO.tablenamesys2
+    this.dbtest.starttssys1 = this.taskMainDTO.starttssys2
+    this.dbtest.endtssys1 = this.taskMainDTO.endtssys2
+    this.dbtestService.createtriggerUsingPOST(this.dbtest).subscribe(
+      (response: any) => {
+        this.createtrigger2=response.status;
+      },
+      (error) => {
+        this.createtrigger2="Failed";
+      }
+    );
+    }
+    droptriggersys2() {
+      this.droptrigger2="";
+      this.dbtest.jdbcurlsys1 = this.taskMainDTO.jdbcurlsys2
+      this.dbtest.usernamesys1 = this.taskMainDTO.usernamesys2
+      this.dbtest.passwordsys1 = this.taskMainDTO.passwordsys2
+      this.dbtest.dbtypesys1 = this.taskMainDTO.dbtypesys2
+      this.dbtest.tablenamesys1 = this.taskMainDTO.tablenamesys2
+      this.dbtest.starttssys1 = this.taskMainDTO.starttssys2
+      this.dbtest.endtssys1 = this.taskMainDTO.endtssys2
+      this.dbtestService.droptriggerUsingPOST(this.dbtest).subscribe(
+        (response: any) => {
+          this.droptrigger2=response.status;
+        },
+        (error) => {
+          this.droptrigger2="Failed";
+        }
+      );
+    }
+    createtrigger2: any;
+    droptrigger2: any;
+    droptriggersys1() {
+      this.droptrigger1="";
+      this.dbtest.jdbcurlsys1 = this.taskMainDTO.jdbcurlsys1
+      this.dbtest.usernamesys1 = this.taskMainDTO.usernamesys1
+      this.dbtest.passwordsys1 = this.taskMainDTO.passwordsys1
+      this.dbtest.dbtypesys1 = this.taskMainDTO.dbtypesys1
+      this.dbtest.tablenamesys1 = this.taskMainDTO.tablenamesys1
+      this.dbtest.starttssys1 = this.taskMainDTO.starttssys1
+      this.dbtest.endtssys1 = this.taskMainDTO.endtssys1
+      this.dbtestService.droptriggerUsingPOST(this.dbtest).subscribe(
+        (response: any) => {
+          this.droptrigger1=response.status;
+        },
+        (error) => {
+          console.log(error)
+          this.droptrigger1="Failed";
+        }
+      );
+    }
+    createtriggersys1() {
+      this.createtrig1="";
+      this.dbtest.jdbcurlsys1 = this.taskMainDTO.jdbcurlsys1
+      this.dbtest.usernamesys1 = this.taskMainDTO.usernamesys1
+      this.dbtest.passwordsys1 = this.taskMainDTO.passwordsys1
+      this.dbtest.dbtypesys1 = this.taskMainDTO.dbtypesys1
+      this.dbtest.tablenamesys1 = this.taskMainDTO.tablenamesys1
+      this.dbtest.starttssys1 = this.taskMainDTO.starttssys1
+      this.dbtest.endtssys1 = this.taskMainDTO.endtssys1
+      this.dbtestService.createtriggerUsingPOST(this.dbtest).subscribe(
+        (response: any) => {
+          this.createtrig1=response.status;
+        },
+        (error) => {
+          console.log(error)
+          this.createtrig1="Failed";
+        }
+      );
+    }
+    
 }

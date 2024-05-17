@@ -1,75 +1,239 @@
-<div class="row">
-  <div class="col-xl-12">
-    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
-        (click)="oncreate();exampleModalPopoversLabel.show()">CreateTask</button>
-    <app-card cardTitle="Task List" blockClass="table-border-style">
-      
-         
-      <div class="table-responsive ">
-        <table class="table table-bordered table-sm">
-          <thead>
-            <tr class="table-primary">
-              <th>#</th>
-              <th>Action</th>
-              <th>TaskName</th>
-              <th>TaskId</th>
+<div class="col-xl-12">
+  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+    (click)="oncreate();exampleModalPopoversLabel.show()">CreateTask</button>
+  <app-card cardTitle="Task List" blockClass="table-border-style">
 
-              <th>Status</th>
-              <th>Createdby</th>
-              <th>Shared</th>
-              <th>RowCount</th>
-              <th>Filelocation1</th>
-              <th>Filelocation2</th>
 
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="table-light" *ngFor="let taskmain of taskmainArray; let i = index">
-              <td>{{i+1}}</td>
-              <td>
-                <div class="btn-group mb-2" role="group" aria-label="Basic example">
-                  <img src="assets/images/play.svg" (click)="onrun(taskmain.taskid)" alt="" class="img-fluid">&nbsp;
-                  <img src="assets/images/edit.svg" (click)="onedit(taskmain.taskid);exampleModalPopoversLabel.show()"
-                    alt="" class="img-fluid">&nbsp;
-                  <img src="assets/images/delete.svg" (click)="ondelete(taskmain.taskid,i)" alt=""
-                    class="img-fluid">
+    <div class="table-responsive ">
+      <table class="table table-bordered table-sm">
+        <thead>
+          <tr class="table-primary">
+            <th>#</th>
+            <th>Action</th>
+            <th>TaskName</th>
+            <th>TaskId</th>
+            <th>Type</th>
+            <th>Createdby</th>
+            <th>Jdbcurlsys1</th>
+            <th>Jdbcurlsys2</th>
+            <th>usernamesys1</th>
+            <th>usernamesys2</th>
+            <th>dbtypesys1</th>
+            <th>tablenamesys1</th>
+            <th>dbtypesys2</th>
+            <th>tablenamesys2</th>
+            <th>Shared</th>
+            <th>RowCount</th>
+            <th>Filelocation1</th>
+            <th>Filelocation2</th>
 
-                </div>
-              </td>
-              <td>{{taskmain.taskname}}</td>
-              <td>{{taskmain.taskid}}</td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="table-light" *ngFor="let taskmain of taskmainArray; let i = index">
+            <td>{{i+1}}</td>
+            <td>
+              <div class="btn-group mb-2" role="group" aria-label="Basic example">
+                <img src="assets/images/play.svg" (click)="onrun(taskmain.taskid)" alt="" class="img-fluid">&nbsp;
+                <img src="assets/images/edit.svg" (click)="onedit(taskmain.taskid);exampleModalPopoversLabel.show()"
+                  alt="" class="img-fluid">&nbsp;
+                <img src="assets/images/delete.svg" (click)="ondelete(taskmain.taskid,i)" alt="" class="img-fluid">
 
-              <td>{{taskmain.status}}</td>
-              <td>{{taskmain.createdby}}</td>
-              <td>{{taskmain.shared}}</td>
-              <td>{{taskmain.rowcount}}</td>
-              <td>{{taskmain.filelocation}}</td>
-              <td>{{taskmain.filelocation2}}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </app-card>
-  </div>
-  <!-- Button trigger modal -->
-  <div class="col-xl-4 col-md-6">
+              </div>
+            </td>
+            <td>{{taskmain.taskname}}</td>
+            <td>{{taskmain.taskid}}</td>
 
-    <!-- <button type="button" class="btn btn-primary" data-toggle="modal" (click)="exampleModalPopoversLabel.show()">Launch demo modal</button> -->
-    <app-ui-modal #exampleModalPopoversLabel dialogClass="modal-dialog-centered">
-      <div class="app-modal-header">
-        <h5 class="modal-title">Create/Edit Task</h5>
-        <button type="button" #myModalClose class="close basic-close" data-dismiss="modal" aria-label="Close"
-          (click)="exampleModalPopoversLabel.hide()"><span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="app-modal-body">
-        <div class="col-md-6">
-          <form action="javascript:">
+            <td>{{taskmain.sys1type}}</td>
+            <td>{{taskmain.createdby}}</td>
+
+            <td>{{taskmain.jdbcurlsys1}}</td>
+            <td>{{taskmain.jdbcurlsys2}}</td>
+            <td>{{taskmain.usernamesys1}}</td>
+            <td>{{taskmain.usernamesys2}}</td>
+            <td>{{taskmain.dbtypesys1}}</td>
+            <td>{{taskmain.tablenamesys1}}</td>
+            <td>{{taskmain.dbtypesys2}}</td>
+            <td>{{taskmain.tablenamesys2}}</td>
+            <td>{{taskmain.shared}}</td>
+            <td>{{taskmain.rowcount}}</td>
+            <td>{{taskmain.filelocation}}</td>
+            <td>{{taskmain.filelocation2}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </app-card>
+</div>
+
+<!-- Button trigger modal -->
+<div class="col-xl-8 col-md-12">
+
+  <!-- <button type="button" class="btn btn-primary" data-toggle="modal" (click)="exampleModalPopoversLabel.show()">Launch demo modal</button> -->
+  <app-ui-modal #exampleModalPopoversLabel [dialogClass]="'modal-lg'">
+    <div class="app-modal-header">
+      <h3> <span class="badge bg-secondary">Create/Edit Task</span></h3>
+       
+      <button type="button" #myModalClose class="close basic-close" data-dismiss="modal" aria-label="Close"
+        (click)="exampleModalPopoversLabel.hide()"><span aria-hidden="true">&times;</span></button>
+    </div>
+    <div class="app-modal-body">
+      <div class="col-md-10">
+        <form action="javascript:">
+          <div class="p-3 mb-2 bg-secondary text-white">
             <div class="form-group">
               <label>Task Name</label>
               <input type="text" name="taskname" [(ngModel)]="taskMainDTO.taskname" class="form-control"
                 placeholder="Enter Taskname">
             </div>
 
+            <div class="form-group">
+              <label>Source Type</label>
+              <select class="form-control" name="sourcetype" id="sourcetype" [(ngModel)]="taskMainDTO.sys1type"
+                (ngModelChange)="changeSrcType()">
+                <option value="DB"> DB </option>
+                <option value="FILE"> FILE </option>
+              </select>
+            </div>
+          </div>
+          <br>
+
+          <div class="p-3 mb-2 bg-secondary text-white" *ngIf="taskMainDTO.sys1type == 'DB'">
+            <div class="p-3 mb-2 bg-secondary text-white">
+              <label><b>OLD SYS</b></label>
+              <br>
+              <form>
+                <div class="row">
+                  <div class="col">
+                    <label>JDBC URL</label>
+                    <input type="text" name="jdbcurlsys1" [(ngModel)]="taskMainDTO.jdbcurlsys1" class="form-control"
+                      placeholder="Enter JDBC URL">
+                  </div>
+
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <label>UserName</label>
+                    <input type="text" name="usernamesys1" [(ngModel)]="taskMainDTO.usernamesys1" class="form-control"
+                      placeholder="Enter UserName">
+                  </div>
+                  <div class="col">
+                    <label>Password</label>
+                    <input type="password" name="passwordsys1" [(ngModel)]="taskMainDTO.passwordsys1"
+                      class="form-control" placeholder="Enter Password">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <label>db type sys1</label>
+                    <input type="text" name="dbtypesys1" [(ngModel)]="taskMainDTO.dbtypesys1" class="form-control"
+                      placeholder="Enter dbtypesys1">
+                  </div>
+                  <div class="col">
+                    <label>Tablename</label>
+                    <input type="text" name="tablenamesys1" [(ngModel)]="taskMainDTO.tablenamesys1" class="form-control"
+                      placeholder="Enter Tablename">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <label>Start ts sys1</label>
+                    <input type="datetime-local" name="starttssys1" [(ngModel)]="taskMainDTO.starttssys1"
+                      class="form-control" placeholder="Enter Start ts sys1">
+                  </div>
+                  <div class="col">
+                    <label>End ts sys1</label>
+                    <input type="datetime-local" name="endtssys1" [(ngModel)]="taskMainDTO.endtssys1"
+                      class="form-control" placeholder="Enter End ts sys1">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <h4>Status <span [ngClass]="this.test1=='connection success' ? 'badge bg-success' : 'badge bg-danger' " >{{this.test1}}</span></h4>
+                    <button type="button" (click)="testdbsys1()" class="btn btn-primary">Test Connection</button>
+                  </div>
+                  <div class="col">
+                    <h4>Status <span [ngClass]="this.createtrig1=='Trigger Created Successful' ? 'badge bg-success' : 'badge bg-danger' " >{{this.createtrig1}}</span></h4>
+                    <button type="button" (click)="createtriggersys1()" class="btn btn-success">Create Trigger</button>
+                  </div>
+                  <div class="col">
+                    <h4>Status <span [ngClass]="this.droptrigger1=='Trigger Deoped Successful' ? 'badge bg-success' : 'badge bg-danger' " >{{this.droptrigger1}}</span></h4>
+                    <button type="button" (click)="droptriggersys1()" class="btn btn-danger">Drop Trigger</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="p-3 mb-2 bg-secondary text-white">
+              <label><b>New SYS</b></label>
+              <br>
+              <form>
+                <div class="row">
+                  <div class="col">
+                    <label>JDBC URL</label>
+                    <input type="text" name="jdbcurlsys2" [(ngModel)]="taskMainDTO.jdbcurlsys2" class="form-control"
+                      placeholder="Enter JDBC URL">
+                  </div>
+
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <label>UserName</label>
+                    <input type="text" name="usernamesys2" [(ngModel)]="taskMainDTO.usernamesys2" class="form-control"
+                      placeholder="Enter UserName">
+                  </div>
+                  <div class="col">
+                    <label>Password</label>
+                    <input type="password" name="passwordsys2" [(ngModel)]="taskMainDTO.passwordsys2"
+                      class="form-control" placeholder="Enter Password">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <label>db type sys2</label>
+                    <input type="text" name="dbtypesys2" [(ngModel)]="taskMainDTO.dbtypesys2" class="form-control"
+                      placeholder="Enter dbtypesys2">
+                  </div>
+                  <div class="col">
+                    <label>Tablename</label>
+                    <input type="text" name="tablenamesys2" [(ngModel)]="taskMainDTO.tablenamesys2" class="form-control"
+                      placeholder="Enter Tablename">
+                  </div>
+                </div>
+                <div class="row">
+                  <div class="col">
+                    <label>Start ts sys2</label>
+                    <input type="datetime-local" name="starttssys2" [(ngModel)]="taskMainDTO.starttssys2"
+                      class="form-control" placeholder="Enter Start ts sys2">
+                  </div>
+                  <div class="col">
+                    <label>End ts sys2</label>
+                    <input type="datetime-local" name="endtssys2" [(ngModel)]="taskMainDTO.endtssys2"
+                      class="form-control" placeholder="Enter End ts sys2">
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col">
+                    <h4>Status <span [ngClass]="this.test2=='connection success' ? 'badge bg-success' : 'badge bg-danger' " >{{this.test2}}</span></h4>
+                    <button type="button" (click)="testdbsys2()" class="btn btn-primary">Test Connection</button>
+                  </div>
+                  <div class="col">
+                    <h4>Status <span [ngClass]="this.createtrigger2=='Trigger Created Successful' ? 'badge bg-success' : 'badge bg-danger' " >{{this.createtrigger2}}</span></h4>
+                    <button type="button" (click)="craetetriggersys2()" class="btn btn-success">Create Trigger</button>
+                  </div>
+                  <div class="col">
+                    <h4>Status <span [ngClass]="this.droptrigger2=='Trigger Deoped Successful' ? 'badge bg-success' : 'badge bg-danger' " >{{this.droptrigger2}}</span></h4>
+                    <button type="button" (click)="droptriggersys2()" class="btn btn-danger">Drop Trigger</button>
+                  </div>
+                </div>
+                
+              </form>
+
+            </div>
+          </div>
+
+
+          <div class="p-3 mb-2 bg-secondary text-white" *ngIf="taskMainDTO.sys1type == 'FILE'">
             <div class="form-group">
               <label>File location system1</label>
               <input type="text" name="filelocation" [(ngModel)]="taskMainDTO.filelocation" class="form-control"
@@ -97,23 +261,24 @@
 
             </div>
 
-            <div class="form-group">
-              <label>Row count</label>
-              <input type="number" name="rowcount" [(ngModel)]="taskMainDTO.rowcount" class="form-control"
-                placeholder="Enter Row count">
-            </div>
-            <br>
+           
+          </div>
 
 
 
-          </form>
+
+
+        </form>
+        <div class="p-3 mb-2 bg-secondary text-white">
+          <label>Row count</label>
+          <input type="number" name="rowcount" [(ngModel)]="taskMainDTO.rowcount" class="form-control"
+            placeholder="Enter Row count">
         </div>
       </div>
-      <div class="app-modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal"
-          (click)="exampleModalPopoversLabel.hide()">Close</button>&nbsp;
-        <button type="button" (click)="createtaskmain($event)" class="btn btn-primary">Submit</button>
-      </div>
-    </app-ui-modal>
-
-  </div>
+    </div>
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal"
+        (click)="exampleModalPopoversLabel.hide()">Close</button>&nbsp;
+      <button type="button" (click)="createtaskmain($event)" class="btn btn-primary">Submit</button>
+    </div>
+  </app-ui-modal>

@@ -13,13 +13,29 @@
 
 export interface TaskMainDTO { 
     createdby?: number;
+    dbtypesys1?: string;
+    dbtypesys2?: string;
+    endtssys1?: string;
+    endtssys2?: string;
     filelocation?: string;
+    filelocation2?: string;
     insertts?: Date;
+    jdbcurlsys1?: string;
+    jdbcurlsys2?: string;
+    passwordsys1?: string;
+    passwordsys2?: string;
     rowcount?: number;
     shared?: string;
+    starttssys1?: string;
+    starttssys2?: string;
     status?: string;
+    sys1type?: string;
+    sys2type?: string;
+    tablenamesys1?: string;
+    tablenamesys2?: string;
     taskid?: number;
     taskname?: string;
     updatets?: Date;
-    filelocation2?: string;
+    usernamesys1?: string;
+    usernamesys2?: string;
 }

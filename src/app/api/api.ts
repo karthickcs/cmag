@@ -1,3 +1,5 @@
+export * from './dbController.service';
+import { DbControllerService } from './dbController.service';
 export * from './diffTableController.service';
 import { DiffTableControllerService } from './diffTableController.service';
 export * from './dpListenController.service';
@@ -6,6 +8,7 @@ export * from './fileController.service';
 import { FileControllerService } from './fileController.service';
 export * from './jwtAuthenticationController.service';
 import { JwtAuthenticationControllerService } from './jwtAuthenticationController.service';
+ 
 export * from './taskController.service';
 import { TaskControllerService } from './taskController.service';
-export const APIS = [DiffTableControllerService, DpListenControllerService, FileControllerService, JwtAuthenticationControllerService, TaskControllerService];
+export const APIS = [DbControllerService, DiffTableControllerService, DpListenControllerService, FileControllerService, JwtAuthenticationControllerService, MyErrorControllerService, TaskControllerService];

@@ -131,7 +131,7 @@
                                     <td>{{i+1}}</td>
                                     <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{diffobj.column}}" readonly></td>
                                     <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: red;" value="{{diffobj.newval}}" readonly></td>
-                                    <td><a style="width:96%;text-align: left; vertical-align: middle; color: blue;" (click)="onMaintrainid(diffobj.maintranid,diffobj.runid,diffobj.taskid)"><u>{{diffobj.maintranid}}</u></a> </td>
+                                    <td><a style="width:96%;text-align: left; vertical-align: middle; color: blue;" (click)="onMaintrainid(diffobj.maintranid,diffobj.runid,diffobj.taskid)"><u>{{diffobj.maintranid.split("|")[1]}}</u></a> </td>
                                     
                                      
                                   </tr>

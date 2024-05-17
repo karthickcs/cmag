@@ -28,6 +28,14 @@ const routes: Routes = [
         loadChildren: () => import('./demo/pages/task-manager/createtask/createtask.module').then(module => module.CreatetaskModule)
       },
       {
+        path: 'another-view',
+        loadChildren: () => import('./demo/pages/task-manager/viewbytran/viewbytran.module').then(module => module.ViewbytranModule)
+      },
+      {
+        path: 'accordian',
+        loadChildren: () => import('./demo/pages/task-manager/viewacc/viewacc.module').then(module => module.ViewaccModule)
+      },
+      {
         path: 'manage-task',
         loadChildren: () => import('./demo/pages/task-manager/managetask/managetask.module').then(module => module.ManagetaskModule)
       },

@@ -11,15 +11,33 @@
  */
 
 
+
 export interface DpListenDTO { 
+    dbtypesys1?: string;
+    dbtypesys2?: string;
+    dpid?: number;
+    endtssys1?: string;
+    endtssys2?: string;
     filelocation?: string;
     filelocationt2?: string;
     insertts?: Date;
+    jdbcurlsys1?: string;
+    jdbcurlsys2?: string;
+    passwordsys1?: string;
+    passwordsys2?: string;
     rowcount?: number;
     runid?: number;
+    starttssys1?: string;
+    starttssys2?: string;
     status?: string;
+    sys1type?: string;
+    sys2type?: string;
+    tablenamesys1?: string;
+    tablenamesys2?: string;
     taskid?: number;
-    dpid?: number;
     taskname?: string;
     updatets?: Date;
+    usernamesys1?: string;
+    usernamesys2?: string;
 }
+

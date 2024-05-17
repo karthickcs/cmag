@@ -49,10 +49,18 @@ const NavigationItems = [
       }
       ,
       {
-        id: 'CreateTask',
-        title: 'Create Task',
+        id: 'AnotherView',
+        title: 'AnotherView',
         type: 'item',
-        url: '/create-task',
+        url: '/another-view',
+         
+        icon: 'feather icon-layout'
+      },
+      {
+        id: 'Accordian',
+        title: 'Accordian',
+        type: 'item',
+        url: '/accordian',
          
         icon: 'feather icon-layout'
       }

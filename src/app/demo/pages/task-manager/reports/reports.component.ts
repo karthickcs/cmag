@@ -14,6 +14,13 @@ import { switchMap } from 'rxjs/operators';
   styleUrls: ['./reports.component.scss']
 })
 export class ReportsComponent implements OnInit {
+read(arg0: string) {
+   if(arg0)
+    {
+      return arg0.split("|")[1];
+    }
+    return "";
+}
   options = {
     autoClose: false,
     keepAfterRouteChange: false
@@ -125,7 +132,7 @@ export class ReportsComponent implements OnInit {
         // // alert(response);
         this.diffTableDTOArray = response;
         if(this.diffTableDTOArray[0]){
-          //this.tranid=this.diffTableDTOArray[0]['maintranid'];
+          this.tranid=this.diffTableDTOArray[0]['maintranid'];
           this.loadtramdata();
         }
          
@@ -174,7 +181,7 @@ export class ReportsComponent implements OnInit {
       }
       if (val[0] == 'change') {
         this.changeDTO ={};
-        this.changeDTO['field']=this.gettname(val[1]);
+        this.changeDTO['field']=this.gettname(val[1][0]);
          
         this.changeDTO['oldval']=val[2][0];
         this.changeDTO['newval']=val[2][1];

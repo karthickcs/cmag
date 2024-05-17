@@ -30,7 +30,7 @@ import { DpListenControllerService } from './api/dpListenController.service';
 import { FileControllerService } from './api/fileController.service';
 import { JwtAuthenticationControllerService } from './api/jwtAuthenticationController.service';
 import { TaskControllerService } from './api/taskController.service';
-
+import { DbControllerService } from './api/dbController.service';
  
  
 
@@ -62,7 +62,7 @@ import { TaskControllerService } from './api/taskController.service';
   ],
   providers: [  DiffTableControllerService,
     DpListenControllerService,
-    FileControllerService,
+    FileControllerService,DbControllerService,
     JwtAuthenticationControllerService,
     TaskControllerService,NavigationItem,AuthGuardService,AuthService, 
     {

@@ -78,7 +78,7 @@
       <select class="form-select" name="tranid" id="tranid" [(ngModel)]="tranid" (ngModelChange)="loadtramdata()">
           <option value="0" disabled selected >Select TransactionID</option>
           <option *ngFor="let diffval of diffTableDTOArray" [value]="diffval.maintranid">
-           TranId ---> {{diffval.maintranid}}
+           TranId ---> {{diffval.maintranid.split("|")[1]}}
           </option>
       </select>
       
@@ -111,9 +111,9 @@
                               <tbody>
                                 <tr class="table-light" >
                                   <td>1</td>
-                                  <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{diffTableDTO.maintranid}}" readonly></td>
-                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{diffTableDTO.newtranid}}" readonly></td>
-                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{diffTableDTO.countval}}" readonly></td>
+                                  <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value="{{read(diffTableDTO.maintranid)}}" readonly></td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value={{read(diffTableDTO.newtranid)}} readonly></td>
+                                    <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;" value={{diffTableDTO.countval}} readonly></td>
                            
                                    
                                    
