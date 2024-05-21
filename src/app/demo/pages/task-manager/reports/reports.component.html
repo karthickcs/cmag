@@ -38,11 +38,21 @@
              
             <th>TaskName</th>
             <th>TaskId</th>
-            <th>Status</th>
-            <th>RunId</th>
+            <th>Type</th>
+            
+            <th>Jdbcurlsys1</th>
+            <th>Jdbcurlsys2</th>
+            <th>usernamesys1</th>
+            <th>usernamesys2</th>
+            <th>dbtypesys1</th>
+            <th>tablenamesys1</th>
+            <th>dbtypesys2</th>
+            <th>tablenamesys2</th>
+            
             <th>RowCount</th>
             <th>Filelocation1</th>
             <th>Filelocation2</th>
+
   
           </tr>
         </thead>
@@ -51,12 +61,23 @@
              
           
             <td>{{dplistenentry.taskname}}</td>
-            <td>{{dplistenentry.taskid}}</td>
-            <td>{{dplistenentry.status}}</td>    
-            <td>{{dplistenentry.runid}}</td>
-            <td>{{dplistenentry.rowcount}}</td>
-            <td>{{dplistenentry.filelocation}}</td>
-            <td>{{dplistenentry.filelocationt2}}</td>
+              <td>{{dplistenentry.taskid}}</td>
+  
+              <td>{{dplistenentry.sys1type}}</td>
+             
+  
+              <td>{{dplistenentry.jdbcurlsys1}}</td>
+              <td>{{dplistenentry.jdbcurlsys2}}</td>
+              <td>{{dplistenentry.usernamesys1}}</td>
+              <td>{{dplistenentry.usernamesys2}}</td>
+              <td>{{dplistenentry.dbtypesys1}}</td>
+              <td>{{dplistenentry.tablenamesys1}}</td>
+              <td>{{dplistenentry.dbtypesys2}}</td>
+              <td>{{dplistenentry.tablenamesys2}}</td>
+             
+              <td>{{dplistenentry.rowcount}}</td>
+              <td>{{dplistenentry.filelocation}}</td>
+              <td>{{dplistenentry.filelocationt2}}</td>
           </tr>
         </tbody>
       </table>

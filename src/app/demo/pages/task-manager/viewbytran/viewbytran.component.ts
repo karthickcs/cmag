@@ -179,8 +179,8 @@ export class ViewbytranComponent implements OnInit {
         }
         if (val[0] == 'change') {
           this.changeDTO = {};
-          this.changeDTO['tname'] = this.gettname(val[1][0]);
-          this.changeDTO['column'] = this.getcolumnname(val[1][0]);
+          this.changeDTO['tname'] = this.gettname(val[1]);
+          this.changeDTO['column'] = this.getcolumnname(val[1]);
           this.changeDTO['oldval'] = val[2][0];
           this.changeDTO['newval'] = val[2][1];
           this.changeDTO['maintranid'] = diff_entry.maintranid;

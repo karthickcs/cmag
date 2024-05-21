@@ -181,7 +181,7 @@ read(arg0: string) {
       }
       if (val[0] == 'change') {
         this.changeDTO ={};
-        this.changeDTO['field']=this.gettname(val[1][0]);
+        this.changeDTO['field']=this.gettname(val[1]);
          
         this.changeDTO['oldval']=val[2][0];
         this.changeDTO['newval']=val[2][1];
