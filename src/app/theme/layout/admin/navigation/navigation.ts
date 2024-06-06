@@ -39,37 +39,37 @@ const NavigationItems = [
         url: '/task-manager',
         icon: 'feather icon-home'
       },
-      {
-        id: 'ManageTask',
-        title: 'Manage Task Run',
-        type: 'item',
-        url: '/manage-task',
+      // {
+      //   id: 'ManageTask',
+      //   title: 'Manage Task Run',
+      //   type: 'item',
+      //   url: '/manage-task',
         
-        icon: 'feather icon-layout'
-      }
-      ,
-      {
-        id: 'AnotherView',
-        title: 'AnotherView',
-        type: 'item',
-        url: '/another-view',
+      //   icon: 'feather icon-layout'
+      // }
+      // ,
+      // {
+      //   id: 'AnotherView',
+      //   title: 'AnotherView',
+      //   type: 'item',
+      //   url: '/another-view',
          
-        icon: 'feather icon-layout'
-      },
-      {
-        id: 'Accordian',
-        title: 'Accordian',
-        type: 'item',
-        url: '/accordian',
+      //   icon: 'feather icon-layout'
+      // },
+      // {
+      //   id: 'Accordian',
+      //   title: 'Accordian',
+      //   type: 'item',
+      //   url: '/accordian',
          
-        icon: 'feather icon-layout'
-      }
-      ,
+      //   icon: 'feather icon-layout'
+      // }
+      // ,
       {
-        id: 'Difference',
-        title: 'Difference',
+        id: 'newtab',
+        title: 'newtab',
         type: 'item',
-        url: '/difference',
+        url: '/newtab',
         
         icon: 'feather icon-layout'
       },
@@ -78,6 +78,22 @@ const NavigationItems = [
         title: 'Reports',
         type: 'item',
         url: '/reports',
+        
+        icon: 'feather icon-layout'
+      },
+      {
+        id: 'windows',
+        title: 'windows',
+        type: 'item',
+        url: '/windows',
+        
+        icon: 'feather icon-layout'
+      },
+      {
+        id: 'windowstran',
+        title: 'windowstran',
+        type: 'item',
+        url: '/windowstran',
         
         icon: 'feather icon-layout'
       }

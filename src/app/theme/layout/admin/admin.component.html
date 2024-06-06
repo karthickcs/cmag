@@ -1,5 +1,5 @@
 <app-navigation class="pcoded-navbar" [ngClass]="{'navbar-collapsed' : navCollapsed, 'theme-horizontal': this.nextConfig['layout'] === 'horizontal', 'mob-open' : navCollapsedMob}" (onNavMobCollapse)="navMobClick()"></app-navigation>
-<app-nav-bar class="navbar pcoded-header navbar-expand-lg navbar-light" (onNavCollapse)="this.navCollapsed = !this.navCollapsed;" (onNavHeaderMobCollapse)="navMobClick()"></app-nav-bar>
+<app-nav-bar class="navbar pcoded-header navbar-expand-sm navbar-light" (onNavCollapse)="this.navCollapsed = !this.navCollapsed;" (onNavHeaderMobCollapse)="navMobClick()"></app-nav-bar>
 <div class="pcoded-main-container">
   <div class="pcoded-wrapper" [ngClass]="{'container': this.nextConfig.layout === 'horizontal' && this.nextConfig.subLayout === 'horizontal-2'}">
     <div class="pcoded-content">
@@ -13,5 +13,19 @@
       </div>
     </div>
   </div>
-</div>
+</div> 
+<!-- <ul>
+  <li><a href="/task-manager">taskmanager</a></li> &nbsp;&nbsp;&nbsp;&nbsp;
+  <li><a href="/manage-task">managetask</a></li>&nbsp;&nbsp;&nbsp;&nbsp;
+  <li><a href="/windows;taskid=2;runid=1">windows</a></li>&nbsp;&nbsp;&nbsp;&nbsp;
+  <li><a href="/windowstran">Transaction</a></li>&nbsp;&nbsp;&nbsp;&nbsp;
+  <li><a href="/another-view">another-view</a></li>&nbsp;&nbsp;&nbsp;&nbsp;
+  <li><a href="/accordian">accordian</a></li>&nbsp;&nbsp;&nbsp;&nbsp;
+  <li><a href="/difference">difference</a></li>&nbsp;&nbsp;&nbsp;&nbsp;
+  <li><a href="/reports">reports</a></li>&nbsp;&nbsp;&nbsp;&nbsp;
+</ul> -->
+
+ <!-- <div style="margin-left: 15px;">
+<router-outlet></router-outlet>
+</div> -->
 <app-configuration></app-configuration>

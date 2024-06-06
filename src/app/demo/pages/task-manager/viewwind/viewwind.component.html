@@ -1,0 +1,167 @@
+<select class=" " name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+  <option value="0" disabled selected>Select Task</option>
+  <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+    {{taskmain.taskname}} ---> {{taskmain.taskid}}
+  </option>
+</select>
+<select class="" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()">
+  <option value="0" disabled selected>Select RunID</option>
+  <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+    Run Id ---> {{dplisten.runid}}
+  </option>
+</select>
+<div style="margin-left: 40%; margin-right: 30%">
+  <b> Oracle OldSYS</b>&nbsp;&nbsp;&nbsp;<img src="assets/images/dbgreen.svg" alt=""
+    class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/images/dbred.svg" alt="" class="img-fluid"> <b>Oracle NewSYS</b>
+</div>
+<div class="row">
+
+
+
+  <div class="table-responsive ">
+
+    <table border="3" style="height:200px" class="table table-bordered table-sm">
+      <thead>
+        <tr class="table-primary">
+
+          <th>#</th>
+          <th>Src Table</th>
+          <th>Difference</th>
+
+          <th>OnlyinSrc</th>
+          <th>Identical</th>
+          <th>Difference</th>
+          <th>Target Table</th>
+
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of this.groupedoriginal | keyvalue; let m = index">
+          <td width="15%">{{m+1}}</td>
+          <td width="15%" align="left"><img (click)="filterTable(item.key)" src="assets/images/tabm.png" alt=""
+              class="img-fluid">&nbsp;{{item.key}}</td>
+          <td align="center">{{(item.value | keyvalue ).length}}</td>
+
+          <td>0</td>
+          <td>0</td>
+          <td align="center">{{(item.value | keyvalue ).length}}</td>
+          <td width="15%"><img (click)="filterTable(item.key)" src="assets/images/tabm.png" alt=""
+              class="img-fluid">&nbsp;{{item.key}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<br>
+<span style="margin-left: 15%; margin-right: 10%">
+  <b>{{ this.tname}}</b>&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/tab.png" alt=""
+    class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/images/tab.png" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp; <b>{{
+    this.tname}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <select class=" " name="columnname" id="columnname" [(ngModel)]="columnname">
+    <option *ngFor="let cn of this.colnames" [value]="cn">
+      {{convert(cn) }}
+    </option>
+  </select>
+  <!-- (keydown)="searchchange()" -->
+  <input type="text"  id="m-search" class="" name="searchtext" id="searchtext"
+    [(ngModel)]="searchtext" placeholder="Search . . ." [style.width]="'330px'">
+  <span class="input-group-append search-btn btn ">
+    <i (click)="search()" class="feather icon-search input-group-text"></i>
+  </span>
+
+</span>
+<div class="row">
+
+  <div class="table-responsive">
+    <table border="3"  class="table table-bordered table-sm">
+
+
+      <tbody class="a">
+        <tr class="table-primary">
+          <th width="30px">#</th>
+          <th width="30px" *ngFor="let kee  of this.colnames; let zz = index  ">
+            <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'src' ">
+              <b> {{convert(kee) }}</b><img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
+            </div>
+            <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'tar' ">
+              <b> {{convert(kee) }}</b><img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
+            </div>
+            <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'rec' ">
+              <b> {{convert(kee) }}</b>
+            </div>
+            <div style="background-color:white" *ngIf="convertcheck(kee) == 'sp' ">
+              &nbsp;
+            </div>
+          </th>
+           
+
+        </tr>
+        <tr class="table-light" *ngFor="let diffobj  of this.groupednewstructval; let m = index">
+
+          <td width="30px">{{m+1}}</td>
+
+
+
+          <td width="30px" *ngFor="let k  of diffobj | keyvalue">
+            <div *ngIf="k.value != ' ' ">
+              <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.2')"><span
+                  style="width:96%;text-align: left; vertical-align: middle; color: rgb(212, 91, 91);">{{k.value}}</span>
+              </div>
+              <div style="white-space:nowrap" *ngIf="k.key.toString().includes('AAAAAmaintranid') ">
+                <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
+                  matTooltipPosition="right" (click)="onMaintrainid(k.value,this.runidselect,this.taskid)"
+                  aria-tooltip="">
+                  Src_Record ID
+                </button>
+
+                <!-- <a style="width:96%;text-align: left; vertical-align: middle; color: blue;"
+                  (click)="onMaintrainid(read(k.value),this.runidselect,this.taskid)">
+
+                  <u>{{convertmin(read(k.value))}}</u>
+                </a> -->
+              </div>
+              <div style="white-space:nowrap" *ngIf="k.key.toString().includes('AAAAAnewtranid') ">
+                <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
+                matTooltipPosition="right" (click)="onMaintrainid(k.value,this.runidselect,this.taskid)"
+                aria-tooltip="">
+                Tar_Record ID
+              </button>
+                  
+                  
+              </div>
+              <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.1')"><span
+                  style=" text-align: left; vertical-align: middle; ">{{k.value}}</span></div>
+
+            </div>
+            <div style="background-color:white" *ngIf="k.value == ' ' ">&nbsp;</div>
+
+          </td>
+          <td width="30px" *ngFor="let kee  of getcolumn(m)">
+            <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'src' ">
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+            <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'tar' ">
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+
+            <div style="background-color:white" *ngIf="convertcheck(kee) == 'sp' ">
+              &nbsp;&nbsp;&nbsp;&nbsp;
+            </div>
+          </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+</div>
+<hr>
+<hr>
+<hr>
+ 

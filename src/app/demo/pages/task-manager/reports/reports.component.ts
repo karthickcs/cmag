@@ -17,7 +17,12 @@ export class ReportsComponent implements OnInit {
 read(arg0: string) {
    if(arg0)
     {
-      return arg0.split("|")[1];
+      if (arg0.split("|")[1]) {
+         return arg0.split("|")[1];
+      }
+      else{
+         return arg0;
+      }
     }
     return "";
 }
@@ -79,6 +84,7 @@ read(arg0: string) {
       }
     );
     this.tabledata = require('../../../../../assets/tabledata.json');
+    //console.log(Object.keys(this.tabledata));
     
   }
   loaddata() {
@@ -191,17 +197,26 @@ read(arg0: string) {
   }
 
   gettname(field) {
+    if (Array.isArray(field)){
+      field=field[0];
+    }
     let a = field.replace('INSERTING on FBNK_', '');
     a = a.replace('UPDATING on FBNK_', '');
     a = a.replace('DELETING on FBNK_', '');
+    a = a.replace('INSERTING on F_', '');
+    a = a.replace('UPDATING on F_', '');
+    a = a.replace('DELETING on F_', '');
     a = a.replace('/row/', '');
     let ans = a.split(":");
     let columnname = "";
-    if (this.tabledata[ans[0].replace("_", ".").replace('001', '')]) {
-      columnname = this.tabledata[ans[0].replace("_", ".").replace('001', '')][ans[2].toUpperCase()]
-      return ans[0].replace("_", ".").replace('001', '') + "." + columnname;
+    let tname=ans[0].split("_").join(".").replace('001', '')
+    let cname=ans[2].split("[")[0]
+    cname=cname.substring(cname.lastIndexOf("/")+1)
+    if (this.tabledata[tname]) {
+      columnname = this.tabledata[tname][cname.toUpperCase()]
+      return tname + "." + columnname;
     }
-    return field;
+    return tname  + "." + cname;;
   }
 
 }

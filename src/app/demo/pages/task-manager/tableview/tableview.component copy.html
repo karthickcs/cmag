@@ -1,0 +1,55 @@
+ <!-- <select class=" " name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+  <option value="0" disabled selected>Select Task</option>
+  <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+    {{taskmain.taskname}}  {{taskmain.taskid}}
+  </option>
+</select>
+<select class="" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()">
+  <option value="0" disabled selected>Select RunID</option>
+  <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+    Run Id   {{dplisten.runid}}
+  </option>
+</select>  -->
+<div class="example-header">
+    <mat-form-field>
+      <input matInput (keyup)="applyFilter($event.currentTarget)" placeholder="Filter">
+    </mat-form-field>
+  </div>
+  
+  <div class="example-container mat-elevation-z8">
+  
+    <mat-table [dataSource]="dataSource" matSort>
+  
+      <!-- ID Column -->
+      <ng-container matColumnDef="id">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> id </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.diffid}} </mat-cell>
+      </ng-container>
+  
+      <!-- Progress Column -->
+      <ng-container matColumnDef="progress">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> maintranid </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.maintranid}}% </mat-cell>
+      </ng-container>
+  
+      <!-- Name Column -->
+      <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> newtranid </mat-header-cell>
+        <mat-cell *matCellDef="let row"> {{row.newtranid}} </mat-cell>
+      </ng-container>
+  
+      <!-- Color Column -->
+      <ng-container matColumnDef="color">
+        <mat-header-cell *matHeaderCellDef mat-sort-header> difference </mat-header-cell>
+        <mat-cell *matCellDef="let row" [style.color]="row.difference"> {{row.difference}} </mat-cell>
+      </ng-container>
+  
+      <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+      <mat-row *matRowDef="let row; columns: displayedColumns;">
+      </mat-row>
+    </mat-table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]"></mat-paginator>
+  </div>
+  
+   

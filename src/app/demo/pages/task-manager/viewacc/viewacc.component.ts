@@ -212,6 +212,9 @@ export class ViewaccComponent implements OnInit {
 
 
   gettname(field) {
+    if (Array.isArray(field)){
+      field=field[0];
+    }
     let a = field.replace('INSERTING on FBNK_', '');
     a = a.replace('UPDATING on FBNK_', '');
     a = a.replace('DELETING on FBNK_', '');
@@ -224,6 +227,9 @@ export class ViewaccComponent implements OnInit {
 
   }
   getcolumnname(field) {
+    if (Array.isArray(field)){
+      field=field[0];
+    }
     let a = field.replace('INSERTING on FBNK_', '');
     a = a.replace('UPDATING on FBNK_', '');
     a = a.replace('DELETING on FBNK_', '');

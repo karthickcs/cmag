@@ -191,6 +191,9 @@ export class ViewdifferenceComponent implements OnInit {
 
    
   gettname(field) {
+    if (Array.isArray(field)){
+      field=field[0];
+    }
     let a = field.replace('INSERTING on FBNK_', '');
     a = a.replace('UPDATING on FBNK_', '');
     a = a.replace('DELETING on FBNK_', '');
@@ -199,21 +202,29 @@ export class ViewdifferenceComponent implements OnInit {
     let columnname = "";
     //if (this.tabledata[ans[0].replace("_", ".").replace('001', '')]) {
       //columnname = this.tabledata[ans[0].replace("_", ".").replace('001', '')][ans[2].toUpperCase()]
-      return ans[0].replace("_", ".").replace('001', '');
+      return ans[0].split("_").join(".").replace('001', '');
      
   }
   getcolumnname(field) {
+    if (Array.isArray(field)){
+      field=field[0];
+    }
     let a = field.replace('INSERTING on FBNK_', '');
     a = a.replace('UPDATING on FBNK_', '');
     a = a.replace('DELETING on FBNK_', '');
     a = a.replace('/row/', '');
     let ans = a.split(":");
     let columnname = "";
-    if (this.tabledata[ans[0].replace("_", ".").replace('001', '')]) {
-      columnname = this.tabledata[ans[0].replace("_", ".").replace('001', '')][ans[2].toUpperCase()]
-      return  columnname;
+    let tname=ans[0].split("_").join(".").replace('001', '')
+    let cname=ans[2].split("[")[0]
+    if (this.tabledata[tname]) {
+      columnname = this.tabledata[tname][cname.toUpperCase()]
+      if(columnname != undefined )
+      return tname + "." + columnname;
+      
+
     }
-    return field;
+    return tname  + "." + cname;;
   }
   onMaintrainid(maintranid,runid,taskid){
     this.router.navigate(['/reports', { taskid: taskid ,

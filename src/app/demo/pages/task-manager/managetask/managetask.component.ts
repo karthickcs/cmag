@@ -63,7 +63,12 @@ export class ManagetaskComponent implements OnInit {
 
         // // alert(response);
         this.dplistenArray = response;
-
+         
+          this.runidselect= this.dplistenArray.reduce((max, obj) => {
+            return Math.max(max, obj.runid);
+          }, 0);
+         
+          this.loadrunid();
       },
       (error) => {
         console.log(error);

@@ -1,0 +1,119 @@
+<select class=" " name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+  <option value="0" disabled selected>Select Task</option>
+  <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+    {{taskmain.taskname}} ---> {{taskmain.taskid}}
+  </option>
+</select>
+<select class="" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()">
+  <option value="0" disabled selected>Select RunID</option>
+  <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+    Run Id ---> {{dplisten.runid}}
+  </option>
+</select>
+<button mat-raised-button color="primary" 
+                    matTooltipPosition="right" (click)="goBack(this.runidselect,this.taskid)"
+                    aria-tooltip="">
+                    Back
+                  </button>
+<div style="margin-left: 40%; margin-right: 30%">
+  <b> Oracle OldSYS</b><img src="assets/images/db.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/images/db.svg" alt="" class="img-fluid"> <b>Oracle NewSYS</b>
+</div>
+<div class="row">
+
+   
+  <br>
+
+  <div class="row">
+    <span style="margin-left: 35%; margin-right: 10%">
+      <b>{{read( this.tname)}}</b>&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/tb.svg" alt=""
+        class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+      <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+      <img src="assets/images/tb.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp; <b>{{
+        read(this.tname)}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+
+    </span>
+    <div style="max-height:490px">
+      <table border="3" *ngFor="let objkeyval  of this.groupednewstructvalObject | keyvalue ; let m = index"
+        class="table caption-top">
+        <caption><b>{{objkeyval.key}}</b></caption>
+
+        <tbody>
+
+          <tr class="table-primary">
+            <th width="30px">#</th>
+            <th width="30px" *ngFor="let kee  of this.colmaster[objkeyval.key+'']; let zz = index  ">
+              <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'src' ">
+                <b> {{convert(kee) }}</b><img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
+              </div>
+              <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'tar' ">
+                <b> {{convert(kee) }}</b><img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
+              </div>
+              <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'rec' ">
+                <b> {{convert(kee) }}</b>
+              </div>
+              <div style="background-color:white" *ngIf="convertcheck(kee) == 'sp' ">
+                &nbsp;
+              </div>
+            </th>
+
+
+          </tr>
+
+           
+          <tr class="table-light" >
+
+            <td width="30px">{{m+1}}</td>
+  
+  
+  
+            <td width="30px" *ngFor="let k  of objkeyval.value| keyvalue">
+              <div *ngIf="k.value != ' ' ">
+                <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.2')"><span
+                    style="width:96%;text-align: left; vertical-align: middle; color: rgb(212, 91, 91);">{{k.value}}</span>
+                </div>
+                <div style="white-space:nowrap" *ngIf="k.key.toString().includes('AAAAAmaintranid') ">
+                  <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
+                    matTooltipPosition="right" (click)="onMaintrainid(read(k.value),this.runidselect,this.taskid)"
+                    aria-tooltip="">
+                    Record ID
+                  </button>
+  
+                  <!-- <a style="width:96%;text-align: left; vertical-align: middle; color: blue;"
+                    (click)="onMaintrainid(read(k.value),this.runidselect,this.taskid)">
+  
+                    <u>{{convertmin(read(k.value))}}</u>
+                  </a> -->
+                </div>
+                <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.1')"><span
+                    style=" text-align: left; vertical-align: middle; ">{{k.value}}</span></div>
+  
+              </div>
+              <div style="background-color:white" *ngIf="k.value == ' ' ">&nbsp;</div>
+  
+            </td>
+            <td width="30px" *ngFor="let kee  of getcolumn(objkeyval.key)">
+              <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'src' ">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+              </div>
+              <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'tar' ">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+              </div>
+  
+              <div style="background-color:white" *ngIf="convertcheck(kee) == 'sp' ">
+                &nbsp;&nbsp;&nbsp;&nbsp;
+              </div>
+            </td>
+  
+          </tr>
+        
+        </tbody>
+
+      </table>
+    </div>
+    <hr>
+    <hr>
+    <hr>
+ 

@@ -99,7 +99,7 @@
       <select class="form-select" name="tranid" id="tranid" [(ngModel)]="tranid" (ngModelChange)="loadtramdata()">
           <option value="0" disabled selected >Select TransactionID</option>
           <option *ngFor="let diffval of diffTableDTOArray" [value]="diffval.maintranid">
-           TranId ---> {{diffval.maintranid.split("|")[1]}}
+           TranId ---> {{read(diffval.maintranid)}}
           </option>
       </select>
       
@@ -157,9 +157,10 @@
                                 <input type="text" name="countval" [(ngModel)]="diffTableDTO.countval" class="form-control" readonly>
                             </div> -->
     
-                            <h4>Difference</h4>
                            
-                            <div class="table-responsive ">
+                           
+                            <div *ngIf="changeDTOArray.length > 0" class="table-responsive ">
+                              <h4>Difference</h4>
                               <table class="table table-bordered table-sm">
                                 <thead>
                                   <tr class="table-primary">
@@ -194,9 +195,10 @@
                               </table>
                             </div>
 
-                            <h4>Missing </h4>
+                            
                            
-                            <div class="table-responsive ">
+                            <div *ngIf="removeDTOArray.length > 0" class="table-responsive ">
+                              <h4>Missing </h4>
                               <table class="table table-bordered table-sm">
                                 <thead>
                                   <tr class="table-primary">
@@ -231,9 +233,10 @@
                               </table>
                             </div>
 
-                            <h4>Additional</h4>
                             
-                            <div class="table-responsive ">
+                            
+                            <div *ngIf="addDTOArray.length > 0" class="table-responsive ">
+                              <h4>Additional</h4>
                               <table class="table table-bordered table-sm">
                                 <thead>
                                   <tr class="table-primary">

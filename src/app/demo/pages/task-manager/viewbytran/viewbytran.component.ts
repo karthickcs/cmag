@@ -186,6 +186,16 @@ export class ViewbytranComponent implements OnInit {
           this.changeDTO['maintranid'] = diff_entry.maintranid;
           this.changeDTO['runid'] = diff_entry.runid;
           this.changeDTO['taskid'] = diff_entry.taskid;
+          let f=val[1]
+          if (diff_entry.maintranid.indexOf("|") <0){
+            if (Array.isArray(f)){
+              f=f[0];
+            }
+            let recid=f.split(":")[2]
+            recid=recid.substring(0,recid.lastIndexOf("/")-1)
+            this.changeDTO['maintranid'] = diff_entry.maintranid+"|"+recid;
+          }
+
           this.changeDTOArray.push(this.changeDTO);
         }
       }
@@ -208,32 +218,87 @@ export class ViewbytranComponent implements OnInit {
     this.groupedoriginal = this.grouped;
   }
 
-
   gettname(field) {
-    let a = field.replace('INSERTING on FBNK_', '');
-    a = a.replace('UPDATING on FBNK_', '');
-    a = a.replace('DELETING on FBNK_', '');
-    a = a.replace('/row/', '');
-    let ans = a.split(":");
-    let columnname = "";
-    //if (this.tabledata[ans[0].replace("_", ".").replace('001', '')]) {
-    //columnname = this.tabledata[ans[0].replace("_", ".").replace('001', '')][ans[2].toUpperCase()]
-    return ans[0].replace("_", ".").replace('001', '');
-
-  }
-  getcolumnname(field) {
-    let a = field.replace('INSERTING on FBNK_', '');
-    a = a.replace('UPDATING on FBNK_', '');
-    a = a.replace('DELETING on FBNK_', '');
-    a = a.replace('/row/', '');
-    let ans = a.split(":");
-    let columnname = "";
-    if (this.tabledata[ans[0].replace("_", ".").replace('001', '')]) {
-      columnname = this.tabledata[ans[0].replace("_", ".").replace('001', '')][ans[2].toUpperCase()]
-      return columnname;
+    if (Array.isArray(field)){
+      field=field[0];
     }
-    return field;
+    let a = field.replace('INSERTING on FBNK_', '');
+    a = a.replace('UPDATING on FBNK_', '');
+    a = a.replace('DELETING on FBNK_', '');
+    a = a.replace('INSERTING on F_', '');
+    a = a.replace('UPDATING on F_', '');
+    a = a.replace('DELETING on F_', '');
+    a = a.replace('/row/', '');
+    let ans = a.split(":");
+    let columnname = "";
+    let tname=ans[0].split("_").join(".").replace('001', '')
+    let cname=ans[2].split("[")[0]
+    // if (this.tabledata[tname]) {
+    //   columnname = this.tabledata[tname][cname.toUpperCase()]
+    //   return tname + "." + columnname;
+    // }
+    return tname  ;
   }
+
+  getcolumnname(field) {
+    if (Array.isArray(field)){
+      field=field[0];
+    }
+    let a = field.replace('INSERTING on FBNK_', '');
+    a = a.replace('UPDATING on FBNK_', '');
+    a = a.replace('DELETING on FBNK_', '');
+    a = a.replace('INSERTING on F_', '');
+    a = a.replace('UPDATING on F_', '');
+    a = a.replace('DELETING on F_', '');
+    a = a.replace('/row/', '');
+    let ans = a.split(":");
+    let columnname = "";
+    let tname=ans[0].split("_").join(".").replace('001', '')
+    let cname=ans[2].split("[")[0]
+    cname=cname.substring(cname.lastIndexOf("/")+1)
+    if (this.tabledata[tname]) {
+      columnname = this.tabledata[tname][cname.toUpperCase()]
+      return tname + "." + columnname;
+    }
+    return tname  + "." + cname;;
+  }
+  // gettname(field) {
+  //   if (Array.isArray(field)){
+  //     field=field[0];
+  //   }
+  //   let a = field.replace('INSERTING on FBNK_', '');
+  //   a = a.replace('UPDATING on FBNK_', '');
+  //   a = a.replace('DELETING on FBNK_', '');
+  //   a = a.replace('INSERTING on F_', '');
+  //   a = a.replace('UPDATING on F_', '');
+  //   a = a.replace('DELETING on F_', '');
+  //   a = a.replace('/row/', '');
+  //   let ans = a.split(":");
+  //   let columnname = "";
+  //   //if (this.tabledata[ans[0].replace("_", ".").replace('001', '')]) {
+  //   //columnname = this.tabledata[ans[0].replace("_", ".").replace('001', '')][ans[2].toUpperCase()]
+  //   return ans[0].replace("_", ".").replace('001', '');
+
+  // }
+  // getcolumnname(field) {
+  //   if (Array.isArray(field)){
+  //     field=field[0];
+  //   }
+  //   let a = field.replace('INSERTING on FBNK_', '');
+  //   a = a.replace('UPDATING on FBNK_', '');
+  //   a = a.replace('DELETING on FBNK_', '');
+  //   a = a.replace('INSERTING on F_', '');
+  //   a = a.replace('UPDATING on F_', '');
+  //   a = a.replace('DELETING on F_', '');
+  //   a = a.replace('/row/', '');
+  //   let ans = a.split(":");
+  //   let columnname = "";
+  //   if (this.tabledata[ans[0].replace("_", ".").replace('001', '')]) {
+  //     columnname = this.tabledata[ans[0].replace("_", ".").replace('001', '')][ans[2].toUpperCase()]
+  //     return columnname;
+  //   }
+  //   return field;
+  // }
   onMaintrainid(maintranid, runid, taskid) {
     this.router.navigate(['/reports', {
       taskid: taskid,
