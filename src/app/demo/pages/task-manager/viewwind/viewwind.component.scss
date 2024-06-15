@@ -1,10 +1,11 @@
 .table-responsive {
-    max-height:230px;
+    max-height:280px;
 }
 .table-responsive2 {
     max-height:280px;
 }
 th {
+    font-weight: 800;
     // width: 150px;
     position: sticky;
     top: 0;
@@ -14,8 +15,8 @@ th {
  td{
     text-align: start;
     color: #070707;
-    // font-size: larger;
-     font-weight: 700;
+    font-size: small;
+     font-weight: 400;
     // padding: 5px;
     // box-shadow: inset 0 4px 10px rgba(182, 180, 247, 0.8);
     width: 100px;
@@ -27,26 +28,4 @@ table.a {
     table-layout: auto;
     width: 30px;  
   }
-.tooltip {
-position: relative;
-display: inline-block;
-border-bottom: 1px dotted black;
-}
-
-.tooltip .tooltiptext {
-visibility: hidden;
-width: 120px;
-background-color: black;
-color: #fff;
-text-align: center;
-border-radius: 6px;
-padding: 5px 0;
-
-/* Position the tooltip */
-position: absolute;
-z-index: 1;
-}
-
-.tooltip:hover .tooltiptext {
-visibility: visible;
-}
+ 

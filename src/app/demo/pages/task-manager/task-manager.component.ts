@@ -16,6 +16,7 @@ import { DbControllerService } from '../../../api/dbController.service';
   styleUrls: ['./task-manager.component.scss']
 })
 export class TaskManagerComponent implements OnInit {
+
   test1: any;
   test2: any;
 createtrig1: any;
@@ -285,5 +286,16 @@ droptrigger1: any;
         }
       );
     }
-    
+    cleanoldrun() {
+      this.dpListenControllerService.cleanupUsingGET().subscribe(
+        (response: any) => {
+          this.alertService.success('Clean up successful', this.options);
+          
+  
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+      }
 }

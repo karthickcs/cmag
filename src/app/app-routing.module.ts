@@ -48,10 +48,6 @@ const routes: Routes = [
         loadChildren: () => import('./demo/pages/task-manager/viewwind/viewwind.module').then(module => module.ViewwindModule)
       },
       {
-        path: 'newtab',
-        loadChildren: () => import('./demo/pages/task-manager/tableview/tableview.module').then(module => module.TableviewModule)
-      },
-      {
         path: 'windowstran',
         loadChildren: () => import('./demo/pages/task-manager/viewwindtransac/viewwindtransac.module').then(module => module.ViewwindtransacModule)
       },

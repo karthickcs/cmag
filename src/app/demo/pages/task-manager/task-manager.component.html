@@ -1,13 +1,17 @@
 <div class="col-xl-12">
   <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
     (click)="oncreate();exampleModalPopoversLabel.show()">CreateTask</button>
-  <app-card cardTitle="Task List" blockClass="table-border-style">
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+    (click)="cleanoldrun()">Clean up old Runs</button>
+   
+    <app-card cardTitle="Task List" blockClass="table-border-style">
 
 
     <div class="table-responsive ">
       <table class="table table-bordered table-sm">
         <thead>
-          <tr class="table-primary">
+          <tr class="table-secondary">
             <th>#</th>
             <th>Action</th>
             <th>TaskName</th>
@@ -30,15 +34,15 @@
           </tr>
         </thead>
         <tbody>
-          <tr class="table-light" *ngFor="let taskmain of taskmainArray; let i = index">
+          <tr   *ngFor="let taskmain of taskmainArray; let i = index">
             <td>{{i+1}}</td>
-            <td>
+            <td  >
               <div class="btn-group mb-2" role="group" aria-label="Basic example">
                 <img src="assets/images/play.svg" (click)="onrun(taskmain.taskid)" alt="" class="img-fluid">&nbsp;
                 <img src="assets/images/edit.svg" (click)="onedit(taskmain.taskid);exampleModalPopoversLabel.show()"
                   alt="" class="img-fluid">&nbsp;
                 <img src="assets/images/delete.svg" (click)="ondelete(taskmain.taskid,i)" alt="" class="img-fluid">
-
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
               </div>
             </td>
             <td>{{taskmain.taskname}}</td>

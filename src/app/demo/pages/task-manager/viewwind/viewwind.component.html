@@ -10,21 +10,21 @@
     Run Id ---> {{dplisten.runid}}
   </option>
 </select>
+
 <div style="margin-left: 40%; margin-right: 30%">
   <b> Oracle OldSYS</b>&nbsp;&nbsp;&nbsp;<img src="assets/images/dbgreen.svg" alt=""
     class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/images/dbred.svg" alt="" class="img-fluid"> <b>Oracle NewSYS</b>
 </div>
+
 <div class="row">
-
-
 
   <div class="table-responsive ">
 
-    <table border="3" style="height:200px" class="table table-bordered table-sm">
+    <table border="3" style="height:200px" class="table">
       <thead>
-        <tr class="table-primary">
+        <tr class="table-secondary">
 
           <th>#</th>
           <th>Src Table</th>
@@ -42,14 +42,18 @@
         <tr *ngFor="let item of this.groupedoriginal | keyvalue; let m = index">
           <td width="15%">{{m+1}}</td>
           <td width="15%" align="left"><img (click)="filterTable(item.key)" src="assets/images/tabm.png" alt=""
-              class="img-fluid">&nbsp;{{item.key}}</td>
+              class="img-fluid">&nbsp;<button (click)="filterTable(item.key)" style="color:blue;font-size: small;" mat-stroked-button color="primary" matTooltipPosition="right" aria-tooltip="">
+                {{item.key}}
+             </button></td>
           <td align="center">{{(item.value | keyvalue ).length}}</td>
 
           <td>0</td>
           <td>0</td>
           <td align="center">{{(item.value | keyvalue ).length}}</td>
           <td width="15%"><img (click)="filterTable(item.key)" src="assets/images/tabm.png" alt=""
-              class="img-fluid">&nbsp;{{item.key}}</td>
+              class="img-fluid"><button (click)="filterTable(item.key)" style="color:bluefont-size: small;" mat-stroked-button color="primary" matTooltipPosition="right" aria-tooltip="">
+                {{item.key}}
+             </button>&nbsp;</td>
         </tr>
       </tbody>
     </table>
@@ -57,7 +61,7 @@
 </div>
 
 <br>
-<span style="margin-left: 15%; margin-right: 10%">
+<span style="margin-left: 5%; margin-right: 10%">
   <b>{{ this.tname}}</b>&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/tab.png" alt=""
     class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
@@ -69,8 +73,8 @@
     </option>
   </select>
   <!-- (keydown)="searchchange()" -->
-  <input type="text"  id="m-search" class="" name="searchtext" id="searchtext"
-    [(ngModel)]="searchtext" placeholder="Search . . ." [style.width]="'330px'">
+  <input type="text" id="m-search" class="" name="searchtext" id="searchtext" [(ngModel)]="searchtext"
+    placeholder="Search . . ." [style.width]="'330px'">
   <span class="input-group-append search-btn btn ">
     <i (click)="search()" class="feather icon-search input-group-text"></i>
   </span>
@@ -81,27 +85,34 @@
   <div class="table-responsive">
     <table border="3"  class="table table-bordered table-sm">
 
-
       <tbody class="a">
-        <tr class="table-primary">
+
+        <tr class="table-secondary">
           <th width="30px">#</th>
           <th width="30px" *ngFor="let kee  of this.colnames; let zz = index  ">
-            <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'src' ">
+            <div *ngIf="convertcheck(kee) == 'src' ">
               <b> {{convert(kee) }}</b><img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
             </div>
-            <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'tar' ">
+            <div *ngIf="convertcheck(kee) == 'tar' ">
               <b> {{convert(kee) }}</b><img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
             </div>
-            <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'rec' ">
+            <div *ngIf="convertcheck(kee) == 'srcb' ">
+              <b> {{convert(kee) }}</b>
+            </div>
+            <div *ngIf="convertcheck(kee) == 'tarb' ">
+              <b> {{convert(kee) }}</b>
+            </div>
+            <div *ngIf="convertcheck(kee) == 'rec' ">
               <b> {{convert(kee) }}</b>
             </div>
             <div style="background-color:white" *ngIf="convertcheck(kee) == 'sp' ">
               &nbsp;
             </div>
           </th>
-           
+
 
         </tr>
+
         <tr class="table-light" *ngFor="let diffobj  of this.groupednewstructval; let m = index">
 
           <td width="30px">{{m+1}}</td>
@@ -110,14 +121,17 @@
 
           <td width="30px" *ngFor="let k  of diffobj | keyvalue">
             <div *ngIf="k.value != ' ' ">
-              <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.2')"><span
-                  style="width:96%;text-align: left; vertical-align: middle; color: rgb(212, 91, 91);">{{k.value}}</span>
+              <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.___2')">
+                <button mat-stroked-button color="warn" #tooltip="matTooltip" matTooltip="{{k.value}}"
+                  matTooltipPosition="right" aria-tooltip="">
+                  {{convertmin(k.value)}}
+                </button>
               </div>
-              <div style="white-space:nowrap" *ngIf="k.key.toString().includes('AAAAAmaintranid') ">
-                <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
+              <div style="background-color:lightblue" *ngIf="k.key.toString().includes('AAAAAmaintranid') ">
+                <button mat-stroked-button color="primary" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
                   matTooltipPosition="right" (click)="onMaintrainid(k.value,this.runidselect,this.taskid)"
                   aria-tooltip="">
-                  Src_Record ID
+                  {{convertmin(read(k.value))}}
                 </button>
 
                 <!-- <a style="width:96%;text-align: left; vertical-align: middle; color: blue;"
@@ -126,28 +140,35 @@
                   <u>{{convertmin(read(k.value))}}</u>
                 </a> -->
               </div>
-              <div style="white-space:nowrap" *ngIf="k.key.toString().includes('AAAAAnewtranid') ">
-                <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
-                matTooltipPosition="right" (click)="onMaintrainid(k.value,this.runidselect,this.taskid)"
-                aria-tooltip="">
-                Tar_Record ID
-              </button>
-                  
-                  
-              </div>
-              <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.1')"><span
-                  style=" text-align: left; vertical-align: middle; ">{{k.value}}</span></div>
+              <div style="background-color:lightblue" *ngIf="k.key.toString().includes('AAAAAnewtranid') ">
+                <button mat-stroked-button color="warn" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
+                  matTooltipPosition="right" (click)="onMaintrainid(k.value,this.runidselect,this.taskid)"
+                  aria-tooltip="">
+                  {{convertmin(read(k.value))}}
+                </button>
 
+
+              </div>
+              <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.___1')">
+                <button mat-stroked-button color="primary" #tooltip="matTooltip" matTooltip="{{k.value}}"
+                  matTooltipPosition="right" aria-tooltip="">
+                  {{convertmin(k.value)}}
+                </button>
+              </div>
             </div>
             <div style="background-color:white" *ngIf="k.value == ' ' ">&nbsp;</div>
 
           </td>
           <td width="30px" *ngFor="let kee  of getcolumn(m)">
             <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'src' ">
-              &nbsp;&nbsp;&nbsp;&nbsp;
+              <button style="color:lightblue" mat-stroked-button   matTooltipPosition="right" aria-tooltip="">
+                ______
+              </button>
             </div>
             <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'tar' ">
-              &nbsp;&nbsp;&nbsp;&nbsp;
+              <button style="color:lightblue" mat-stroked-button color="primary" matTooltipPosition="right" aria-tooltip="">
+                 ______
+              </button>
             </div>
 
             <div style="background-color:white" *ngIf="convertcheck(kee) == 'sp' ">
@@ -161,7 +182,3 @@
     </table>
   </div>
 </div>
-<hr>
-<hr>
-<hr>
- 
