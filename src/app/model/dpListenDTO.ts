@@ -11,11 +11,14 @@
  */
 
 
-
 export interface DpListenDTO { 
     dbtypesys1?: string;
     dbtypesys2?: string;
     dpid?: number;
+    endtsClobsys1?: string;
+    endtsClobsys2?: string;
+    endtsOnlinesys1?: string;
+    endtsOnlinesys2?: string;
     endtssys1?: string;
     endtssys2?: string;
     filelocation?: string;
@@ -27,11 +30,19 @@ export interface DpListenDTO {
     passwordsys2?: string;
     rowcount?: number;
     runid?: number;
+    starttsClobsys1?: string;
+    starttsClobsys2?: string;
+    starttsOnlinesys1?: string;
+    starttsOnlinesys2?: string;
     starttssys1?: string;
     starttssys2?: string;
     status?: string;
     sys1type?: string;
     sys2type?: string;
+    tablenameClobsys1?: string;
+    tablenameClobsys2?: string;
+    tablenameOnlinesys1?: string;
+    tablenameOnlinesys2?: string;
     tablenamesys1?: string;
     tablenamesys2?: string;
     taskid?: number;
@@ -40,4 +51,3 @@ export interface DpListenDTO {
     usernamesys1?: string;
     usernamesys2?: string;
 }
-

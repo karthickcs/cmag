@@ -66,10 +66,10 @@ const NavigationItems = [
       // }
       // ,
       {
-        id: 'newtab',
-        title: 'newtab',
+        id: 'dashboard',
+        title: 'dashboard',
         type: 'item',
-        url: '/newtab',
+        url: '/dashboard',
         
         icon: 'feather icon-layout'
       },
@@ -85,7 +85,7 @@ const NavigationItems = [
         id: 'windows',
         title: 'windows',
         type: 'item',
-        url: '/windows',
+        url: '/windowsna',
         
         icon: 'feather icon-layout'
       },

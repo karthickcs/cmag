@@ -19,6 +19,14 @@ const routes: Routes = [
         path: '',
         loadChildren: () => import('./demo/pages/task-manager/task-manager.module').then(module => module.TaskManagerModule)
       },
+      // {
+      //   path: 'dashboard',
+      //   loadChildren: () => import('./demo/pages/dashboard/dashboard.module').then(module => module.DashboardModule)
+      // },
+       {
+        path: 'dashboard',
+        loadChildren: () => import('./demo/pages/task-manager/dashchart/dashchart.module').then(module => module.DashchartModule)
+      },
       {
         path: 'task-manager',
         loadChildren: () => import('./demo/pages/task-manager/task-manager.module').then(module => module.TaskManagerModule)
@@ -46,6 +54,10 @@ const routes: Routes = [
       {
         path: 'windows',
         loadChildren: () => import('./demo/pages/task-manager/viewwind/viewwind.module').then(module => module.ViewwindModule)
+      },
+      {
+        path: 'windowsna',
+        loadChildren: () => import('./demo/pages/task-manager/viewwindna/viewwindna.module').then(module => module.ViewwindnaModule)
       },
       {
         path: 'windowstran',

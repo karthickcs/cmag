@@ -5,12 +5,13 @@ import { TaskManagerRoutingModule } from './task-manager-routing.module';
 import { TaskManagerComponent } from './task-manager.component';
 import {SharedModule} from '../../../theme/shared/shared.module';
 import { AlertModule } from '../../../theme/shared/components';
-
-
+import {MatTooltipModule} from '@angular/material/tooltip';
+import {MatButtonModule} from '@angular/material/button';
+import {MatIconModule} from '@angular/material/icon';
 @NgModule({
   declarations: [TaskManagerComponent],
   imports: [
-    CommonModule,AlertModule,
+    CommonModule,AlertModule,MatTooltipModule,MatButtonModule,MatIconModule,
     TaskManagerRoutingModule,
     SharedModule
   ]

@@ -16,6 +16,22 @@ import { DbControllerService } from '../../../api/dbController.service';
   styleUrls: ['./task-manager.component.scss']
 })
 export class TaskManagerComponent implements OnInit {
+clear2() {
+  this.taskMainDTO.starttsOnlinesys2="";
+  this.taskMainDTO.endtsOnlinesys2="";
+}
+clear1() {
+  this.taskMainDTO.starttsOnlinesys1="";
+  this.taskMainDTO.endtsOnlinesys1="";
+}
+copy2() {
+  this.taskMainDTO.starttsOnlinesys2=this.taskMainDTO.starttssys2;
+  this.taskMainDTO.endtsOnlinesys2=this.taskMainDTO.endtssys2;
+}
+copy1() {
+this.taskMainDTO.starttsOnlinesys1=this.taskMainDTO.starttssys1;
+this.taskMainDTO.endtsOnlinesys1=this.taskMainDTO.endtssys1;
+}
 
   test1: any;
   test2: any;
@@ -30,6 +46,10 @@ droptrigger1: any;
   oncreate() {
     this.taskMainDTO = {};
     this.taskMainDTO.createdby = 2;
+    this.taskMainDTO.tablenamesys1 = "LOG_TABLE";
+    this.taskMainDTO.tablenamesys2 = "LOG_TABLE";
+    this.taskMainDTO.dbtypesys1 = "oracle";
+    this.taskMainDTO.dbtypesys2 = "oracle";
     //alert(JSON.stringify(this.taskMainDTO));
 
   }
@@ -111,6 +131,21 @@ droptrigger1: any;
     this.dplistenentry.starttssys2 = this.taskMainDTO.starttssys2
     this.dplistenentry.endtssys2 = this.taskMainDTO.endtssys2
     this.dplistenentry.sys2type = this.taskMainDTO.sys2type
+
+
+    this.dplistenentry.tablenameClobsys1 = this.taskMainDTO.tablenameClobsys1
+    this.dplistenentry.starttsClobsys1 = this.taskMainDTO.starttsClobsys1
+    this.dplistenentry.endtsClobsys1 = this.taskMainDTO.endtsClobsys1
+    this.dplistenentry.tablenameOnlinesys1 = this.taskMainDTO.tablenameOnlinesys1
+    this.dplistenentry.starttsOnlinesys1 = this.taskMainDTO.starttsOnlinesys1
+    this.dplistenentry.endtsOnlinesys1 = this.taskMainDTO.endtsOnlinesys1
+    this.dplistenentry.tablenameClobsys2 = this.taskMainDTO.tablenameClobsys2
+    this.dplistenentry.starttsClobsys2 = this.taskMainDTO.starttsClobsys2
+    this.dplistenentry.endtsClobsys2 = this.taskMainDTO.endtsClobsys2
+    this.dplistenentry.tablenameOnlinesys2 = this.taskMainDTO.tablenameOnlinesys2
+    this.dplistenentry.starttsOnlinesys2 = this.taskMainDTO.starttsOnlinesys2
+    this.dplistenentry.endtsOnlinesys2 = this.taskMainDTO.endtsOnlinesys2
+
     this.dpListenControllerService.savedplistenUsingPOST(this.dplistenentry).subscribe(
       (response: any) => {
         this.alertService.success('Run created succesful', this.options);

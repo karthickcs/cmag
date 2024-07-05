@@ -36,7 +36,7 @@
 
     </span>
     <div style="max-height:490px">
-      <table border="3" *ngFor="let objkeyval  of this.groupednewstructvalObject | keyvalue ; let m = index"
+      <table border="3" *ngFor="let objkeyval  of this.groupednewstructvalObjectTable | keyvalue ; let m = index"
         class="table caption-top">
         <caption><b>{{objkeyval.key}}</b></caption>
 
@@ -69,13 +69,13 @@
           </tr>
 
            
-          <tr class="table-light" >
+          <tr class="table-light" *ngFor="let innobjk  of objkeyval.value| keyvalue; let n = index">
 
-            <td width="30px">{{m+1}}</td>
+            <td width="30px">{{n+1}}</td>
   
   
   
-            <td width="30px" *ngFor="let k  of objkeyval.value| keyvalue">
+            <td width="30px" *ngFor="let k  of innobjk.value| keyvalue">
               <div *ngIf="k.value != ' ' ">
                 <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.2')"><button mat-stroked-button color="warn" #tooltip="matTooltip" matTooltip="{{k.value}}"
                   matTooltipPosition="right" aria-tooltip="">
@@ -84,7 +84,7 @@
                 </div>
                 <div style="background-color:lightblue" *ngIf="k.key.toString().includes('AAAAAmaintranid') ">
                   <button mat-stroked-button color="primary" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
-                    matTooltipPosition="right" (click)="onMaintrainid(read(k.value),this.runidselect,this.taskid)"
+                    matTooltipPosition="right" (click)="onMaintrainid(k.value,this.runidselect,this.taskid)"
                     aria-tooltip="">
                     {{convertmin(read(k.value))}}
                   </button>
@@ -99,7 +99,7 @@
                   <button mat-stroked-button color="warn" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
                     matTooltipPosition="right" (click)="onMaintrainid(k.value,this.runidselect,this.taskid)"
                     aria-tooltip="">
-                    {{convertmin(k.value)}}
+                    {{convertmin(read(k.value))}}
                   </button>
 
 

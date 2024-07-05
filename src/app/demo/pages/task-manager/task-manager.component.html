@@ -13,14 +13,14 @@
         <thead>
           <tr class="table-secondary">
             <th>#</th>
-            <th>Action</th>
+            <th>Action </th>
             <th>TaskName</th>
             <th>TaskId</th>
             <th>Type</th>
             <th>Createdby</th>
             <th>Jdbcurlsys1</th>
             <th>Jdbcurlsys2</th>
-            <th>usernamesys1</th>
+            <!-- <th>usernamesys1</th>
             <th>usernamesys2</th>
             <th>dbtypesys1</th>
             <th>tablenamesys1</th>
@@ -29,14 +29,35 @@
             <th>Shared</th>
             <th>RowCount</th>
             <th>Filelocation1</th>
-            <th>Filelocation2</th>
+            <th>Filelocation2</th> -->
 
           </tr>
         </thead>
         <tbody>
           <tr   *ngFor="let taskmain of taskmainArray; let i = index">
+            
             <td>{{i+1}}</td>
-            <td  >
+           
+            <td>
+              <div class="row">
+              <section>
+
+              <button (click)="onrun(taskmain.taskid)"   #tooltip="matTooltip" matTooltip="Run Task"
+              mat-icon-button color="success" matTooltipPosition="right" aria-tooltip="">
+              <mat-icon style="color:green" >play_circle_outline</mat-icon>
+            </button> 
+            <button (click)="onedit(taskmain.taskid);exampleModalPopoversLabel.show()"   #tooltip="matTooltip" matTooltip="Edit Task"
+            mat-icon-button color="primary" matTooltipPosition="right" aria-tooltip="">
+            <mat-icon>edit</mat-icon>
+            </button> 
+            <button (click)="ondelete(taskmain.taskid,i)"   #tooltip="matTooltip" matTooltip="Delete Task"
+            mat-icon-button color="warn" matTooltipPosition="right" aria-tooltip="">
+            <mat-icon>delete</mat-icon>
+            </button>
+            </section>
+          </div>
+            </td>
+            <!-- <td  >
               <div class="btn-group mb-2" role="group" aria-label="Basic example">
                 <img src="assets/images/play.svg" (click)="onrun(taskmain.taskid)" alt="" class="img-fluid">&nbsp;
                 <img src="assets/images/edit.svg" (click)="onedit(taskmain.taskid);exampleModalPopoversLabel.show()"
@@ -44,7 +65,7 @@
                 <img src="assets/images/delete.svg" (click)="ondelete(taskmain.taskid,i)" alt="" class="img-fluid">
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
               </div>
-            </td>
+            </td> -->
             <td>{{taskmain.taskname}}</td>
             <td>{{taskmain.taskid}}</td>
 
@@ -53,7 +74,7 @@
 
             <td>{{taskmain.jdbcurlsys1}}</td>
             <td>{{taskmain.jdbcurlsys2}}</td>
-            <td>{{taskmain.usernamesys1}}</td>
+            <!-- <td>{{taskmain.usernamesys1}}</td>
             <td>{{taskmain.usernamesys2}}</td>
             <td>{{taskmain.dbtypesys1}}</td>
             <td>{{taskmain.tablenamesys1}}</td>
@@ -62,7 +83,7 @@
             <td>{{taskmain.shared}}</td>
             <td>{{taskmain.rowcount}}</td>
             <td>{{taskmain.filelocation}}</td>
-            <td>{{taskmain.filelocation2}}</td>
+            <td>{{taskmain.filelocation2}}</td> -->
           </tr>
         </tbody>
       </table>
@@ -105,7 +126,7 @@
           <div class="p-3 mb-2 bg-secondary text-white" *ngIf="taskMainDTO.sys1type == 'DB'">
             <div class="p-3 mb-2 bg-secondary text-white">
               <label><b>OLD SYS</b></label>
-              <br>
+               
               <form>
                 <div class="row">
                   <div class="col">
@@ -129,30 +150,6 @@
                 </div>
                 <div class="row">
                   <div class="col">
-                    <label>db type sys1</label>
-                    <input type="text" name="dbtypesys1" [(ngModel)]="taskMainDTO.dbtypesys1" class="form-control"
-                      placeholder="Enter dbtypesys1">
-                  </div>
-                  <div class="col">
-                    <label>Tablename</label>
-                    <input type="text" name="tablenamesys1" [(ngModel)]="taskMainDTO.tablenamesys1" class="form-control"
-                      placeholder="Enter Tablename">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <label>Start ts sys1</label>
-                    <input type="datetime-local" name="starttssys1" [(ngModel)]="taskMainDTO.starttssys1"
-                      class="form-control" placeholder="Enter Start ts sys1">
-                  </div>
-                  <div class="col">
-                    <label>End ts sys1</label>
-                    <input type="datetime-local" name="endtssys1" [(ngModel)]="taskMainDTO.endtssys1"
-                      class="form-control" placeholder="Enter End ts sys1">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
                     <h4>Status <span [ngClass]="this.test1=='connection success' ? 'badge bg-success' : 'badge bg-danger' " >{{this.test1}}</span></h4>
                     <button type="button" (click)="testdbsys1()" class="btn btn-primary">Test Connection</button>
                   </div>
@@ -165,11 +162,86 @@
                     <button type="button" (click)="droptriggersys1()" class="btn btn-danger">Drop Trigger</button>
                   </div>
                 </div>
+                 
+              
+                <div class="row">
+                  <div class="col">
+                    <label>db type sys1</label>
+                    <input type="text" name="dbtypesys1" [(ngModel)]="taskMainDTO.dbtypesys1" class="form-control"
+                      placeholder="Enter dbtypesys1">
+                  </div>
+                  <div class="col">
+                    <label>Tablename</label>
+                    <input type="text" name="tablenamesys1" [(ngModel)]="taskMainDTO.tablenamesys1" class="form-control"
+                      placeholder="Enter Tablename">
+                  </div>
+                </div>
+                <label><b>Batch Details</b></label>
+                <div class="row">
+                  <div class="col">
+                    
+                    <label>Start ts sys1</label>
+                    <input type="datetime-local" name="starttssys1" [(ngModel)]="taskMainDTO.starttssys1"
+                      class="form-control" placeholder="Enter Start ts sys1">
+                  </div>
+                  <div class="col">
+                    <label>End ts sys1</label>
+                    <input type="datetime-local" name="endtssys1" [(ngModel)]="taskMainDTO.endtssys1"
+                      class="form-control" placeholder="Enter End ts sys1">
+                  </div>
+                </div>
+              
+                <label><b>Online Details</b></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" (click)="copy1()"  >copy time</button><button type="button" (click)="clear1()"  >clear</button>
+                <br>
+                <!-- <div class="row">
+                  <div class="col">
+                    <label>Tablename Online</label>
+                    <input type="text" name="tablenameOnlinesys1" [(ngModel)]="taskMainDTO.tablenameOnlinesys1" class="form-control"
+                      placeholder="Enter Tablename">
+                  </div>
+                </div> -->
+                <div class="row">
+                  <div class="col">
+                    <label>Start ts Onlinesys1</label>
+                    <input type="datetime-local" name="starttsOnlinesys1" [(ngModel)]="taskMainDTO.starttsOnlinesys1"
+                      class="form-control" placeholder="Enter Start ts Onlinesys1">
+                  </div>
+                  <div class="col">
+                    <label>End ts Onlinesys1</label>
+                    <input type="datetime-local" name="endtsOnlinesys1" [(ngModel)]="taskMainDTO.endtsOnlinesys1"
+                      class="form-control" placeholder="Enter End ts Onlinesys1">
+                  </div>                 
+                </div>
+                
+                <!-- <label><b>Clob Details</b></label>
+                <div class="row">
+                  <div class="col">
+                    <label>Tablename Clob</label>
+                    <input type="text" name="tablenameClobsys1" [(ngModel)]="taskMainDTO.tablenameClobsys1" class="form-control"
+                      placeholder="Enter Tablename">
+                  </div>
+                  </div>
+                  <div class="row">
+                  <div class="col">
+                    <label>Start ts Clobsys1</label>
+                    <input type="datetime-local" name="starttsClobsys1" [(ngModel)]="taskMainDTO.starttsClobsys1"
+                      class="form-control" placeholder="Enter Start ts Clobsys1">
+                  </div>
+                  <div class="col">
+                    <label>End ts Clobsys1</label>
+                    <input type="datetime-local" name="endtsClobsys1" [(ngModel)]="taskMainDTO.endtsClobsys1"
+                      class="form-control" placeholder="Enter End ts Clobsys1">
+                  </div>                 
+                </div> -->
+               
+               
               </form>
             </div>
+            <hr><hr>
             <div class="p-3 mb-2 bg-secondary text-white">
               <label><b>New SYS</b></label>
-              <br>
+           
               <form>
                 <div class="row">
                   <div class="col">
@@ -193,31 +265,6 @@
                 </div>
                 <div class="row">
                   <div class="col">
-                    <label>db type sys2</label>
-                    <input type="text" name="dbtypesys2" [(ngModel)]="taskMainDTO.dbtypesys2" class="form-control"
-                      placeholder="Enter dbtypesys2">
-                  </div>
-                  <div class="col">
-                    <label>Tablename</label>
-                    <input type="text" name="tablenamesys2" [(ngModel)]="taskMainDTO.tablenamesys2" class="form-control"
-                      placeholder="Enter Tablename">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <label>Start ts sys2</label>
-                    <input type="datetime-local" name="starttssys2" [(ngModel)]="taskMainDTO.starttssys2"
-                      class="form-control" placeholder="Enter Start ts sys2">
-                  </div>
-                  <div class="col">
-                    <label>End ts sys2</label>
-                    <input type="datetime-local" name="endtssys2" [(ngModel)]="taskMainDTO.endtssys2"
-                      class="form-control" placeholder="Enter End ts sys2">
-                  </div>
-                </div>
-
-                <div class="row">
-                  <div class="col">
                     <h4>Status <span [ngClass]="this.test2=='connection success' ? 'badge bg-success' : 'badge bg-danger' " >{{this.test2}}</span></h4>
                     <button type="button" (click)="testdbsys2()" class="btn btn-primary">Test Connection</button>
                   </div>
@@ -230,6 +277,78 @@
                     <button type="button" (click)="droptriggersys2()" class="btn btn-danger">Drop Trigger</button>
                   </div>
                 </div>
+               
+                
+                <div class="row">
+                  <div class="col">
+                    <label>db type sys2</label>
+                    <input type="text" name="dbtypesys2" [(ngModel)]="taskMainDTO.dbtypesys2" class="form-control"
+                      placeholder="Enter dbtypesys2">
+                  </div>
+                  <div class="col">
+                    <label>Tablename</label>
+                    <input type="text" name="tablenamesys2" [(ngModel)]="taskMainDTO.tablenamesys2" class="form-control"
+                      placeholder="Enter Tablename">
+                  </div>
+                </div>
+                <div class="row">
+                  <label><b>Batch Details</b></label>
+                  <div class="col">
+                    <label>Start ts sys2</label>
+                    <input type="datetime-local" name="starttssys2" [(ngModel)]="taskMainDTO.starttssys2"
+                      class="form-control" placeholder="Enter Start ts sys2">
+                  </div>
+                  <div class="col">
+                    <label>End ts sys2</label>
+                    <input type="datetime-local" name="endtssys2" [(ngModel)]="taskMainDTO.endtssys2"
+                      class="form-control" placeholder="Enter End ts sys2">
+                  </div>
+                </div>
+                
+                <label><b>Online</b></label>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" (click)="copy2()"  >copy time</button><button type="button" (click)="clear2()"  >clear</button>
+                 <br>
+                <!-- <div class="row">
+                  <div class="col">
+                    <label>Tablename Online</label>
+                    <input type="text" name="tablenameOnlinesys2" [(ngModel)]="taskMainDTO.tablenameOnlinesys2" class="form-control"
+                      placeholder="Enter Tablename">
+                  </div>
+                  </div> -->
+                  <div class="row">
+                  <div class="col">
+                    <label>Start ts Onlinesys2</label>
+                    <input type="datetime-local" name="starttsOnlinesys2" [(ngModel)]="taskMainDTO.starttsOnlinesys2"
+                      class="form-control" placeholder="Enter Start ts Onlinesys2">
+                  </div>
+                  <div class="col">
+                    <label>End ts Onlinesys2</label>
+                    <input type="datetime-local" name="endtsOnlinesys2" [(ngModel)]="taskMainDTO.endtsOnlinesys2"
+                      class="form-control" placeholder="Enter End ts Onlinesys2">
+                  </div>                 
+                </div>
+            
+                <!-- <label><b>Blob</b></label>
+                <div class="row">
+                  <div class="col">
+                    <label>Tablename Clob</label>
+                    <input type="text" name="tablenameClobsys2" [(ngModel)]="taskMainDTO.tablenameClobsys2" class="form-control"
+                      placeholder="Enter Tablename">
+                  </div>
+                </div>  
+                <div class="row">
+                  <div class="col">
+                    <label>Start ts Clobsys2</label>
+                    <input type="datetime-local" name="starttsClobsys2" [(ngModel)]="taskMainDTO.starttsClobsys2"
+                      class="form-control" placeholder="Enter Start ts Clobsys2">
+                  </div>
+                  <div class="col">
+                    <label>End ts Clobsys2</label>
+                    <input type="datetime-local" name="endtsClobsys2" [(ngModel)]="taskMainDTO.endtsClobsys2"
+                      class="form-control" placeholder="Enter End ts Clobsys2">
+                  </div>                 
+                </div> -->
+               
                 
               </form>
 

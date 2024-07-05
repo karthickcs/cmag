@@ -172,7 +172,7 @@ export class ViewwindComponent implements OnInit {
 
 
   load(taskid, runid) {
-    this.router.navigate(['/windows', {
+    this.router.navigate(['/windowsna', {
       taskid: taskid,
       runid: runid
 

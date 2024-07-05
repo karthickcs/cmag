@@ -135,7 +135,11 @@ export class ViewdifferenceComponent implements OnInit {
     a = a.split('(').join('[')
     a = a.split(')').join(']')
 
-    this.jsondiff = JSON.parse(a);
+    try {
+      this.jsondiff = JSON.parse(a);
+    } catch (error) {
+
+    }
     diff_entry.difference = a;
    
     for (var val of this.jsondiff) {
