@@ -1,4 +1,4 @@
-import { Component, NgZone, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { NextConfig } from '../../../app-config';
 import { Location } from '@angular/common';
 
@@ -8,12 +8,16 @@ import { Location } from '@angular/common';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
+onchangev() {
+  this.navCollapsed = !this.navCollapsed;
+  this.changedetectionref.detectChanges;
+}
   public nextConfig: any;
   public navCollapsed: boolean;
   public navCollapsedMob: boolean;
   public windowWidth: number;
 
-  constructor(private zone: NgZone, private location: Location) {
+  constructor(private zone: NgZone, private location: Location, private changedetectionref: ChangeDetectorRef) {
     this.nextConfig = NextConfig.config;
     let currentURL = this.location.path();
     const baseHerf = this.location['_baseHref'];

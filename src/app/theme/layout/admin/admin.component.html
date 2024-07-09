@@ -1,10 +1,14 @@
-<app-navigation class="pcoded-navbar menu-light" [ngClass]="{'navbar-collapsed' : navCollapsed, 'theme-horizontal': this.nextConfig['layout'] === 'horizontal', 'mob-open' : navCollapsedMob}" (onNavMobCollapse)="navMobClick()"></app-navigation>
-<!-- <app-nav-bar class="navbar pcoded-header navbar-expand-sm navbar-light" (onNavCollapse)="this.navCollapsed = !this.navCollapsed;" (onNavHeaderMobCollapse)="navMobClick()"></app-nav-bar> -->
-<div class="pcoded-main-container">
+<app-navigation class="pcoded-navbar " [ngClass]="{'navbar-collapsed' : navCollapsed, 'theme-horizontal': this.nextConfig['layout'] === 'horizontal', 'mob-open' : navCollapsedMob}" (onNavMobCollapse)="navMobClick()" (onmin)="onchangev()"></app-navigation>
+<!-- <app-nav-bar class="navbar pcoded-header navbar-expand-sm navbar-light" (onNavCollapse)="this.navCollapsed = !this.navCollapsed;" (onNavHeaderMobCollapse)="navMobClick()"></app-nav-bar>  -->
+<div class="pcoded-main-container" style="font-family: Inter">
+  
   <div class="pcoded-wrapper" [ngClass]="{'container': this.nextConfig.layout === 'horizontal' && this.nextConfig.subLayout === 'horizontal-2'}">
+    <a href="javascript:" class="minmenu" id="mobile-collapse" (click)="this.navCollapsed = !this.navCollapsed;"><span><img src="assets/images/menu.png" alt="" class="img-fluid mb-4"></span></a>
     <div class="pcoded-content">
       <div class="pcoded-inner-content">
+        
         <div class="main-body">
+          
           <div class="page-wrapper">
             <app-breadcrumb></app-breadcrumb>
             <router-outlet></router-outlet>

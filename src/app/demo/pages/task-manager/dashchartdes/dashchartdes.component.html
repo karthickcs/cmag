@@ -1,0 +1,261 @@
+Viewing Dashboard of task<select class="custom-select" name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+  <option value="0" disabled selected>Select Task</option>
+  <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+    {{taskmain.taskname}} ==> {{taskmain.taskid}}
+  </option>
+</select>
+For Run <select class="custom-select" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()">
+  <option value="0" disabled selected>Select RunID</option>
+  <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+    Run Id ==> {{dplisten.runid}}
+  </option>
+</select>
+<div class="col-sm-12" style="font-family:Sans-serif"  >
+  <div class="row no-gutters">
+<div class="row sparkboxes ">
+  <div class="col-md-3">
+    <div class="box box1"  style="color: cornsilk" >
+       
+        <h3>Db Type: {{taskMainDTO.dbtypesys1}}</h3>
+        <span><b>User : {{taskMainDTO.usernamesys1}}</b></span>
+        <h3>Rows : {{taskMainDTO.rowcount}} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="assets/images/dbgreen.svg" alt="" class="img-fluid"></h3> 
+        
+       
+      
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="box box1" style="color: cornsilk">
+      <h3>Db Type: {{taskMainDTO.dbtypesys1}}</h3>
+      <span><b> User :{{taskMainDTO.usernamesys2}} </b></span>
+      <h3>Rows : {{taskMainDTO.rowcount}}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="assets/images/dbred.svg" alt="" class="img-fluid"></h3>
+      
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="box box1" style="color: cornsilk">
+      <span><h3> Fields Added </h3></span>
+      <h3>{{addcount}}    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="assets/images/linechart2.svg" alt="" class="img-fluid"></h3>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="box box1" style="color: cornsilk">
+      <span><h3>Difference</h3></span>
+      <h3>{{diffcount}}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <img src="assets/images/linechart2.svg" alt="" class="img-fluid"></h3>
+  </div>
+</div>
+</div>
+</div><hr>
+<!-- <div class="col-sm-12">
+  <div class="row no-gutters">
+    
+    <div class="col-md-4 col-xl-2 col-sm-6">
+      <app-card [hidHeader]="true">
+        <span><b>Src Database</b></span>
+        <h1>31   <img src="assets/images/dbgreen.svg" alt="" class="img-fluid"></h1> 
+        <h1>User :newsys</h1>
+      </app-card>
+    </div>
+    <div class="col-md-4 col-xl-2 col-sm-6">
+      <app-card [hidHeader]="true">
+        <span><b> Target Database </b></span>
+        <h1>486   <img src="assets/images/dbred.svg" alt="" class="img-fluid"></h1>
+        <h1>User :oldsys</h1>
+      </app-card>
+    </div>
+    <div class="col-md-4 col-xl-2 col-sm-6">
+      <app-card [hidHeader]="true">
+        <span><b> Tables Added </b></span>
+        <h1>3    <img src="assets/images/linechart2.svg" alt="" class="img-fluid"></h1>
+        
+      </app-card>
+    </div>
+    <div class="col-md-4 col-xl-2 col-sm-6">
+      <app-card [hidHeader]="true">
+        <span><b> Table Modified</b></span>
+        <h1>15   <img src="assets/images/linechart2.svg" alt="" class="img-fluid"></h1>
+        
+      </app-card>
+    </div>
+    <div class="col-md-4 col-xl-2 col-sm-6">
+      <app-card [hidHeader]="true">
+        <span><b> Tables Removed </b></span>
+        <h1>2    <img src="assets/images/linechart2.svg" alt="" class="img-fluid"></h1>
+       
+      </app-card>
+    </div>
+    <div class="col-md-4 col-xl-2 col-sm-6">
+      <app-card [hidHeader]="true">
+        <span><b>Difference</b></span>
+        <h1>286  <img src="assets/images/linechart2.svg" alt="" class="img-fluid"></h1>
+        
+      </app-card>
+    </div>
+  </div>
+</div> -->
+
+<div class="col-sm-12">
+  <div class="row no-gutters">
+    <div class="col-xl-4 ">
+      <div class="card boxwh"  > 
+        <span><b>Comparision</b></span>
+        <apx-chart
+    [series]="chartOptions.series"
+    [chart]="chartOptions.chart"
+    [labels]="chartOptions.labels"
+    [responsive]="chartOptions.responsive"
+  ></apx-chart>
+      </div>
+    </div>
+    
+    <div class="col-xl-4  ">
+      <div class="card boxwh"  > 
+        <span><b> Difference</b></span>
+        <apx-chart
+        [series]="chartOptions5.series"
+        [chart]="chartOptions5.chart"
+        [dataLabels]="chartOptions5.dataLabels"
+        [plotOptions]="chartOptions5.plotOptions"
+        [yaxis]="chartOptions5.yaxis"
+        [xaxis]="chartOptions5.xaxis"
+        [stroke]="chartOptions5.stroke"
+        [grid]="chartOptions5.grid"
+        [fill]="chartOptions5.fill"
+        [annotations]="chartOptions5.annotations"
+      ></apx-chart> 
+      </div>
+    </div>
+    <div class="col-xl-4  ">
+      <div class="card boxwh"  > 
+        <span><b> Task Completion Status</b></span>
+        <apx-chart
+        [series]="chartOptions9.series"
+        [chart]="chartOptions9.chart"
+        [plotOptions]="chartOptions9.plotOptions"
+        [labels]="chartOptions9.labels"
+        [stroke]="chartOptions9.stroke"
+        [fill]="chartOptions9.fill"
+      ></apx-chart>
+          <!-- <apx-chart
+        [series]="chartOptions2.series"
+        [chart]="chartOptions2.chart"
+        [dataLabels]="chartOptions2.dataLabels"
+        [plotOptions]="chartOptions2.plotOptions"
+        [yaxis]="chartOptions2.yaxis"
+        [xaxis]="chartOptions2.xaxis"
+        [stroke]="chartOptions2.stroke"
+        [grid]="chartOptions2.grid"
+        [fill]="chartOptions2.fill"
+        [annotations]="chartOptions2.annotations"
+      ></apx-chart>  -->
+      <!-- <apx-chart
+    [series]="chartOptions8.series"
+    [chart]="chartOptions8.chart"
+    [yaxis]="chartOptions8.yaxis"
+    [xaxis]="chartOptions8.xaxis"
+    [labels]="chartOptions8.labels"
+    [stroke]="chartOptions8.stroke"
+    [plotOptions]="chartOptions8.plotOptions"
+    [markers]="chartOptions8.markers"
+    [fill]="chartOptions8.fill"
+    [tooltip]="chartOptions8.tooltip"
+  ></apx-chart> -->
+      </div>
+    </div>
+  </div>
+</div>
+ 
+
+<div class="col-sm-12">
+  <div class="row no-gutters">
+    <div class="col-xl-4  ">
+      <div class="card boxwh"  > 
+        <span><b>Table Treemap</b></span> 
+        <apx-chart
+        [series]="chartOptions4.series"
+        [chart]="chartOptions4.chart"
+        [dataLabels]="chartOptions4.dataLabels"
+        [plotOptions]="chartOptions4.plotOptions"
+        [title]="chartOptions4.title"
+        [legend]="chartOptions4.legend"
+      ></apx-chart>
+      </div>
+    </div>
+    <div class="col-xl-4  ">
+      
+      <div class="card boxwh"  > 
+        <span><b> Timeline</b></span>
+        <apx-chart
+        [series]="chartOptions3.series"
+        [chart]="chartOptions3.chart"
+        [plotOptions]="chartOptions3.plotOptions"
+        [xaxis]="chartOptions3.xaxis"
+      ></apx-chart>
+      </div>
+    </div>
+    <div class="col-xl-4  ">
+      <div class="card boxwh"  > 
+        <apx-chart
+        [series]="chartOptions10.series"
+        [chart]="chartOptions10.chart"
+        [xaxis]="chartOptions10.xaxis"
+        [stroke]="chartOptions10.stroke"
+        [tooltip]="chartOptions10.tooltip"
+        [dataLabels]="chartOptions10.dataLabels"
+      ></apx-chart>
+        <span><b> Parameter</b></span>
+        <div class="table-responsive ">
+          <table class="table table-bordered table-sm">
+            <thead>
+              <tr class="table-primary">
+                <th>#</th>
+                <th>Parameter </th>
+                <th>Value</th>
+               
+              </tr>
+            </thead>
+            <tbody>
+              <tr >
+                <td>1</td>
+                <td>Parameter </td>
+                <td>Value</td>
+              
+              </tr>
+              <tr >
+                <td>2</td>
+                <td>Parameter </td>
+                <td>Value</td>
+              
+              </tr>
+              <tr >
+                <td>3</td>
+                <td>Parameter </td>
+                <td>Value</td>
+              
+              </tr>
+              <tr >
+                <td>4</td>
+                <td>Parameter </td>
+                <td>Value</td>
+              
+              </tr>
+              <tr >
+                <td>5</td>
+                <td>Parameter </td>
+                <td>Value</td>
+              
+              </tr>
+              <tr >
+                <td>6</td>
+                <td>Parameter </td>
+                <td>Value</td>
+              
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>  
+

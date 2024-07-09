@@ -23,6 +23,10 @@ const routes: Routes = [
       //   path: 'dashboard',
       //   loadChildren: () => import('./demo/pages/dashboard/dashboard.module').then(module => module.DashboardModule)
       // },
+      {
+        path: 'dashboarddes',
+        loadChildren: () => import('./demo/pages/task-manager/dashchartdes/dashchartdes.module').then(module => module.DashchartdesModule)
+      },
        {
         path: 'dashboard',
         loadChildren: () => import('./demo/pages/task-manager/dashchart/dashchart.module').then(module => module.DashchartModule)

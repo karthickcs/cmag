@@ -1,0 +1,118 @@
+<select class=" " name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+  <option value="0" disabled selected>Select Task</option>
+  <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+    {{taskmain.taskname}} ---> {{taskmain.taskid}}
+  </option>
+</select>
+<select class="" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()">
+  <option value="0" disabled selected>Select RunID</option>
+  <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+    Run Id ---> {{dplisten.runid}}
+  </option>
+</select>
+<div style="margin-left: 40%; margin-right: 30%">
+  <b> Oracle OldSYSee</b><img src="assets/images/dbgreen.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/images/dbred.svg" alt="" class="img-fluid"> <b>Oracle NewSYS</b>
+</div>
+<div class="row">
+
+
+  <div class="table-responsive ">
+
+    <table class="table table-bordered table-sm">
+      <thead>
+        <tr class="table-secondary">
+
+          <th>#</th>
+          <th>Src Table</th>
+          <th>Difference</th>
+
+          <th>OnlyinSrc</th>
+          <th>Identical</th>
+          <th>Difference</th>
+          <th>Target Table</th>
+
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of this.groupedoriginal | keyvalue; let m = index">
+          <td>{{m+1}}</td>
+          <td width="15%" align="right">{{item.key}}&nbsp;<img (click)="filterTable(item.key)"
+              src="assets/images/tb.svg" alt="" class="img-fluid"></td>
+          <td align="center">{{(item.value | keyvalue ).length}}</td>
+
+          <td>0</td>
+          <td>0</td>
+          <td align="center">{{(item.value | keyvalue ).length}}</td>
+          <td width="15%"><img (click)="filterTable(item.key)" src="assets/images/tb.svg" alt=""
+              class="img-fluid">&nbsp;{{item.key}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<br>
+
+<div class="row">
+  <span style="margin-left: 35%; margin-right: 10%">
+    <b>{{ this.tname}}</b>&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/tb.svg" alt=""
+      class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+    <img src="assets/images/tb.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp; <b>{{
+      this.tname}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <select class=" " name="columnname" id="columnname" [(ngModel)]="columnname">
+      <option *ngFor="let cn of this.colnames" [value]="cn">
+        {{convert(cn) }}
+      </option>
+    </select>
+    <input type="text" (keydown)="searchchange()" id="m-search" class="" name="searchtext" id="searchtext"
+      [(ngModel)]="searchtext" placeholder="Search . . ." [style.width]="'330px'">
+    <span class="input-group-append search-btn btn ">
+      <i (click)="search()" class="feather icon-search input-group-text"></i>
+    </span>
+
+  </span>
+  <div class="table-responsive">
+    <table class="table">
+
+
+      <tbody>
+        <tr class="table-secondary">
+          <th>#</th>
+          <th width="8%" *ngFor="let kee  of this.colnames; let zz = index  " width="8%">{{convert(kee) }}</th>
+          <th *ngFor="let k  of this.colnames"> </th>
+
+        </tr>
+        <tr class="table-light" *ngFor="let diffobj  of this.groupednewstructval; let m = index">
+
+          <td width="15%">{{m+1}}</td>
+
+
+
+          <td *ngFor="let k  of diffobj | keyvalue" width="8%">
+            <div *ngIf="k.value != ' ' ">
+              <div *ngIf="k.key.toString().includes('.2')"><span style=" text-align: left; vertical-align: middle; ">{{k.value}}</span>
+              </div>
+              <div *ngIf="k.key.toString().includes('AAAAAmaintranid') ">
+                <a style="width:96%;text-align: left; vertical-align: middle; color: blue;"
+                  (click)="onMaintrainid(read(k.value),this.runidselect,this.taskid)"><u>{{read(k.value)}}</u></a>
+              </div>
+              <div *ngIf="k.key.toString().includes('.1')"><span style=" text-align: left; vertical-align: middle; ">{{k.value}}</span></div>
+
+            </div>
+
+          </td>
+          <td *ngFor="let k  of this.colnames"> </td>
+
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+  <hr>
+  <hr>
+  <hr>
+  

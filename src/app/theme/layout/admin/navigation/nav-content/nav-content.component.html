@@ -1,5 +1,8 @@
 <perfect-scrollbar *ngIf="this.nextConfig['layout'] === 'vertical'" (clickOutside)="navMob()" [excludeBeforeClick]="true" [exclude]="'#mobile-collapse'" id="nav-ps-next" ngClass="next-scroll" [style.max-width]="'300px'" [style.max-height]="'calc(100vh - 60px)'" >
   <div class="navbar-content">
+    <hr>
+     <div class="media">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/v2311_73.png" class="img-radius" alt="User-Profile-Image"></div><span class="v2311_74"><h2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;John Willson</h2></span>
+
     <ul class="nav pcoded-inner-navbar" (clickOutside)="fireOutClick()">
       <ng-container *ngFor="let item of navigation">
         <app-nav-group *ngIf="item.type=='group'" [item]="item"></app-nav-group>

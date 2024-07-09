@@ -1,0 +1,621 @@
+
+import { switchMap } from 'rxjs/operators';
+import * as _ from 'lodash'
+import { Component, OnInit } from '@angular/core';
+declare var $: any;
+import {  ViewChild } from "@angular/core";
+import { ChartComponent } from "ng-apexcharts";
+
+import {
+  ApexNonAxisChartSeries,
+  ApexResponsive,
+  ApexChart
+} from "ng-apexcharts";
+import {
+  ApexAxisChartSeries,  
+   
+  ApexDataLabels,
+  ApexPlotOptions,
+  ApexYAxis,
+  ApexAnnotations,
+  ApexFill,
+  ApexStroke,ApexXAxis,ApexTitleSubtitle,ApexLegend,
+  ApexGrid,ApexMarkers,ApexTooltip
+} from "ng-apexcharts";
+
+
+export type ChartOptions8 = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  xaxis: ApexXAxis;
+  yaxis: ApexYAxis | ApexYAxis[];
+  labels: string[];
+  stroke: any; // ApexStroke;
+  markers: ApexMarkers;
+  plotOptions: ApexPlotOptions;
+  fill: ApexFill;
+  tooltip: ApexTooltip;
+};
+ 
+export type ChartOptions5 = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  dataLabels: ApexDataLabels;
+  plotOptions: ApexPlotOptions;
+  xaxis: ApexXAxis;
+  fill: ApexFill;
+  colors: string[];
+};
+export type ChartOptions4 = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  dataLabels: ApexDataLabels;
+  title: ApexTitleSubtitle;
+  plotOptions: ApexPlotOptions;
+  legend: ApexLegend;
+  colors: string[];
+};
+export type ChartOptions3 = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  fill: ApexFill;
+  dataLabels: ApexDataLabels;
+  grid: ApexGrid;
+  yaxis: ApexYAxis;
+  xaxis: ApexXAxis;
+  plotOptions: ApexPlotOptions;
+};
+export type ChartOptions2 = {
+  series: ApexAxisChartSeries;
+  chart: ApexChart;
+  dataLabels: ApexDataLabels;
+  plotOptions: ApexPlotOptions;
+  yaxis: ApexYAxis;
+  xaxis: any; //ApexXAxis;
+  annotations: ApexAnnotations;
+  fill: ApexFill;
+  stroke: ApexStroke;
+  grid: ApexGrid;
+};
+export type ChartOptions = {
+  series: ApexNonAxisChartSeries;
+  chart: ApexChart;
+  responsive: ApexResponsive[];
+  labels: any;
+}; 
+ 
+@Component({
+  selector: 'app-dashchart',
+  templateUrl: './dashchart.component.html',
+  styleUrls: ['./dashchart.component.scss']
+})
+export class DashchartComponent implements OnInit {
+  
+  ngOnInit(): void {
+     
+  }
+  @ViewChild("chart") chart: ChartComponent;
+  public chartOptions: Partial<ChartOptions>;
+  public chartOptions2: Partial<ChartOptions2>;
+  public chartOptions3: Partial<ChartOptions3>;
+  public chartOptions4: Partial<ChartOptions4>;
+  public chartOptions5: Partial<ChartOptions5>;
+  public chartOptions8: Partial<ChartOptions8>;
+  constructor() {
+    this.chartOptions = {
+      series: [23, 5, 43],
+      chart: {
+        type: "donut"
+      },
+      labels: ["Added", "Deleted", "Modified" ],
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              width: 200
+            },
+            legend: {
+              position: "bottom"
+            }
+          }
+        }
+      ]
+    };
+    this.chartOptions2 = {
+      series: [
+        {
+          name: "Difference",
+          data: [44, 55, 41, 67, 22, 43, 21, 33, 45, 31 ]
+        }
+      ],
+      annotations: {
+        points: [
+          {
+            x: "Bananas",
+            seriesIndex: 0,
+            label: {
+              borderColor: "#775DD0",
+              offsetY: 0,
+              style: {
+                color: "#fff",
+                background: "#775DD0"
+              },
+              text: " "
+            }
+          }
+        ]
+      },
+      chart: {
+        height: 350,
+        type: "bar"
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: "50%" 
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        width: 2
+      },
+
+      grid: {
+        row: {
+          colors: ["#fff", "#f2f2f2"]
+        }
+      },
+      xaxis: {
+        labels: {
+          rotate: -45
+        },
+        categories: [
+            "FBNK_CATEG_ENT_LWOR000",
+    "FBNK_CONSOLIDATE_AS000",
+    "FBNK_CONSOLIDATE_PR000",
+    "FBNK_AA_ARRANGEMENT006",
+    "FBNK_CATEG_ENT_TODAY",
+    "FBNK_CONSOL_UPDATE_000",
+    "FBNK_EB_CONTRACT_BA001",
+    "FBNK_PV_ASSET_DETAIL",
+    "FBNK_RE_CONSOL_PROFIT",
+    "FBNK_SC_PERF_DETAIL"
+        ],
+        tickPlacement: "on"
+      },
+      yaxis: {
+        title: {
+          text: "Difference"
+        }
+      },
+      fill: {
+        type: "gradient",
+        gradient: {
+          shade: "light",
+          type: "horizontal",
+          shadeIntensity: 0.25,
+          gradientToColors: undefined,
+          inverseColors: true,
+          opacityFrom: 0.85,
+          opacityTo: 0.85,
+          stops: [50, 0, 100]
+        }
+      }
+    };
+
+    this.chartOptions3 = {
+      series:  [
+        {
+          data: [
+            {
+              x: "DataLoad",
+              y: [
+                0,
+                5
+              ],
+              
+            },
+            {
+              x: "Batch Analysis",
+              y: [
+                5,
+                13
+              ],
+              
+            },
+            {
+              x: "Comparision",
+              y: [
+                13,
+                88
+              ],
+              fillColor: "#FEB019"
+            },
+            {
+              x: "ReportGeneration",
+              y: [
+                88,
+                95
+              ],
+              fillColor: "#FF4560"
+            }
+          ]
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "rangeBar"
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true
+        }
+      },
+      xaxis: {
+        type: "category"
+      }
+    };
+
+    this.chartOptions4 = {
+      series: [
+        {
+          data: [
+            {
+              x: "FBNK_CATEG_ENT_LWOR000",
+              y: 218,
+              
+            },
+            {
+              x: "FBNK_CONSOLIDATE_AS000",
+              y: 149
+            },
+            {
+              x: "FBNK_CONSOLIDATE_PR000",
+              y: 184
+            },
+            {
+              x: "FBNK_AA_ARRANGEMENT006",
+              y: 55
+            },
+            {
+              x: "FBNK_CATEG_ENT_TODAY",
+              y: 84
+            },
+            {
+              x: "FBNK_CONSOL_UPDATE_000",
+              y: 31
+            },
+            {
+              x: "FBNK_EB_CONTRACT_BA001",
+              y: 70
+            },
+            {
+              x: "FBNK_PV_ASSET_DETAIL",
+              y: 30
+            },
+            {
+              x: "FBNK_RE_CONSOL_PROFIT",
+              y: 44
+            },
+            {
+              x: "FBNK_SC_PERF_DETAIL",
+              y: 68
+            } 
+          ]
+        }
+      ],
+
+      legend: {
+        show: false
+      },
+      chart: {
+        height: 350,
+        type: "treemap"
+      },
+      title: {
+        text: "  Treemap ",
+        align: "center"
+      },
+      colors: [
+        "#3B93A5",
+        "#F7B844",
+        "#ADD8C7",
+        "#EC3C65",
+        "#CDD7B6",
+        "#C1F666",
+        "#D43F97",
+        "#1E5D8C",
+        "#421243",
+        "#7F94B0",
+        "#EF6537",
+        "#C0ADDB"
+      ],
+      plotOptions: {
+        treemap: {
+          distributed: true,
+          enableShades: false
+        }
+      }
+    };
+    this.chartOptions4 = {
+      series: [
+        {
+          data: [
+            {
+              x: "FBNK_CATEG_ENT_LWOR000",
+              y: 218
+              
+            },
+            {
+              x: "FBNK_CONSOLIDATE_AS000",
+              y: 149
+            },
+            {
+              x: "FBNK_CONSOLIDATE_PR000",
+              y: 184
+            },
+            {
+              x: "FBNK_AA_ARRANGEMENT006",
+              y: 55
+            },
+            {
+              x: "FBNK_CATEG_ENT_TODAY",
+              y: 84
+            },
+            {
+              x: "FBNK_CONSOL_UPDATE_000",
+              y: 31
+            },
+            {
+              x: "FBNK_EB_CONTRACT_BA001",
+              y: 70
+            },
+            {
+              x: "FBNK_PV_ASSET_DETAIL",
+              y: 30
+            },
+            {
+              x: "FBNK_RE_CONSOL_PROFIT",
+              y: 44
+            },
+            {
+              x: "FBNK_SC_PERF_DETAIL",
+              y: 68
+            } 
+          ]
+        }
+      ],
+      legend: {
+        show: false
+      },
+      chart: {
+        height: 350,
+        type: "treemap"
+      },
+      title: {
+        text: "  Treemap ",
+        align: "center"
+      },
+      colors: [
+        "#3B93A5",
+        "#F7B844",
+        "#ADD8C7",
+        "#EC3C65",
+        "#CDD7B6",
+        "#C1F666",
+        "#D43F97",
+        "#1E5D8C",
+        "#421243",
+        "#7F94B0",
+        "#EF6537",
+        "#C0ADDB"
+      ],
+      plotOptions: {
+        treemap: {
+          distributed: true,
+          enableShades: false
+        }
+      }
+    };
+    this.chartOptions5 = {
+      series: [
+        {
+          name: "basic",
+          data: [44, 55, 41, 67, 22, 43, 21, 33, 45, 31 ]
+        }
+      ],
+      chart: {
+        type: "bar",
+        height: 350
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true
+          
+        }
+      },
+      
+      dataLabels: {
+        enabled: false,
+        style: {
+          fontSize: "12px",
+          colors: ["green"]
+        }
+      },
+      xaxis: {
+        categories: [
+          "FBNK_CATEG_ENT_LWOR000",
+          "FBNK_CONSOLIDATE_AS000",
+          "FBNK_CONSOLIDATE_PR000",
+          "FBNK_AA_ARRANGEMENT006",
+          "FBNK_CATEG_ENT_TODAY",
+          "FBNK_CONSOL_UPDATE_000",
+          "FBNK_EB_CONTRACT_BA001",
+          "FBNK_PV_ASSET_DETAIL",
+          "FBNK_RE_CONSOL_PROFIT",
+          "FBNK_SC_PERF_DETAIL"
+        ]
+      },
+      fill: {
+        colors: ['#7E36AF']
+      }
+    };
+    this.chartOptions5 = {
+      series: [
+        {
+          data: [
+            {
+              x: "FBNK_CATEG_ENT_LWOR000",
+              y: 218,
+              fillColor: "#A0DC80"
+              
+            },
+            {
+              x: "FBNK_CONSOLIDATE_AS000",
+              y: 149,
+              fillColor: "#A0DC80"
+            },
+            {
+              x: "FBNK_CONSOLIDATE_PR000",
+              y: 184,
+              fillColor: "#A0DC80"
+            },
+            {
+              x: "FBNK_AA_ARRANGEMENT006",
+              y: 55,
+              fillColor: "#A0DC80"
+            },
+            {
+              x: "FBNK_CATEG_ENT_TODAY",
+              y: 84,
+              fillColor: "#A0DC80"
+            },
+            {
+              x: "FBNK_CONSOL_UPDATE_000",
+              y: 31,
+              fillColor: "#A0DC80"
+            },
+            {
+              x: "FBNK_EB_CONTRACT_BA001",
+              y: 70,
+              fillColor: "#A0DC80"
+            },
+            {
+              x: "FBNK_PV_ASSET_DETAIL",
+              y: 30,
+              fillColor: "#A0DC80"
+            },
+            {
+              x: "FBNK_RE_CONSOL_PROFIT",
+              y: 44,
+              fillColor: "#A0DC80"
+            },
+            {
+              x: "FBNK_SC_PERF_DETAIL",
+              y: 68,
+              fillColor: "#A0DC80"
+            } 
+          ]
+        }
+      ],
+      
+      chart: {
+        height: 350,
+        type: "bar"
+      },
+     
+       
+      plotOptions: {
+        bar: {
+          horizontal: true
+        }
+      }
+    };
+
+
+    this.chartOptions8 = {
+      series: [
+        {
+          name: "Added",
+          type: "column",
+          data: [13, 11, 12, 17, 13, 12, 27, 21, 24, 12, 10]
+        },
+        {
+          name: "Modified",
+          type: "area",
+          data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
+        },
+        {
+          name: "Modified",
+          type: "line",
+          data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
+        }
+      ],
+      chart: {
+        height: 350,
+        type: "line",
+        stacked: false
+      },
+      stroke: {
+        width: [0, 2, 5],
+        curve: "smooth"
+      },
+      plotOptions: {
+        bar: {
+          columnWidth: "50%"
+        }
+      },
+
+      fill: {
+        opacity: [0.85, 0.25, 1],
+        gradient: {
+          inverseColors: false,
+          shade: "light",
+          type: "vertical",
+          opacityFrom: 0.85,
+          opacityTo: 0.55,
+          stops: [0, 100, 100, 100]
+        }
+      },
+      labels: [
+        "FBNK_CATEG_ENT_LWOR000",
+          "FBNK_CONSOLIDATE_AS000",
+          "FBNK_CONSOLIDATE_PR000",
+          "FBNK_AA_ARRANGEMENT006",
+          "FBNK_CATEG_ENT_TODAY",
+          "FBNK_CONSOL_UPDATE_000",
+          "FBNK_EB_CONTRACT_BA001",
+          "FBNK_PV_ASSET_DETAIL",
+          "FBNK_RE_CONSOL_PROFIT",
+          "FBNK_SC_PERF_DETAIL"
+      ],
+      markers: {
+        size: 0
+      },
+      xaxis: {
+        type: "category"
+      },
+      yaxis: {
+        title: {
+          text: "Points"
+        },
+        min: 0
+      },
+      tooltip: {
+        shared: true,
+        intersect: false,
+        y: {
+          formatter: function(y) {
+            if (typeof y !== "undefined") {
+              return y.toFixed(0) + " points";
+            }
+            return y;
+          }
+        }
+      }
+    };
+    
+  }
+}

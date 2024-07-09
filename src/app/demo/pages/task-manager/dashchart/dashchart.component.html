@@ -1,0 +1,259 @@
+<div class="col-sm-12">
+  <div class="row no-gutters">
+
+    <div class="v2311_84">
+      <div class="v2311_85"></div>
+      <div class="v2311_86">
+        <div class="v2311_87"></div>
+      </div><span class="v2311_88">Search...</span>
+    </div>
+    <div class="v2311_89">
+      <div class="v2311_90"></div>
+      <div class="v2311_91"></div>
+      <div class="v2311_92"></div>
+      <div class="v2311_93">
+        <div class="v2311_94"></div>
+        <div class="v2311_95"></div>
+      </div><span class="v2311_96">Hello John, Welcome back !</span><span class="v2311_97">Today is {{myDate}}</span><span class="v2311_98"> Viewing Dashboard of task<select class="custom-select" name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+        <option value="0" disabled selected>Select Task</option>
+        <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+          {{taskmain.taskname}} ==> {{taskmain.taskid}}
+        </option>
+      </select>
+      For Run <select class="custom-select" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()">
+        <option value="0" disabled selected>Select RunID</option>
+        <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+          Run Id ==> {{dplisten.runid}}
+        </option>
+      </select></span>
+    </div><span class="">Dashboard</span>
+
+
+    
+  </div>
+</div>
+<hr>
+ 
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<hr>
+<div class="col-sm-12">
+<div class="row">
+   
+  <div class="col-sm">
+    <div class=" small">
+      <div class=" square ">
+        <div class=" myfont ">
+          <p></p>
+        <p> &nbsp;&nbsp;&nbsp;&nbsp;Db Type: {{taskMainDTO.dbtypesys1}} </p>
+      <p><span>&nbsp;&nbsp;&nbsp;&nbsp; User : {{taskMainDTO.usernamesys1}}</span></p>
+        &nbsp;&nbsp;&nbsp;&nbsp;Rows : {{taskMainDTO.rowcount}} &nbsp;<img src="assets/images/dbgreen.svg" alt="" class="img-fluid">
+      </div>
+        
+      </div>
+    </div>
+  </div>
+  <div class="col-sm">
+    <div class=" smallorange">
+      <div class=" square ">
+        <div class=" myfont ">
+          <p></p>
+          <p> &nbsp;&nbsp;&nbsp;&nbsp;Db Type: {{taskMainDTO.dbtypesys2}} </p>
+        <p><span>&nbsp;&nbsp;&nbsp;&nbsp;User : {{taskMainDTO.usernamesys2}}</span></p>
+          &nbsp;&nbsp;&nbsp;&nbsp;Rows : {{taskMainDTO.rowcount}}  &nbsp; <img src="assets/images/dbred.svg" alt="" class="img-fluid"> 
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm ">
+    <div class=" small">
+      <div class=" square">
+        <div class=" myfont ">
+          <p></p>
+           &nbsp;&nbsp;&nbsp;  Fields Added  &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/add.png" alt="" class="img-fluid mb-4">
+        
+           <br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class=" myfontbold "> {{addcount}}</span>  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/curve.png" alt="" class="img-fluid"> 
+        </div>
+       
+      </div>
+    </div>
+  </div>
+  <div class="col-sm">
+    <div class=" smallorange">
+      <div class=" square">
+        <div class=" myfont ">
+          <p></p>
+           &nbsp;&nbsp;&nbsp;  Fields Removed  &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/removed.png" alt="" class="img-fluid mb-4">
+        
+           <br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class=" myfontbold "> {{removedcount}}</span>  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/curve.png" alt="" class="img-fluid"> 
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm">
+    <div class="small">
+      <div class=" square">
+        <div class=" myfont ">
+          <p></p>
+           &nbsp;&nbsp;&nbsp;  Fields Difference  &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/difference.png" alt="" class="img-fluid mb-4">
+        
+           <br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class=" myfontbold "> {{diffcount}}</span>  &nbsp; &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/curve.png" alt="" class="img-fluid"> 
+        </div>
+      </div>
+    </div>
+  </div>
+   
+</div>
+</div>
+<hr> 
+<div class="col-sm-12">
+  <div class="row no-gutters">
+    <div class="col-xl-4 ">
+      <div class="card boxwh">
+        <span class="myfont"><b>Comparision</b></span>
+        <hr><hr>
+        <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart" [labels]="chartOptions.labels"
+          [responsive]="chartOptions.responsive" [colors]="chartOptions.colors"></apx-chart>
+      </div>
+    </div>
+
+    <div class="col-xl-4  ">
+      <div class="card boxwh">
+        <span class="myfont"><b> Difference</b></span>
+        <apx-chart [series]="chartOptions5.series" [chart]="chartOptions5.chart" [dataLabels]="chartOptions5.dataLabels"
+          [plotOptions]="chartOptions5.plotOptions" [yaxis]="chartOptions5.yaxis" [xaxis]="chartOptions5.xaxis"
+          [stroke]="chartOptions5.stroke" [grid]="chartOptions5.grid" [fill]="chartOptions5.fill"
+          [annotations]="chartOptions5.annotations"></apx-chart>
+      </div>
+    </div>
+    <div class="col-xl-4  ">
+      <div class="card boxwh">
+        <span class="myfont"><b> Task Completion Status</b></span>
+        <apx-chart [series]="chartOptions9.series" [chart]="chartOptions9.chart"
+          [plotOptions]="chartOptions9.plotOptions" [labels]="chartOptions9.labels" [stroke]="chartOptions9.stroke"
+          [fill]="chartOptions9.fill"></apx-chart>
+        <!-- <apx-chart
+        [series]="chartOptions2.series"
+        [chart]="chartOptions2.chart"
+        [dataLabels]="chartOptions2.dataLabels"
+        [plotOptions]="chartOptions2.plotOptions"
+        [yaxis]="chartOptions2.yaxis"
+        [xaxis]="chartOptions2.xaxis"
+        [stroke]="chartOptions2.stroke"
+        [grid]="chartOptions2.grid"
+        [fill]="chartOptions2.fill"
+        [annotations]="chartOptions2.annotations"
+      ></apx-chart>  -->
+        <!-- <apx-chart
+    [series]="chartOptions8.series"
+    [chart]="chartOptions8.chart"
+    [yaxis]="chartOptions8.yaxis"
+    [xaxis]="chartOptions8.xaxis"
+    [labels]="chartOptions8.labels"
+    [stroke]="chartOptions8.stroke"
+    [plotOptions]="chartOptions8.plotOptions"
+    [markers]="chartOptions8.markers"
+    [fill]="chartOptions8.fill"
+    [tooltip]="chartOptions8.tooltip"
+  ></apx-chart> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="col-sm-12">
+  <div class="row no-gutters">
+    <div class="col-xl-4  ">
+      <div class="card boxwh">
+        <span class="myfont"><b>Table Treemap</b></span>
+        <apx-chart [series]="chartOptions4.series" [chart]="chartOptions4.chart" [dataLabels]="chartOptions4.dataLabels"
+          [plotOptions]="chartOptions4.plotOptions" [title]="chartOptions4.title"
+          [legend]="chartOptions4.legend"></apx-chart>
+      </div>
+    </div>
+    <div class="col-xl-8  ">
+
+      <div class="card boxwh">
+        <span class="myfont"><b> Timeline</b></span>
+        <apx-chart [series]="chartOptions3.series" [chart]="chartOptions3.chart"
+          [plotOptions]="chartOptions3.plotOptions" [xaxis]="chartOptions3.xaxis"></apx-chart>
+      </div>
+    </div>
+    <div class="col-xl-8  ">
+      <div class="card boxwh">
+        <apx-chart [series]="chartOptions10.series" [chart]="chartOptions10.chart" [xaxis]="chartOptions10.xaxis"
+          [stroke]="chartOptions10.stroke" [tooltip]="chartOptions10.tooltip" [dataLabels]="chartOptions10.dataLabels"
+          [colors]="chartOptions10.colors"></apx-chart>
+        </div>
+        </div>
+          
+          <div class="col-xl-4  ">
+            <div class="card boxwh">
+        <span class="myfont"><b> Parameter</b></span>
+        <div class="table-responsive ">
+          <table class="table table-bordered table-sm myfont">
+            <thead>
+              <tr class="table-primary">
+                <th>#</th>
+                <th>Parameter </th>
+                <th>Value</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>1</td>
+                <td>Parameter </td>
+                <td>Value</td>
+
+              </tr>
+              <tr>
+                <td>2</td>
+                <td>Parameter </td>
+                <td>Value</td>
+
+              </tr>
+              <tr>
+                <td>3</td>
+                <td>Parameter </td>
+                <td>Value</td>
+
+              </tr>
+              <tr>
+                <td>4</td>
+                <td>Parameter </td>
+                <td>Value</td>
+
+              </tr>
+              <tr>
+                <td>5</td>
+                <td>Parameter </td>
+                <td>Value</td>
+
+              </tr>
+              <tr>
+                <td>6</td>
+                <td>Parameter </td>
+                <td>Value</td>
+
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

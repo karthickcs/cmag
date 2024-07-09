@@ -28,13 +28,13 @@ export interface Navigation extends NavigationItem {
 const NavigationItems = [
   {
     id: 'navigation',
-    title: 'Navigation',
+    title: '  Navigation',
     type: 'group',
     icon: 'feather icon-monitor',
     children: [
       {
         id: 'TaskManager',
-        title: 'TaskManager',
+        title: ' TaskManager',
         type: 'item',
         url: '/task-manager',
         icon: 'feather icon-home'
@@ -65,33 +65,42 @@ const NavigationItems = [
       //   icon: 'feather icon-layout'
       // }
       // ,
+     
       {
-        id: 'dashboard',
-        title: 'dashboard',
+        id: 'Dashboard',
+        title: ' Dashboard',
         type: 'item',
         url: '/dashboard',
         
         icon: 'feather icon-layout'
       },
       {
+        id: 'Dashboarddes',
+        title: ' Dashboard_av',
+        type: 'item',
+        url: '/dashboarddes',
+        
+        icon: 'feather icon-layout'
+      },
+      {
         id: 'Reports',
-        title: 'Reports',
+        title: ' Reports',
         type: 'item',
         url: '/reports',
         
         icon: 'feather icon-layout'
       },
       {
-        id: 'windows',
-        title: 'windows',
+        id: 'Windows',
+        title: ' Windows',
         type: 'item',
         url: '/windowsna',
         
         icon: 'feather icon-layout'
       },
       {
-        id: 'windowstran',
-        title: 'windowstran',
+        id: 'Windowstran',
+        title: ' Windowstran',
         type: 'item',
         url: '/windowstran',
         
@@ -103,7 +112,7 @@ const NavigationItems = [
    
   {
     id: 'pages',
-    title: 'Pages',
+    title: '  Pages',
     type: 'group',
     icon: 'feather icon-file-text',
     children: [

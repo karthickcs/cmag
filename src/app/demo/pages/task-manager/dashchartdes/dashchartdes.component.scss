@@ -1,0 +1,110 @@
+.table-responsive {
+  max-height:280px;
+}
+.table-responsive2 {
+  max-height:280px;
+}
+th {
+  font-weight: 800;
+  // width: 150px;
+  position: sticky;
+  top: 0;
+  // border: 1px solid black;
+}
+
+td{
+  text-align: start;
+  color: #070707;
+  font-size: small;
+   font-weight: 400;
+  // padding: 5px;
+  // box-shadow: inset 0 4px 10px rgba(182, 180, 247, 0.8);
+  width: 100px;
+  border: 1px dotted black;
+  // overflow:visible;
+
+}
+table.a {
+  table-layout: auto;
+  width: 30px;  
+}
+
+body {
+  background: #343E59;
+  color: #777;
+  font-family: Montserrat, Arial, sans-serif;
+}
+
+.body-bg {
+  background: #F3F4FA !important;
+}
+
+h1, h2, h3, h4, h5, h6, strong {
+  font-weight: 600;
+}
+ 
+.content-area {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.box {
+  background-color: #2B2D3E;
+  padding: 25px 20px;
+  height: 140px;
+}
+.boxwh {
+  background-color: rgba(245, 241, 237, 0.858);
+  padding: 25px 20px;
+  height: 420px;
+  border-radius: 25px;
+}
+.shadow {
+  box-shadow: 0px 1px 15px 1px rgba(69, 65, 78, 0.08);
+}
+.sparkboxes .box {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-shadow: 0 1px 1px 1px #666;
+  box-shadow: 0px 1px 15px 1px rgba(69, 65, 78, 0.08);
+  position: relative;
+  border-radius: 25px;
+}
+.card .box {
+  position: absolute;
+  color: #fff;
+ 
+  transform: scale(0.7) translate(-22px, 20px);
+}
+.sparkboxes .box .details {
+  position: absolute;
+  color: #fff;
+ 
+  transform: scale(0.7) translate(-22px, 20px);
+}
+.sparkboxes strong {
+  position: relative;
+  z-index: 3;
+  top: -8px;
+  color: #fff;
+}
+
+th {
+  background-color: #6579CF;
+  color: white;
+}
+.sparkboxes .box1 {
+  background-image: linear-gradient( 135deg, #6579CF 1%, #6579CF 100%);
+}
+
+.sparkboxes .box2 {
+  background-image: linear-gradient( 135deg, #2AFADF 1%, #0c6da2 100%);
+}
+
+.sparkboxes .box3 {
+  background-image: linear-gradient( 135deg, #FFD3A5 1%, #0c6da2 100%);
+}
+
+.sparkboxes .box4 {
+  background-image: linear-gradient( 135deg, #EE9AE5 1%, #0c6da2 100%);
+} 
