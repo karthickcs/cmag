@@ -1,0 +1,165 @@
+<div class="col-sm-12">
+
+  <div class="row no-gutters">
+
+    <div class="card boxwhsmall">
+      <div class="row">
+        
+        <span><h3>MetaData Comparison</h3></span>
+        <hr>
+        &nbsp;&nbsp;&nbsp;Viewing MetaData of task
+        <div class="custom-select ">
+          <select name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+            <option value="0" disabled selected>Select Task</option>
+            <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+              {{taskmain.taskname}} ==> {{taskmain.taskid}}
+            </option>
+          </select>
+          <div class="select-arrow"></div>
+        </div> 
+        
+
+      </div>
+      <hr>
+
+      <div class="col-sm-12">
+        <div class="row">
+
+          <div class="col-sm">
+            <div class=" small">
+              <div class=" square " (click)="goBackmeta('diff')">
+                <div class=" myfont ">
+                  <p></p>
+                  <p> &nbsp;&nbsp;&nbsp;&nbsp;Db Type: {{taskMainDTO.dbtypesys1}} {{taskMainDTO.taskname}} </p>
+                  <p><span  >&nbsp;&nbsp;&nbsp;&nbsp; User : {{taskMainDTO.usernamesys1}}</span></p>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf="dplistenentry">Rows : {{dplistenentry.rowcount}} </span>&nbsp;<img src="assets/images/dbgreen.svg"
+                    alt="" class="img-fluid">
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class=" smallorange">
+              <div class=" square " (click)="goBackmeta('diff')">
+                <div class=" myfont ">
+                  <p></p>
+                  <p> &nbsp;&nbsp;&nbsp;&nbsp;Db Type: {{taskMainDTO.dbtypesys2}} </p>
+                  <p><span>&nbsp;&nbsp;&nbsp;&nbsp;User : {{taskMainDTO.usernamesys2}}</span></p>
+                  &nbsp;&nbsp;&nbsp;&nbsp;<span *ngIf="dplistenentry">Rows : {{dplistenentry.rowcountsys2}} </span>  &nbsp; <img
+                    src="assets/images/dbred.svg" alt="" class="img-fluid">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm ">
+            <div class=" small">
+              <div class=" square" (click)="goBackmeta('add')">
+                <div class=" myfont ">
+                  <p></p>
+                  &nbsp;&nbsp;&nbsp; Tables Added &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/add.png" alt=""
+                    class="img-fluid mb-4">
+
+                  <br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class=" myfontboldss "> {{getlength(addDTOArrayTsruct)}}</span>
+                  &nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/curve.png" alt=""
+                    class="img-fluid">
+                </div>
+
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class=" smallorange">
+              <div class=" square" (click)="goBackmeta('remove')">
+                <div class=" myfont ">
+                  <p></p>
+                  &nbsp;&nbsp;&nbsp; Tables Removed &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/removed.png" alt=""
+                    class="img-fluid mb-4">
+
+                  <br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class=" myfontboldss "> {{getlength(removeDTOArrayTsruct)}}</span>
+                  &nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/curve.png" alt=""
+                    class="img-fluid">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col-sm">
+            <div class="small">
+              <div class=" square" (click)="goBackmeta('diff')">
+                <div class=" myfont ">
+                  <p></p>
+                  &nbsp;&nbsp;&nbsp; Table Modified &nbsp;&nbsp;&nbsp;&nbsp;<img
+                    src="assets/images/difference.png" alt="" class="img-fluid mb-4">
+
+                  <br><br>&nbsp;&nbsp;&nbsp;&nbsp;<span class=" myfontboldss "> {{getlength(changeDTOArrayTstruct)}}</span>
+                  &nbsp;
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/curve.png" alt=""
+                    class="img-fluid">
+                </div>
+              </div>
+            </div>
+          </div>
+          
+        </div>
+      </div>
+      <hr>
+      <div class="col-sm-12">
+        <div class="row no-gutters">
+          <div class="col-xl-4 ">
+            <div class="card boxwh" (click)="goBackmeta('diff')">
+              <span class="myfont"><b>MetaData Comparison</b></span>
+              <hr>
+              <hr>
+              <apx-chart [series]="chartOptions.series" [chart]="chartOptions.chart"   [labels]="chartOptions.labels"
+                [responsive]="chartOptions.responsive" [colors]="chartOptions.colors"></apx-chart>
+            </div>
+          </div>
+
+          <div class="col-xl-4  ">
+            <div class="card boxwh" (click)="goBackmeta('diff')">
+              <span class="myfont"><b>MetaData Difference</b></span>
+              <apx-chart [series]="chartOptions5.series" [chart]="chartOptions5.chart"
+                [dataLabels]="chartOptions5.dataLabels" [plotOptions]="chartOptions5.plotOptions"
+                [yaxis]="chartOptions5.yaxis" [xaxis]="chartOptions5.xaxis" [stroke]="chartOptions5.stroke"
+                [grid]="chartOptions5.grid" [fill]="chartOptions5.fill"
+                [annotations]="chartOptions5.annotations"></apx-chart>
+            </div>
+          </div>
+          <div class="col-xl-4  ">
+            <div class="card boxwh" (click)="goBackmeta('diff')">
+              <span class="myfont"><b>MetaData Task Completion Status</b></span>
+              <apx-chart [series]="chartOptions9.series" [chart]="chartOptions9.chart"
+                [plotOptions]="chartOptions9.plotOptions" [labels]="chartOptions9.labels"
+                [stroke]="chartOptions9.stroke" [fill]="chartOptions9.fill"></apx-chart>
+            
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="col-sm-12">
+        <div class="row no-gutters">
+           
+          <div class="col-xl-6  ">
+
+            <div class="card boxwh" (click)="goBackmeta('diff')">
+              <span class="myfont"><b>MetaData Timeline</b></span>
+              <apx-chart [series]="chartOptions3.series" [chart]="chartOptions3.chart"
+                [plotOptions]="chartOptions3.plotOptions" [xaxis]="chartOptions3.xaxis"></apx-chart>
+            </div>
+          </div>
+          <div class="col-xl-6  ">
+            <div class="card boxwh" (click)="goBackmeta('diff')">
+              <span class="myfont"><b>MetaData </b></span>
+              <apx-chart [series]="chartOptions10.series" [chart]="chartOptions10.chart" [xaxis]="chartOptions10.xaxis"
+                [stroke]="chartOptions10.stroke"  
+                [dataLabels]="chartOptions10.dataLabels"  [labels]="chartOptions10.labels" [colors]="chartOptions10.colors"></apx-chart>
+            </div>
+          </div>
+
+          
+        </div>
+      </div>

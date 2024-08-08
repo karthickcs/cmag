@@ -1,107 +1,233 @@
 <div class="row">
-  <div class="col-md-6">
-      <div class="form-group">
-        <label for="exampleFormControlSelect1">Task ID</label>
-        
-        <select class="form-control" name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata()">
-            <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
-              {{taskmain.taskname}} ---> {{taskmain.taskid}}
-            </option>
-        </select>
-      </div>
-   
-  </div>
-  <div class="col-md-6">
-      <div class="form-group">
-        <label for="exampleFormControlSelect2">Run ID</label>
-        <select class="form-control" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()" >
-            <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
-             Run Id ---> {{dplisten.runid}}
-            </option>
-        </select>
-      </div>
-      
+  <div class="col-md-2">
+
+    <div class="custom-select-pink">
+
+
+      <select class="form-control" name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata()">
+        <option value="0" disabled selected>Task</option>
+        <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+          {{taskmain.taskname}} => {{taskmain.taskid}}
+        </option>
+      </select> 
     </div>
+    &nbsp;
+    
   </div>
+  <div class="col-md-3">
+    <div class="custom-filter ">
+      <button mat-raised-button color="primary" matTooltipPosition="right" (click)="goBack(this.runidselect,this.taskid)"
+        aria-tooltip="">
+        Back
+      </button>
+    </div>
+
+  </div>  
+</div>
+<hr>
+
+<div style="border:1px solid rgb(216, 214, 214);" class="row">
   <hr>
-  <div class="table-responsive ">
-    <table class="table table-bordered table-sm">
-      <thead>
-        <tr class="table-secondary">
-           
-          <th>TaskName</th>
-            <th>TaskId</th>
-            <th>Type</th>
-            
-            <th>Jdbcurlsys1</th>
-            <th>Jdbcurlsys2</th>
-            <th>usernamesys1</th>
-            <th>usernamesys2</th>
-            <th>dbtypesys1</th>
-            <th>tablenamesys1</th>
-            <th>dbtypesys2</th>
-            <th>tablenamesys2</th>
-            
-            <th>RowCount</th>
-            <th>Filelocation1</th>
-            <th>Filelocation2</th>
+  <span>
 
-        </tr>
-      </thead>
+
+    <select [style.height]="'30px'" class="text-line" name="columnname" id="columnname" [(ngModel)]="columnname">
+      <option value="tname" selected>Table Name </option>
+      <option value="cname"> Column Name</option>
+      <option value="oldval"> Src </option>
+      <option value="newval"> Target</option>
+    </select>
+    &nbsp;&nbsp;&nbsp;
+    <input type="text" id="m-search" class="text-line" name="searchtext" id="searchtext" [(ngModel)]="searchtext"
+      placeholder="Search . . ." [style.width]="'330px'">
+    <!-- <span class="input-group-append search-btn btn ">
+      <i (click)="search()" class="feather icon-search input-group-text"></i>
+    </span> -->
+    &nbsp;&nbsp;&nbsp;
+    <button mat-raised-button color="primary" matTooltipPosition="right" (click)="search()" aria-tooltip="">
+      Search
+    </button>&nbsp;&nbsp;&nbsp;
+    <button mat-raised-button color="primary" matTooltipPosition="right" (click)="searchonlyinsrc()" aria-tooltip="">
+      Only in Src
+    </button>&nbsp;&nbsp;&nbsp;
+    <button mat-raised-button color="primary" matTooltipPosition="right" (click)="searchonlyindest()" aria-tooltip="">
+      Only in Target
+    </button>
+    &nbsp;&nbsp;&nbsp;
+    <button mat-raised-button color="primary" matTooltipPosition="right" (click)="searchdiff()" aria-tooltip="">
+      difference
+    </button>
+  </span>
+  <hr>
+  <div class="table-responsive">
+    <table class="table" *ngIf="changeDTOArray">
+      <tr style="border-bottom:0.2px dotted rgb(215, 212, 212)">
+        <th class="divcs">
+          <div class="divcs">
+            <h4>#</h4>
+          </div>
+        </th>
+
+        <th class="divcs">TableName</th>
+        <th class="divcs">Column</th>
+        <th class="divcs">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbgreen.svg" alt=""
+            class="divcs"></th>
+
+        <th class="divcs">Name&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbred.svg" alt=""
+            class="divcs"></th>
+        <th class="divcs">&nbsp; </th>
+        <th class="divcs">Program&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbgreen.svg" alt=""
+            class="divcs"></th>
+
+        <th class="divcs">Program&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbred.svg" alt=""
+            class="divcs"></th>
+        <th class="divcs">&nbsp; </th>
+        <th class="divcs">Size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbgreen.svg" alt=""
+            class="divcs"></th>
+
+        <th class="divcs">Size&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbred.svg" alt=""
+            class="divcs"></th>
+        <th class="divcs">&nbsp; </th>
+        <th class="divcs">Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbgreen.svg" alt=""
+            class="divcs"></th>
+
+        <th class="divcs">Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbred.svg" alt=""
+            class="divcs"></th>
+
+
+
+
+
+      </tr>
       <tbody>
-        <tr class="table-light" >
-           
-        
-          
-          <td>{{dplistenentry.taskname}}</td>
-          <td>{{dplistenentry.taskid}}</td>
+        <tr *ngFor="let diffobj  of changeDTOArray; let i = index">
 
-          <td>{{dplistenentry.sys1type}}</td>
-         
-
-          <td>{{dplistenentry.jdbcurlsys1}}</td>
-          <td>{{dplistenentry.jdbcurlsys2}}</td>
-          <td>{{dplistenentry.usernamesys1}}</td>
-          <td>{{dplistenentry.usernamesys2}}</td>
-          <td>{{dplistenentry.dbtypesys1}}</td>
-          <td>{{dplistenentry.tablenamesys1}}</td>
-          <td>{{dplistenentry.dbtypesys2}}</td>
-          <td>{{dplistenentry.tablenamesys2}}</td>
-         
-          <td>{{dplistenentry.rowcount}}</td>
-          <td>{{dplistenentry.filelocation}}</td>
-          <td>{{dplistenentry.filelocationt2}}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="table-responsive ">
-    <table class="table table-bordered table-sm">
-      <thead>
-        <tr class="table-secondary">
-          <th>#</th>
-          <th>Oldtranid</th>
-          <th>Newtranid</th>
-          <th>Difference</th>
-
-          <th>DifferenceCount</th>
-          <th>View</th>
-          
-
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="table-light" *ngFor="let diffval of diffTableDTOArray; let i = index">
           <td>{{i+1}}</td>
-          
-          <td>{{diffval.maintranid.split("|")[2]}}</td>
-          <td>{{diffval.newtranid.split("|")[2]}}</td>
+           
+           
+          <td>
+            <div *ngIf="i>0 && changeDTOArray[i].tname != changeDTOArray[i-1].tname " style="height: 50%;border: none;">
+              <button style="height: 50%;border: none;" mat-button color="primary" #tooltip="matTooltip"
+                matTooltip="{{diffobj.tname}}" matTooltipPosition="right" aria-tooltip="">
+                <pre style="color: blue;">  {{convertmin(diffobj.tname)}}</pre>
+              </button>
+            </div>
+            <div *ngIf="i==0" style="height: 50%;border: none;">
+              <button style="height: 50%;border: none;" mat-button color="primary" #tooltip="matTooltip"
+                matTooltip="{{diffobj.tname}}" matTooltipPosition="right" aria-tooltip="">
+                <pre style="color: blue;">  {{convertmin(diffobj.tname)}}</pre>
+              </button>
+            </div>
+          </td>
+  
+   
+ 
 
-          <td>{{diffval.difference}}</td>
-          <td>{{diffval.countval}}</td>
-          <td><button type="button" (click)="myClickFunction(diffval.maintranid)" class="btn btn-success" >View</button></td>           
-        </tr>
-      </tbody>
-    </table>
-  </div>
+
+
+  <!-- <td><input type="text" style="width:96%;text-align: left; vertical-align: middle;  " value="{{diffobj.tname}}" readonly></td> -->
+  <td>
+    <div >
+      <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{diffobj.cname}}" matTooltipPosition="right"
+        aria-tooltip="">
+        <pre style="color: blue;">  {{convertmin(diffobj.cname)}}</pre>
+      </button>
+    </div>
+  </td>
+
+
+  <td>
+    <div >
+      <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{diffobj.oldval.split('|')[0]}}"
+        matTooltipPosition="right" aria-tooltip="">
+        <pre style="color: blue;">  {{convertminss(diffobj.oldval.split("|")[0])}}</pre>
+      </button>
+    </div>
+  </td>
+
+  <td>
+    <div >
+      <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{diffobj.newval.split('|')[0]}}"
+        matTooltipPosition="right" aria-tooltip="">
+        <pre
+          [ngClass]="diffobj.oldval.split('|')[0] == diffobj.newval.split('|')[0] ? 'colblue' : 'colred'">  {{convertmin(diffobj.newval.split("|")[0])}}</pre>
+      </button>
+    </div>
+  </td>
+  <td>
+    <button style="color:white" mat-button color="primary" matTooltipPosition="right" aria-tooltip="">
+
+    </button>
+  </td>
+  <td>
+    <div >
+      <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{diffobj.oldval.split('|')[1]}}"
+        matTooltipPosition="right" aria-tooltip="">
+        <pre style="color: blue;">  {{convertmin(diffobj.oldval.split("|")[1])}}</pre>
+      </button>
+    </div>
+  </td>
+
+  <td>
+    <div >
+      <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{diffobj.newval.split('|')[1]}}"
+        matTooltipPosition="right" aria-tooltip="">
+        <pre
+          [ngClass]="diffobj.oldval.split('|')[1] == diffobj.newval.split('|')[1] ? 'colblue' : 'colred'">  {{convertmin(diffobj.newval.split("|")[1])}}</pre>
+      </button>
+    </div>
+  </td>
+  <td>
+    <button style="color:white" mat-button color="primary" matTooltipPosition="right" aria-tooltip="">
+
+    </button>
+  </td>
+  <td>
+    <div >
+      <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{diffobj.oldval.split('|')[2]}}"
+        matTooltipPosition="right" aria-tooltip="">
+        <pre style="color: blue;">  {{convertmin(diffobj.oldval.split("|")[2])}}</pre>
+      </button>
+    </div>
+  </td>
+  <td>
+    <div >
+      <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{diffobj.newval.split('|')[2]}}"
+        matTooltipPosition="right" aria-tooltip="">
+        <pre
+          [ngClass]="diffobj.oldval.split('|')[2] == diffobj.newval.split('|')[2] ? 'colblue' : 'colred'">  {{convertmin(diffobj.newval.split("|")[2])}}</pre>
+      </button>
+    </div>
+  </td>
+  <td>
+    <button style="color:white" mat-button color="primary" matTooltipPosition="right" aria-tooltip="">
+
+    </button>
+  </td>
+  <td>
+    <div >
+      <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{diffobj.oldval.split('|')[3]}}"
+        matTooltipPosition="right" aria-tooltip="">
+        <pre style="color: blue;">  {{convertmin(diffobj.oldval.split("|")[3])}}</pre>
+      </button>
+    </div>
+  </td>
+  <td>
+    <div >
+      <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{diffobj.newval.split('|')[3]}}"
+        matTooltipPosition="right" aria-tooltip="">
+        <pre
+          [ngClass]="diffobj.oldval.split('|')[3] == diffobj.newval.split('|')[3] ? 'colblue' : 'colred'">  {{convertmin(diffobj.newval.split("|")[3])}}</pre>
+      </button>
+    </div>
+  </td>
+
+
+
+
+  </tr>
+
+  </tbody>
+  </table>
+</div>
+</div>

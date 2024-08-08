@@ -24,8 +24,8 @@ const routes: Routes = [
       //   loadChildren: () => import('./demo/pages/dashboard/dashboard.module').then(module => module.DashboardModule)
       // },
       {
-        path: 'dashboarddes',
-        loadChildren: () => import('./demo/pages/task-manager/dashchartdes/dashchartdes.module').then(module => module.DashchartdesModule)
+        path: 'metadash',
+        loadChildren: () => import('./demo/pages/task-manager/dashchartmeta/dashchartmeta.module').then(module => module.DashchartmetaModule)
       },
        {
         path: 'dashboard',
@@ -48,11 +48,11 @@ const routes: Routes = [
         loadChildren: () => import('./demo/pages/task-manager/viewacc/viewacc.module').then(module => module.ViewaccModule)
       },
       {
-        path: 'manage-task',
+        path: 'metaData',
         loadChildren: () => import('./demo/pages/task-manager/managetask/managetask.module').then(module => module.ManagetaskModule)
       },
       {
-        path: 'reports',
+        path: 'transactionview',
         loadChildren: () => import('./demo/pages/task-manager/reports/reports.module').then(module => module.ReportsModule)
       },
       {
@@ -60,7 +60,7 @@ const routes: Routes = [
         loadChildren: () => import('./demo/pages/task-manager/viewwind/viewwind.module').then(module => module.ViewwindModule)
       },
       {
-        path: 'windowsna',
+        path: 'tableview',
         loadChildren: () => import('./demo/pages/task-manager/viewwindna/viewwindna.module').then(module => module.ViewwindnaModule)
       },
       {

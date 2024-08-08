@@ -12,6 +12,9 @@
 
 
 export interface DpListenDTO { 
+    batchtime?: number;
+    comparetime?: number;
+    dataloadtime?: number;
     dbtypesys1?: string;
     dbtypesys2?: string;
     dpid?: number;
@@ -23,12 +26,16 @@ export interface DpListenDTO {
     endtssys2?: string;
     filelocation?: string;
     filelocationt2?: string;
+    generateMetadata?: string;
     insertts?: Date;
     jdbcurlsys1?: string;
     jdbcurlsys2?: string;
     passwordsys1?: string;
     passwordsys2?: string;
+    reportgentime?: number;
     rowcount?: number;
+    rowcountsys2?: number;
+    rowsprocessed?: number;
     runid?: number;
     starttsClobsys1?: string;
     starttsClobsys2?: string;

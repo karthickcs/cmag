@@ -206,8 +206,17 @@ export class DashchartdesComponent implements OnInit {
     this.loaddifftable();
   }
   loaddifftable() {
+
     this.diffTableDTO.taskid = "" + this.taskid;
     this.diffTableDTO.runid = this.runidselect;
+    this.diffTableDTO.taskid = "" + this.taskid;
+    this.diffTableDTO.runid = this.runidselect;
+    this.diffTableDTOArray = [];
+    this.diffcount=0;
+    this.addcount=0;
+    this.removedcount=0;
+    this.grouped={};
+    this.afterInit();
     // this.diffTableDTOArray = require('../../../../../assets/diff.json');
     // this.loadDifferenceTableHorizontal();
     this.diffTableControllerService.getDiffDataUsingPOST(this.diffTableDTO).subscribe(
@@ -423,6 +432,9 @@ export class DashchartdesComponent implements OnInit {
   }
   loadruniddata(onload: boolean) {
     // alert(this.taskid);
+    this.taskMainDTO= this.taskmainArray.filter(x => x['taskid']==this.taskid)[0];
+    // alert(this.taskid);
+    this.dplistenArray=[];
     this.dpListenControllerService.getRunIdsUsingGET(this.taskid).subscribe(
       (response: any) => {
 
@@ -441,6 +453,7 @@ export class DashchartdesComponent implements OnInit {
     );
   }
   loaddata() {
+    this.taskmainArray =[];
     this.taskControllerService.getTasknainUsingGET().subscribe(
       (response: any) => {
 
@@ -652,7 +665,7 @@ export class DashchartdesComponent implements OnInit {
               fillColor: "#9C27B0"
             },
             {
-              x: "Comparision",
+              x: "comparison",
               y: [
                 33,
                 88
@@ -1051,8 +1064,12 @@ export class DashchartdesComponent implements OnInit {
         }
       }
     }; 
+    let ann=(this.diffTableDTOArray.length*100)/this.dplistenentry.rowcount;
+    if(ann>100){
+      ann=100;
+    }
     this.chartOptions9 = {
-      series: [75],
+      series: [ann],
       chart: {
         height: 350,
         type: "radialBar",

@@ -75,34 +75,52 @@ const NavigationItems = [
         icon: 'feather icon-layout'
       },
       {
-        id: 'Dashboarddes',
-        title: ' Dashboard_av',
+        id: 'Metadash',
+        title: 'Metadash',
         type: 'item',
-        url: '/dashboarddes',
+        url: '/metadash',
+        
+        icon: 'feather icon-layout'  
+      },
+      // {
+      //   id: 'Tableview',
+      //   title: 'Tableview',
+      //   type: 'item',
+      //   url: '/tableview',
+        
+      //   icon: 'feather icon-layout'
+      // },
+      // {
+      //   id: 'TransactionView',
+      //   title: ' TransactionView',
+      //   type: 'item',
+      //   url: '/transactionview',
+        
+      //   icon: 'feather icon-layout'
+      // }
+      // ,
+      {
+        id: 'Tableview',
+        title: 'Tableview',
+        type: 'item',
+        url: '/windows',
         
         icon: 'feather icon-layout'
-      },
+      }
+      ,
       {
-        id: 'Reports',
-        title: ' Reports',
-        type: 'item',
-        url: '/reports',
-        
-        icon: 'feather icon-layout'
-      },
-      {
-        id: 'Windows',
-        title: ' Windows',
-        type: 'item',
-        url: '/windowsna',
-        
-        icon: 'feather icon-layout'
-      },
-      {
-        id: 'Windowstran',
-        title: ' Windowstran',
+        id: 'TranView',
+        title: ' TranView',
         type: 'item',
         url: '/windowstran',
+        
+        icon: 'feather icon-layout'
+      } ,
+      {
+        id: 'MetaData-Diff',
+        title: 'MetaData-Diff',
+        type: 'item',
+        url: '/metaData',
         
         icon: 'feather icon-layout'
       }

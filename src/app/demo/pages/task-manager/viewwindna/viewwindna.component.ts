@@ -19,6 +19,16 @@ declare var $: any;
 })
 export class ViewwindnaComponent implements OnInit {
 
+
+
+  goBack( runid, taskid) {
+    this.router.navigate(['/dashboard', {
+      taskid: taskid,
+      runid: runid,
+     
+    }]);
+  }
+
   clength: any = {};
   groupednewstructvaloriginal: any = {};
   columnname: any = "";
@@ -130,7 +140,7 @@ export class ViewwindnaComponent implements OnInit {
   convertmin(arg0) {
     if (arg0) {
 
-      return arg0.substring(0, 10);
+      return arg0.substring(0, 25);
 
     }
     return "";
@@ -176,7 +186,7 @@ export class ViewwindnaComponent implements OnInit {
 
 
   load(taskid, runid) {
-    this.router.navigate(['/windowsna', {
+    this.router.navigate(['/tableview', {
       taskid: taskid,
       runid: runid
 
@@ -188,7 +198,11 @@ export class ViewwindnaComponent implements OnInit {
 
         // // alert(response);
         this.taskmainArray = response;
-        this.loadruniddata(true);
+        if( this.taskmainArray[0]){
+          this.taskid=this.taskmainArray[0].taskid;
+          this.taskMainDTO=this.taskmainArray[0]
+        }
+        this.loadruniddata(false);
       },
       (error) => {
         console.log(error);
@@ -198,6 +212,7 @@ export class ViewwindnaComponent implements OnInit {
 
   loadruniddata(onload: boolean) {
     // alert(this.taskid);
+    this.dplistenArray =[];
     this.dpListenControllerService.getRunIdsUsingGET(this.taskid).subscribe(
       (response: any) => {
 
@@ -226,6 +241,10 @@ export class ViewwindnaComponent implements OnInit {
     this.diffTableDTO.runid = this.runidselect;
     // this.diffTableDTOArray = require('../../../../../assets/diff.json');
     // this.loadDifferenceTableHorizontal();
+    this.diffTableDTOArray = [];
+    this.grouped={};
+    this.groupedoriginal={};
+    this.changeDTOArray=[];
     this.diffTableControllerService.getDiffDataUsingPOST(this.diffTableDTO).subscribe(
       (response: any) => {
 
@@ -243,79 +262,7 @@ export class ViewwindnaComponent implements OnInit {
       }
     );
   }
-  loadDifferenceTable() {
-    this.addDTOArray = [];
-    this.removeDTOArray = [];
-    this.changeDTOArray = [];
-    this.cdr.detectChanges();
-    this.changeDTOArray = [];
-    for (var diff_entry of this.diffTableDTOArray) {
-
-      let a = "";
-      a = diff_entry.difference;
-      a = a.split('(').join('[')
-      a = a.split(')').join(']')
-      try {
-        this.jsondiff = JSON.parse(a);
-      } catch (error) {
-
-      }
-
-      diff_entry.difference = a;
-
-      for (var val of this.jsondiff) {
-
-        if (val[0] == 'add') {
-
-          for (var v1 of val[2]) {
-            this.addDTO = {};
-            this.addDTO['tname'] = this.gettname(v1[0]);
-            this.addDTO['column'] = this.getcolumnname(v1[0]);
-            this.addDTO['oldval'] = "_Missing_";
-            this.addDTO['newval'] = v1[1];
-            this.addDTO['maintranid'] = diff_entry.maintranid;
-            this.addDTO['runid'] = diff_entry.runid;
-            this.addDTO['taskid'] = diff_entry.taskid;
-            this.changeDTOArray.push(this.addDTO);
-          }
-        }
-        if (val[0] == 'remove') {
-          for (var v1 of val[2]) {
-            this.removeDTO = {};
-            this.removeDTO['tname'] = this.gettname(v1[0]);
-            this.removeDTO['oldval'] = v1[1];
-            this.removeDTO['column'] = this.getcolumnname(v1[0]);
-            this.removeDTO['newval'] = "_Missing_";
-            this.removeDTO['maintranid'] = diff_entry.maintranid;
-            this.removeDTO['runid'] = diff_entry.runid;
-            this.removeDTO['taskid'] = diff_entry.taskid;
-            this.changeDTOArray.push(this.removeDTO);
-          }
-        }
-        if (val[0] == 'change') {
-          this.changeDTO = {};
-          this.changeDTO['tname'] = this.gettname(val[1]);
-          this.changeDTO['column'] = this.getcolumnname(val[1]);
-          this.changeDTO['oldval'] = val[2][0];
-          this.changeDTO['newval'] = val[2][1];
-          this.changeDTO['maintranid'] = diff_entry.maintranid;
-          this.changeDTO['runid'] = diff_entry.runid;
-          this.changeDTO['taskid'] = diff_entry.taskid;
-          this.changeDTOArray.push(this.changeDTO);
-        }
-      }
-    }
-
-
-    // Group by city
-    this.grouped = _.groupBy(this.changeDTOArray, "tname");
-
-
-    this.tname = Object.keys(this.grouped)[0]
-    this.groupedoriginal = this.grouped;
-    this.groupedval = this.grouped[Object.keys(this.grouped)[0]]
-  }
-
+   
 
   loadDifferenceTableHorizontal() {
     this.addDTOArray = [];
@@ -503,7 +450,7 @@ export class ViewwindnaComponent implements OnInit {
   }
 
   onMaintrainid(maintranid, runid, taskid) {
-    this.router.navigate(['/windowstran', {
+    this.router.navigate(['/transactionview', {
       taskid: taskid,
       runid: runid,
       tranid: maintranid
@@ -512,86 +459,45 @@ export class ViewwindnaComponent implements OnInit {
   search() {
     let cname = this.columnname
     //const arr1 = Object.keys(this.groupedoriginal).filter(d =>console.log('arr1', d));
-    this.groupednewstructval = this.groupednewstructvaloriginal
-      .filter(key => key[cname])
-      .filter(key => key[cname].includes(this.searchtext.toUpperCase()));
+  
+   
+    this.groupednewstructval = this.groupednewstructvaloriginal.filter((objj) => {
+        return objj[cname].toUpperCase()  ==this.searchtext.toUpperCase();
+    });
 
-      this.tablemap = new Array(this.groupednewstructval.length)
-      .fill(" ")
-      .map(() =>
-        new Array(this.colnames.length+15).fill(" ")
-      );
-
-    for (let i = 0; i < this.groupednewstructval.length; i++) {
-      let strkeys = Object.keys(this.groupednewstructval[i])
-      for (var kk of strkeys) {
-        let fval = this.groupednewstructval[i][kk];
-        let colindx=this.colnames.indexOf(kk);
-        this.tablemap[i][colindx]=fval;
-      }
-
+    if(this.searchtext == ""){
+      this.groupednewstructval = this.groupednewstructvaloriginal;
     }
   }
 
-  searchchange() {
+  // searchchange() {
 
-    let cname = this.columnname
+  //   let cname = this.columnname
 
-    this.groupednewstructval = this.groupednewstructvaloriginal
-      .filter(key => key[cname])
-      .filter(key => key[cname].includes(this.searchtext.toUpperCase()));
+  //   this.groupednewstructval = this.groupednewstructvaloriginal
+  //     .filter(key => key[cname])
+  //     .filter(key => key[cname].includes(this.searchtext.toUpperCase()));
 
 
 
-  }
+  // }
 
   filterTable(tname) {
     this.clength = {};
-    let sval = Object.keys(this.tabnewstruct)
+    let sval = Object.keys(this.grouped)
       .filter(key => key.split(":")[0]==tname )
       .reduce((obj, key) => {
-        let t = key.replace(tname, '')
-        obj[t] = this.tabnewstruct[key];
-        this.clength[t] = Object.keys(this.tabnewstruct[key]).length;
+       // let t = key.replace(tname, '')
+        obj[key] = this.grouped[key];
+        this.clength[key] = Object.keys(this.grouped[key]).length;
         return obj;
       }, {});
     let colnames1 = new Set();
-    this.groupednewstructval = Object.values(sval)
-    this.groupednewstructvaloriginal = Object.values(sval)
-    Object.keys(this.groupednewstructval)
-      .reduce((obj, key) => {
-        Object.keys(this.groupednewstructval[key])
-          .reduce((obji, keyi) => {
-            colnames1.add(keyi);
-            return {};
-          }, {});
+    this.groupednewstructval = Object.values(sval)[0]
+    this.groupednewstructvaloriginal = Object.values(sval)[0]
+    
 
-        return {};
-      }, {});
-    this.colnames = Array.from(colnames1).sort();
-
-
-    this.tablemap = new Array(this.groupednewstructval.length)
-      .fill(" ")
-      .map(() =>
-        new Array(this.colnames.length+15).fill(" ")
-      );
-
-    for (let i = 0; i < this.groupednewstructval.length; i++) {
-      let strkeys = Object.keys(this.groupednewstructval[i])
-      for (var kk of strkeys) {
-        let fval = this.groupednewstructval[i][kk];
-        let colindx=this.colnames.indexOf(kk);
-        this.tablemap[i][colindx]=fval;
-      }
-
-    }
-
-    // for (let i = this.colnames.length; i < 30; i = i + 3) {
-    //   this.colnames[i] = ".___0";
-    //   this.colnames[i + 1] = "_____.___1";
-    //   this.colnames[i + 2] = "_____.___2";
-    // }
+  
 
 
 

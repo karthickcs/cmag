@@ -1,11 +1,12 @@
-<div class="col-xl-12">
-  <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
+<div class="row">
+  <button type="button" class="btn1" data-toggle="modal"
     (click)="oncreate();exampleModalPopoversLabel.show()">CreateTask</button>
-    &nbsp;&nbsp;&nbsp;&nbsp;
-    <button type="button" class="btn btn-primary btn-sm" data-toggle="modal"
-    (click)="cleanoldrun()">Clean up old Runs</button>
-   
-    <app-card cardTitle="Task List" blockClass="table-border-style">
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <button type="button" class="btnorg" data-toggle="modal" (click)="cleanoldrun()">Clean up</button>
+</div>
+<div class="col-xl-12">
+
+  <app-card cardTitle="Task List" blockClass="table-border-style">
 
 
     <div class="table-responsive ">
@@ -14,12 +15,14 @@
           <tr class="table-secondary">
             <th>#</th>
             <th>Action </th>
+            
             <th>TaskName</th>
             <th>TaskId</th>
             <th>Type</th>
             <th>Createdby</th>
             <th>Jdbcurlsys1</th>
             <th>Jdbcurlsys2</th>
+            <th>RegenerateMeta</th>
             <!-- <th>usernamesys1</th>
             <th>usernamesys2</th>
             <th>dbtypesys1</th>
@@ -34,28 +37,31 @@
           </tr>
         </thead>
         <tbody>
-          <tr   *ngFor="let taskmain of taskmainArray; let i = index">
-            
+          <tr *ngFor="let taskmain of taskmainArray; let i = index">
+
             <td>{{i+1}}</td>
-           
+
             <td>
               <div class="row">
-              <section>
+                <section>
 
-              <button (click)="onrun(taskmain.taskid)"   #tooltip="matTooltip" matTooltip="Run Task"
-              mat-icon-button color="success" matTooltipPosition="right" aria-tooltip="">
-              <mat-icon style="color:green" >play_circle_outline</mat-icon>
-            </button> 
-            <button (click)="onedit(taskmain.taskid);exampleModalPopoversLabel.show()"   #tooltip="matTooltip" matTooltip="Edit Task"
-            mat-icon-button color="primary" matTooltipPosition="right" aria-tooltip="">
-            <mat-icon>edit</mat-icon>
-            </button> 
-            <button (click)="ondelete(taskmain.taskid,i)"   #tooltip="matTooltip" matTooltip="Delete Task"
-            mat-icon-button color="warn" matTooltipPosition="right" aria-tooltip="">
-            <mat-icon>delete</mat-icon>
-            </button>
-            </section>
-          </div>
+                  <button (click)="onrun(taskmain.taskid)" #tooltip="matTooltip" matTooltip="Run Task" mat-icon-button
+                    color="success" matTooltipPosition="right" aria-tooltip="">
+                    <mat-icon style="color:green">play_circle_outline</mat-icon>
+                  </button>
+                  <button (click)="onedit(taskmain.taskid);exampleModalPopoversLabel.show()" #tooltip="matTooltip"
+                    matTooltip="Edit Task" mat-icon-button color="primary" matTooltipPosition="right" aria-tooltip="">
+                    <mat-icon>edit</mat-icon>
+                  </button>
+                  <button (click)="ondelete(taskmain.taskid,i)" #tooltip="matTooltip" matTooltip="Delete Task"
+                    mat-icon-button color="warn" matTooltipPosition="right" aria-tooltip="">
+                    <mat-icon>delete</mat-icon>
+                  </button>
+                  
+                   
+                  
+                </section>
+              </div>
             </td>
             <!-- <td  >
               <div class="btn-group mb-2" role="group" aria-label="Basic example">
@@ -66,6 +72,7 @@
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
               </div>
             </td> -->
+            <!-- <td> <input type="checkbox" id="generatemeta{{i}}" class="" name="generatemeta{{i}}" id="generatemeta{{i}}" [(ngModel)]="generatemeta[i]" > -->
             <td>{{taskmain.taskname}}</td>
             <td>{{taskmain.taskid}}</td>
 
@@ -74,8 +81,12 @@
 
             <td>{{taskmain.jdbcurlsys1}}</td>
             <td>{{taskmain.jdbcurlsys2}}</td>
-            <!-- <td>{{taskmain.usernamesys1}}</td>
-            <td>{{taskmain.usernamesys2}}</td>
+             <td> <button mat-raised-button color="primary" 
+              matTooltipPosition="right" (click)="onGenerate(taskmain.taskid)"
+              aria-tooltip="">
+              Metadata Diff
+            </button></td>
+            <!-- <td>{{taskmain.usernamesys2}}</td>
             <td>{{taskmain.dbtypesys1}}</td>
             <td>{{taskmain.tablenamesys1}}</td>
             <td>{{taskmain.dbtypesys2}}</td>
@@ -83,7 +94,7 @@
             <td>{{taskmain.shared}}</td>
             <td>{{taskmain.rowcount}}</td>
             <td>{{taskmain.filelocation}}</td>
-            <td>{{taskmain.filelocation2}}</td> -->
+            <td>{{taskmain.filelocation2}}</td> -->  
           </tr>
         </tbody>
       </table>
@@ -91,313 +102,259 @@
   </app-card>
 </div>
 
-<!-- Button trigger modal -->
+
 <div class="col-xl-8 col-md-12">
 
-  <!-- <button type="button" class="btn btn-primary" data-toggle="modal" (click)="exampleModalPopoversLabel.show()">Launch demo modal</button> -->
-  <app-ui-modal #exampleModalPopoversLabel [dialogClass]="'modal-lg'">
+
+  <app-ui-modal #exampleModalPopoversLabel [dialogClass]="'modal-xl'">
     <div class="app-modal-header">
-      <h3> <span class="badge bg-secondary">Create/Edit Task</span></h3>
+      <h2> <span class=" ">Create/Edit Task</span></h2>
+      <div >
+        
+          <label><b>Task Name</b></label>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          <input type="text" name="taskname" [(ngModel)]="taskMainDTO.taskname" class="text-line"
+            placeholder="Enter Taskname">
+        
+              <hr>
        
+              <label><b>Source Type</b></label>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+          <select class="text-line" name="sourcetype" id="sourcetype" [(ngModel)]="taskMainDTO.sys1type"
+            (ngModelChange)="changeSrcType()">
+            <option value="DB"> DB </option>
+            <option value="FILE"> FILE </option>
+          </select>
+     
+      </div>
+      <hr><hr>
+      <div class="container">
+        <div class="row">
+          <div class="col" style=" border: 1px solid rgb(80, 80, 98);margin:5px">
+             <br>       
+     
+            <label><b>Source System</b></label>
+            <br> <br>
+            <form>
+              <div class="row">
+                <div class="col">
+                  <label><b>JDBC URL</b></label>
+                  <input type="text" name="jdbcurlsys1" [(ngModel)]="taskMainDTO.jdbcurlsys1" class="text-line"
+                    placeholder="Enter JDBC URL">
+                </div>
+
+              </div>
+              <br>
+              <div class="row">
+                <div class="col">
+                  <label><b>UserName</b></label>
+                  <input type="text" name="usernamesys1" [(ngModel)]="taskMainDTO.usernamesys1" class="text-line"
+                    placeholder="Enter UserName">
+                </div>
+                <div class="col">
+                  <label><b>Password</b></label>
+                  <input type="password" name="passwordsys1" [(ngModel)]="taskMainDTO.passwordsys1" class="text-line"
+                    placeholder="Enter Password">
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col">
+                  <h4>Status <span
+                      [ngClass]="this.test1=='connection success' ? 'badge bg-success' : 'badge bg-danger' ">{{this.test1}}</span>
+                  </h4>
+                  <button type="button" (click)="testdbsys1()"  style="border-radius: 16px;" class="btn btn-primary">Test Connection </button>
+                </div>
+                <div class="col">
+                  <h4>Status <span
+                      [ngClass]="this.createtrig1=='Trigger Created Successful' ? 'badge bg-success' : 'badge bg-danger' ">{{this.createtrig1}}</span>
+                  </h4>
+                  <button type="button" (click)="createtriggersys1()" style="border-radius: 16px;" class="btn btn-success">Create
+                    Trigger</button>
+                </div>
+                <div class="col">
+                  <h4>Status <span
+                      [ngClass]="this.droptrigger1=='Trigger Deoped Successful' ? 'badge bg-success' : 'badge bg-danger' ">{{this.droptrigger1}}</span>
+                  </h4>
+                  <button type="button" (click)="droptriggersys1()" style="border-radius: 16px;" class="btn btn-danger">Drop Trigger</button>
+                </div>
+              </div>
+              <br>
+
+              <div class="row">
+                <div class="col">
+                  <label><b>Db Type</b></label>
+                  <select class="text-line" name="dbtypesys1" id="dbtypesys1" [(ngModel)]="taskMainDTO.dbtypesys1"
+                   >
+                  <option value="oracle">oracle</option>
+                  <option value="sqlserver"> sqlserver </option>
+                </select>
+                </div>
+                <div class="col">
+                  <label><b>Tablename</b></label>
+                  <input type="text" name="tablenamesys1" [(ngModel)]="taskMainDTO.tablenamesys1" class="text-line"
+                    placeholder="Enter Tablename">
+                </div>
+              </div>
+              <br>
+              <label><b><b>Batch Run</b></b></label>
+              <br> <br>
+              <div class="row">
+                <div class="col">
+
+                  <label><b>Start Time</b></label>
+                  <input type="datetime-local" name="starttssys1" [(ngModel)]="taskMainDTO.starttssys1"
+                    class="text-line" placeholder="Enter Start ts sys1">
+                </div>
+                <div class="col">
+                  <label><b>End Time</b></label>
+                  <input type="datetime-local" name="endtssys1" [(ngModel)]="taskMainDTO.endtssys1" class="text-line"
+                    placeholder="Enter End ts sys1">
+                </div>
+              </div>
+              <br>
+              <label><b><b>Online Run </b></b></label>
+             
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" (click)="copy1()" style="border-radius: 16px;">copy time</button>&nbsp;<button  style="border-radius: 16px;"
+                type="button" (click)="clear1()">clear</button>
+              
+              <br> <br>
+              
+              <div class="row">
+                <div class="col">
+                  <label><b>Start Time</b></label>
+                  <input type="datetime-local" name="starttsOnlinesys1" [(ngModel)]="taskMainDTO.starttsOnlinesys1"
+                    class="text-line" placeholder="Enter Start ts Onlinesys1">
+                </div>
+                <div class="col">
+                  <label><b>End Time</b></label>
+                  <input type="datetime-local" name="endtsOnlinesys1" [(ngModel)]="taskMainDTO.endtsOnlinesys1"
+                    class="text-line" placeholder="Enter End ts Onlinesys1">
+                </div>
+              </div>
+              <br> <br>
+
+
+            </form>
+       
+          </div>
+          
+          <div class="col" style=" border: 1px solid rgb(80, 80, 99);margin: 5px;">
+            <br>
+            <label><b>Target System</b></label>
+            <br>
+            <form>
+              <br> 
+              <div class="row">
+                <div class="col">
+                  <label><b>JDBC URL</b></label>
+                  <input type="text" name="jdbcurlsys2" [(ngModel)]="taskMainDTO.jdbcurlsys2" class="text-line"
+                    placeholder="Enter JDBC URL">
+                </div>
+
+              </div>
+              <br>
+              <div class="row">
+                <div class="col">
+                  <label><b>UserName</b></label>
+                  <input type="text" name="usernamesys2" [(ngModel)]="taskMainDTO.usernamesys2" class="text-line"
+                    placeholder="Enter UserName">
+                </div>
+                <div class="col">
+                  <label><b>Password</b></label>
+                  <input type="password" name="passwordsys2" [(ngModel)]="taskMainDTO.passwordsys2" class="text-line"
+                    placeholder="Enter Password">
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                <div class="col">
+                  <h4>Status <span
+                      [ngClass]="this.test2=='connection success' ? 'badge bg-success' : 'badge bg-danger' ">{{this.test2}}</span>
+                  </h4>
+                  <button type="button" (click)="testdbsys2()" style="border-radius: 16px;" class="btn btn-primary">Test Connection </button>
+                </div>
+                <div class="col">
+                  <h4>Status <span
+                      [ngClass]="this.createtrigger2=='Trigger Created Successful' ? 'badge bg-success' : 'badge bg-danger' ">{{this.createtrigger2}}</span>
+                  </h4>
+                  <button type="button" (click)="craetetriggersys2()" style="border-radius: 16px;" class="btn btn-success">Create
+                    Trigger</button>
+                </div>
+                <div class="col">
+                  <h4>Status <span
+                      [ngClass]="this.droptrigger2=='Trigger Deoped Successful' ? 'badge bg-success' : 'badge bg-danger' ">{{this.droptrigger2}}</span>
+                  </h4>
+                  <button type="button" (click)="droptriggersys2()" style="border-radius: 16px;" class="btn btn-danger">Drop Trigger</button>
+                </div>
+              </div>
+
+              <br>
+              <div class="row">
+                <div class="col">
+                  <label><b>Db Type</b></label>
+                  <select class="text-line" name="dbtypesys2" id="dbtypesys2" [(ngModel)]="taskMainDTO.dbtypesys2"
+                   >
+                  <option value="oracle">oracle</option>
+                  <option value="sqlserver"> sqlserver </option>
+                </select>
+                  
+                </div>
+                <div class="col">
+                  <label><b>Tablename</b></label>
+                  <input type="text" name="tablenamesys2" [(ngModel)]="taskMainDTO.tablenamesys2" class="text-line"
+                    placeholder="Enter Tablename">
+                </div>
+              </div>
+              <br>
+              <div class="row">
+                
+                <label><b><b>Batch Run</b></b></label>
+                <br> <br>
+                <div class="col">
+                  <label><b>Start Time</b></label>
+                  <input type="datetime-local" name="starttssys2" [(ngModel)]="taskMainDTO.starttssys2"
+                    class="text-line" placeholder="Enter Start ts sys2">
+                </div>
+                <div class="col">
+                  <label><b>End Time</b></label>
+                  <input type="datetime-local" name="endtssys2" [(ngModel)]="taskMainDTO.endtssys2" class="text-line"
+                    placeholder="Enter End ts sys2">
+                </div>
+              </div>
+              <br>
+              <label><b><b>Online Run  </b></b></label>
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button style="border-radius: 16px;" type="button" (click)="copy2()">copy time</button>&nbsp;<button style="border-radius: 16px;"
+                type="button" (click)="clear2()">clear</button>
+              <br> <br>
+
+              <div class="row">
+                <div class="col">
+                  <label><b>Start Time</b></label>
+                  
+                  <input type="datetime-local" name="starttsOnlinesys2" [(ngModel)]="taskMainDTO.starttsOnlinesys2"
+                    class="text-line" placeholder="Enter Start ts Onlinesys2">
+                </div>
+                <div class="col">
+                  <label><b>End Time</b></label>
+                  <input type="datetime-local" name="endtsOnlinesys2" [(ngModel)]="taskMainDTO.endtsOnlinesys2"
+                    class="text-line" placeholder="Enter End ts Onlinesys2">
+                </div>
+              </div>
+
+
+
+
+            </form>
+         
+          </div>
+
+        </div>
+      </div>
       <button type="button" #myModalClose class="close basic-close" data-dismiss="modal" aria-label="Close"
         (click)="exampleModalPopoversLabel.hide()"><span aria-hidden="true">&times;</span></button>
     </div>
     <div class="app-modal-body">
-      <div class="col-md-10">
-        <form action="javascript:">
-          <div class="p-3 mb-2 bg-secondary text-white">
-            <div class="form-group">
-              <label>Task Name</label>
-              <input type="text" name="taskname" [(ngModel)]="taskMainDTO.taskname" class="form-control"
-                placeholder="Enter Taskname">
-            </div>
-
-            <div class="form-group">
-              <label>Source Type</label>
-              <select class="form-control" name="sourcetype" id="sourcetype" [(ngModel)]="taskMainDTO.sys1type"
-                (ngModelChange)="changeSrcType()">
-                <option value="DB"> DB </option>
-                <option value="FILE"> FILE </option>
-              </select>
-            </div>
-          </div>
-          <br>
-
-          <div class="p-3 mb-2 bg-secondary text-white" *ngIf="taskMainDTO.sys1type == 'DB'">
-            <div class="p-3 mb-2 bg-secondary text-white">
-              <label><b>OLD SYS</b></label>
-               
-              <form>
-                <div class="row">
-                  <div class="col">
-                    <label>JDBC URL</label>
-                    <input type="text" name="jdbcurlsys1" [(ngModel)]="taskMainDTO.jdbcurlsys1" class="form-control"
-                      placeholder="Enter JDBC URL">
-                  </div>
-
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <label>UserName</label>
-                    <input type="text" name="usernamesys1" [(ngModel)]="taskMainDTO.usernamesys1" class="form-control"
-                      placeholder="Enter UserName">
-                  </div>
-                  <div class="col">
-                    <label>Password</label>
-                    <input type="password" name="passwordsys1" [(ngModel)]="taskMainDTO.passwordsys1"
-                      class="form-control" placeholder="Enter Password">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h4>Status <span [ngClass]="this.test1=='connection success' ? 'badge bg-success' : 'badge bg-danger' " >{{this.test1}}</span></h4>
-                    <button type="button" (click)="testdbsys1()" class="btn btn-primary">Test Connection</button>
-                  </div>
-                  <div class="col">
-                    <h4>Status <span [ngClass]="this.createtrig1=='Trigger Created Successful' ? 'badge bg-success' : 'badge bg-danger' " >{{this.createtrig1}}</span></h4>
-                    <button type="button" (click)="createtriggersys1()" class="btn btn-success">Create Trigger</button>
-                  </div>
-                  <div class="col">
-                    <h4>Status <span [ngClass]="this.droptrigger1=='Trigger Deoped Successful' ? 'badge bg-success' : 'badge bg-danger' " >{{this.droptrigger1}}</span></h4>
-                    <button type="button" (click)="droptriggersys1()" class="btn btn-danger">Drop Trigger</button>
-                  </div>
-                </div>
-                 
-              
-                <div class="row">
-                  <div class="col">
-                    <label>db type sys1</label>
-                    <input type="text" name="dbtypesys1" [(ngModel)]="taskMainDTO.dbtypesys1" class="form-control"
-                      placeholder="Enter dbtypesys1">
-                  </div>
-                  <div class="col">
-                    <label>Tablename</label>
-                    <input type="text" name="tablenamesys1" [(ngModel)]="taskMainDTO.tablenamesys1" class="form-control"
-                      placeholder="Enter Tablename">
-                  </div>
-                </div>
-                <label><b>Batch Details</b></label>
-                <div class="row">
-                  <div class="col">
-                    
-                    <label>Start ts sys1</label>
-                    <input type="datetime-local" name="starttssys1" [(ngModel)]="taskMainDTO.starttssys1"
-                      class="form-control" placeholder="Enter Start ts sys1">
-                  </div>
-                  <div class="col">
-                    <label>End ts sys1</label>
-                    <input type="datetime-local" name="endtssys1" [(ngModel)]="taskMainDTO.endtssys1"
-                      class="form-control" placeholder="Enter End ts sys1">
-                  </div>
-                </div>
-              
-                <label><b>Online Details</b></label>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" (click)="copy1()"  >copy time</button><button type="button" (click)="clear1()"  >clear</button>
-                <br>
-                <!-- <div class="row">
-                  <div class="col">
-                    <label>Tablename Online</label>
-                    <input type="text" name="tablenameOnlinesys1" [(ngModel)]="taskMainDTO.tablenameOnlinesys1" class="form-control"
-                      placeholder="Enter Tablename">
-                  </div>
-                </div> -->
-                <div class="row">
-                  <div class="col">
-                    <label>Start ts Onlinesys1</label>
-                    <input type="datetime-local" name="starttsOnlinesys1" [(ngModel)]="taskMainDTO.starttsOnlinesys1"
-                      class="form-control" placeholder="Enter Start ts Onlinesys1">
-                  </div>
-                  <div class="col">
-                    <label>End ts Onlinesys1</label>
-                    <input type="datetime-local" name="endtsOnlinesys1" [(ngModel)]="taskMainDTO.endtsOnlinesys1"
-                      class="form-control" placeholder="Enter End ts Onlinesys1">
-                  </div>                 
-                </div>
-                
-                <!-- <label><b>Clob Details</b></label>
-                <div class="row">
-                  <div class="col">
-                    <label>Tablename Clob</label>
-                    <input type="text" name="tablenameClobsys1" [(ngModel)]="taskMainDTO.tablenameClobsys1" class="form-control"
-                      placeholder="Enter Tablename">
-                  </div>
-                  </div>
-                  <div class="row">
-                  <div class="col">
-                    <label>Start ts Clobsys1</label>
-                    <input type="datetime-local" name="starttsClobsys1" [(ngModel)]="taskMainDTO.starttsClobsys1"
-                      class="form-control" placeholder="Enter Start ts Clobsys1">
-                  </div>
-                  <div class="col">
-                    <label>End ts Clobsys1</label>
-                    <input type="datetime-local" name="endtsClobsys1" [(ngModel)]="taskMainDTO.endtsClobsys1"
-                      class="form-control" placeholder="Enter End ts Clobsys1">
-                  </div>                 
-                </div> -->
-               
-               
-              </form>
-            </div>
-            <hr><hr>
-            <div class="p-3 mb-2 bg-secondary text-white">
-              <label><b>New SYS</b></label>
-           
-              <form>
-                <div class="row">
-                  <div class="col">
-                    <label>JDBC URL</label>
-                    <input type="text" name="jdbcurlsys2" [(ngModel)]="taskMainDTO.jdbcurlsys2" class="form-control"
-                      placeholder="Enter JDBC URL">
-                  </div>
-
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <label>UserName</label>
-                    <input type="text" name="usernamesys2" [(ngModel)]="taskMainDTO.usernamesys2" class="form-control"
-                      placeholder="Enter UserName">
-                  </div>
-                  <div class="col">
-                    <label>Password</label>
-                    <input type="password" name="passwordsys2" [(ngModel)]="taskMainDTO.passwordsys2"
-                      class="form-control" placeholder="Enter Password">
-                  </div>
-                </div>
-                <div class="row">
-                  <div class="col">
-                    <h4>Status <span [ngClass]="this.test2=='connection success' ? 'badge bg-success' : 'badge bg-danger' " >{{this.test2}}</span></h4>
-                    <button type="button" (click)="testdbsys2()" class="btn btn-primary">Test Connection</button>
-                  </div>
-                  <div class="col">
-                    <h4>Status <span [ngClass]="this.createtrigger2=='Trigger Created Successful' ? 'badge bg-success' : 'badge bg-danger' " >{{this.createtrigger2}}</span></h4>
-                    <button type="button" (click)="craetetriggersys2()" class="btn btn-success">Create Trigger</button>
-                  </div>
-                  <div class="col">
-                    <h4>Status <span [ngClass]="this.droptrigger2=='Trigger Deoped Successful' ? 'badge bg-success' : 'badge bg-danger' " >{{this.droptrigger2}}</span></h4>
-                    <button type="button" (click)="droptriggersys2()" class="btn btn-danger">Drop Trigger</button>
-                  </div>
-                </div>
-               
-                
-                <div class="row">
-                  <div class="col">
-                    <label>db type sys2</label>
-                    <input type="text" name="dbtypesys2" [(ngModel)]="taskMainDTO.dbtypesys2" class="form-control"
-                      placeholder="Enter dbtypesys2">
-                  </div>
-                  <div class="col">
-                    <label>Tablename</label>
-                    <input type="text" name="tablenamesys2" [(ngModel)]="taskMainDTO.tablenamesys2" class="form-control"
-                      placeholder="Enter Tablename">
-                  </div>
-                </div>
-                <div class="row">
-                  <label><b>Batch Details</b></label>
-                  <div class="col">
-                    <label>Start ts sys2</label>
-                    <input type="datetime-local" name="starttssys2" [(ngModel)]="taskMainDTO.starttssys2"
-                      class="form-control" placeholder="Enter Start ts sys2">
-                  </div>
-                  <div class="col">
-                    <label>End ts sys2</label>
-                    <input type="datetime-local" name="endtssys2" [(ngModel)]="taskMainDTO.endtssys2"
-                      class="form-control" placeholder="Enter End ts sys2">
-                  </div>
-                </div>
-                
-                <label><b>Online</b></label>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<button type="button" (click)="copy2()"  >copy time</button><button type="button" (click)="clear2()"  >clear</button>
-                 <br>
-                <!-- <div class="row">
-                  <div class="col">
-                    <label>Tablename Online</label>
-                    <input type="text" name="tablenameOnlinesys2" [(ngModel)]="taskMainDTO.tablenameOnlinesys2" class="form-control"
-                      placeholder="Enter Tablename">
-                  </div>
-                  </div> -->
-                  <div class="row">
-                  <div class="col">
-                    <label>Start ts Onlinesys2</label>
-                    <input type="datetime-local" name="starttsOnlinesys2" [(ngModel)]="taskMainDTO.starttsOnlinesys2"
-                      class="form-control" placeholder="Enter Start ts Onlinesys2">
-                  </div>
-                  <div class="col">
-                    <label>End ts Onlinesys2</label>
-                    <input type="datetime-local" name="endtsOnlinesys2" [(ngModel)]="taskMainDTO.endtsOnlinesys2"
-                      class="form-control" placeholder="Enter End ts Onlinesys2">
-                  </div>                 
-                </div>
-            
-                <!-- <label><b>Blob</b></label>
-                <div class="row">
-                  <div class="col">
-                    <label>Tablename Clob</label>
-                    <input type="text" name="tablenameClobsys2" [(ngModel)]="taskMainDTO.tablenameClobsys2" class="form-control"
-                      placeholder="Enter Tablename">
-                  </div>
-                </div>  
-                <div class="row">
-                  <div class="col">
-                    <label>Start ts Clobsys2</label>
-                    <input type="datetime-local" name="starttsClobsys2" [(ngModel)]="taskMainDTO.starttsClobsys2"
-                      class="form-control" placeholder="Enter Start ts Clobsys2">
-                  </div>
-                  <div class="col">
-                    <label>End ts Clobsys2</label>
-                    <input type="datetime-local" name="endtsClobsys2" [(ngModel)]="taskMainDTO.endtsClobsys2"
-                      class="form-control" placeholder="Enter End ts Clobsys2">
-                  </div>                 
-                </div> -->
-               
-                
-              </form>
-
-            </div>
-          </div>
 
 
-          <div class="p-3 mb-2 bg-secondary text-white" *ngIf="taskMainDTO.sys1type == 'FILE'">
-            <div class="form-group">
-              <label>File location system1</label>
-              <input type="text" name="filelocation" [(ngModel)]="taskMainDTO.filelocation" class="form-control"
-                placeholder="Browse filelocation" readonly>
-            </div>
-            <div class="input-group mb-3">
-              <div class="custom-file">
-                <input type="file" (change)="onFileSelected1($event)" class="custom-file-input" id="inputGroupFile01">
-
-              </div>
-
-            </div>
-
-            <div class="form-group">
-              <label>File location system2</label>
-              <input type="text" name="filelocation2" [(ngModel)]="taskMainDTO.filelocation2" class="form-control"
-                placeholder="Browse filelocation2" readonly>
-            </div>
-
-            <div class="input-group mb-3">
-              <div class="custom-file">
-                <input type="file" (change)="onFileSelected2($event)" class="custom-file-input" id="inputGroupFile02">
-
-              </div>
-
-            </div>
-
-           
-          </div>
-
-
-
-
-
-        </form>
-        <div class="p-3 mb-2 bg-secondary text-white">
-          <label>Row count</label>
-          <input type="number" name="rowcount" [(ngModel)]="taskMainDTO.rowcount" class="form-control"
-            placeholder="Enter Row count">
-        </div>
-      </div>
     </div>
     <div class="app-modal-footer">
       <button type="button" class="btn btn-secondary" data-dismiss="modal"

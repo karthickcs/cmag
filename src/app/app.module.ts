@@ -24,7 +24,7 @@ import { NavigationItem } from './theme/layout/admin/navigation/navigation';
 import { NavContentComponent } from './theme/layout/admin/navigation/nav-content/nav-content.component';
 import { NavGroupComponent } from './theme/layout/admin/navigation/nav-content/nav-group/nav-group.component'; 
 import { NavCollapseComponent } from './theme/layout/admin/navigation/nav-content/nav-collapse/nav-collapse.component';
-
+import { TableStructControllerService } from './api/tableStructController.service';
 import { DiffTableControllerService } from './api/diffTableController.service';
 import { DpListenControllerService } from './api/dpListenController.service';
 import { FileControllerService } from './api/fileController.service';
@@ -32,8 +32,13 @@ import { JwtAuthenticationControllerService } from './api/jwtAuthenticationContr
 import { TaskControllerService } from './api/taskController.service';
 import { DbControllerService } from './api/dbController.service';
  
- 
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { AgGridModule } from 'ag-grid-angular';   
+  
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';  
+import { NgxJsonViewerModule } from 'ngx-json-viewer';
 
+ 
 @NgModule({
   declarations: [
     AppComponent,
@@ -57,10 +62,10 @@ import { DbControllerService } from './api/dbController.service';
   ],
   imports: [
    
-    BrowserModule,SharedModule,
-    AppRoutingModule,FormsModule,HttpClientModule, NgbModule
+    BrowserModule,SharedModule,AgGridModule.withComponents([]), 
+    AppRoutingModule,FormsModule,HttpClientModule, NgbModule,BrowserAnimationsModule,NgxJsonViewerModule
   ],
-  providers: [  DiffTableControllerService,
+  providers: [  DiffTableControllerService,TableStructControllerService,
     DpListenControllerService,
     FileControllerService,DbControllerService,
     JwtAuthenticationControllerService,
@@ -72,6 +77,7 @@ import { DbControllerService } from './api/dbController.service';
     }
     
    ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class AppModule { }

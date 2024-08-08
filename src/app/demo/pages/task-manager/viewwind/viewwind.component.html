@@ -1,59 +1,83 @@
-<select class=" " name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
-  <option value="0" disabled selected>Select Task</option>
-  <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
-    {{taskmain.taskname}} ---> {{taskmain.taskid}}
-  </option>
-</select>
-<select class="" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()">
-  <option value="0" disabled selected>Select RunID</option>
-  <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
-    Run Id ---> {{dplisten.runid}}
-  </option>
-</select>
+<div class="row">
+  <div class="custom-filter "><img src="assets/images/funnel.svg" alt=""></div>
+  <div class="custom-select-pink ">
+    <select name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+      <option value="0" disabled selected>Task</option>
+      <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+        {{taskmain.taskname}}--{{taskmain.taskid}}
+      </option>
+    </select>
+    <div class="select-arrow"></div>
+  </div>&nbsp;&nbsp;&nbsp;&nbsp;
+  <div class="custom-select-org "> <select name="runidselect" id="runidselect" [(ngModel)]="runidselect"
+      (ngModelChange)="loadrunid()">
+      <option value="0" disabled selected> RunID</option>
+      <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+        Run Id - {{dplisten.runid}}
+      </option>
+    </select>
+    <div class="select-arrow"></div>
+  </div>
+  &nbsp;
+  <div class="custom-filter ">
+    <button mat-raised-button color="primary" matTooltipPosition="right" (click)="goBack(this.runidselect,this.taskid)"
+      aria-tooltip="">
+      Back
+    </button>
+  </div>
 
-<div style="margin-left: 40%; margin-right: 30%">
-  <b> Oracle OldSYS</b>&nbsp;&nbsp;&nbsp;<img src="assets/images/dbgreen.svg" alt=""
-    class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/images/dbred.svg" alt="" class="img-fluid"> <b>Oracle NewSYS</b>
 </div>
 
-<div class="row">
+
+<div style="margin-left: 30%; margin-right: 30% ;text-align: justify;">
+  <b style="vertical-align: top;"> {{taskMainDTO.usernamesys1}}</b>&nbsp;&nbsp;&nbsp;<img
+    src="assets/images/dbgreen.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+  <img src="assets/images/dbred.svg" alt="" class="img-fluid"> <b
+    style="vertical-align: top;">{{taskMainDTO.usernamesys2}}</b>
+</div>
+
+<div style="border:1px solid rgb(216, 190, 190);" class="row">
 
   <div class="table-responsive ">
 
-    <table border="3" style="height:200px" class="table">
+    <table *ngIf="this.tname" style="height:250px" class="table">
+      <col width='40px' />
       <thead>
-        <tr class="table-secondary">
+        <tr  style="border-bottom:0.2px dotted rgb(215, 212, 212)">
 
-          <th>#</th>
-          <th>Src Table</th>
-          <th>Difference</th>
+          <th class="divcsfull">#</th>
+          <th class="divcsfull"> Table <img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
+            ({{tablecount}})</th>
+          <th class="divcsfull">Difference ({{diffcount}})</th>
 
-          <th>OnlyinSrc</th>
-          <th>Identical</th>
-          <th>Difference</th>
-          <th>Target Table</th>
+          <th class="divcsfull">OnlyinSrc</th>
+          <th class="divcsfull">Identical</th>
+          <th class="divcsfull">Difference ({{diffcount}})</th>
+          <th class="divcsfull"> Table <img src="assets/images/dbredmin.svg" alt="" class="img-fluid"> ({{tablecount}})
+          </th>
 
 
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let item of this.groupedoriginal | keyvalue; let m = index">
-          <td width="15%">{{m+1}}</td>
-          <td width="15%" align="left"><img (click)="filterTable(item.key)" src="assets/images/tabm.png" alt=""
-              class="img-fluid">&nbsp;<button (click)="filterTable(item.key)" style="color:blue;font-size: small;" mat-stroked-button color="primary" matTooltipPosition="right" aria-tooltip="">
-                {{item.key}}
-             </button></td>
-          <td align="center">{{(item.value | keyvalue ).length}}</td>
+        <tr  style="border-bottom:0.2px dotted rgb(215, 212, 212)" *ngFor="let item of this.groupedoriginal | keyvalue; let m = index">
+          <td class="spaced">{{m+1}}</td>
+          <td class="spaced" align="left"><img (click)="filterTable(item.key)" src="assets/images/tabm.png" alt=""
+              class="img-fluid">&nbsp;<button (click)="filterTable(item.key)" style="color:blue;font-size: small;"
+              mat-button color="primary" matTooltipPosition="right" aria-tooltip="">
+              {{item.key}}
+            </button></td>
+          <td class="spaced" align="center">{{(item.value | keyvalue ).length}}</td>
 
-          <td>0</td>
-          <td>0</td>
+          <td class="spaced">0</td>
+          <td class="spaced">0</td>
           <td align="center">{{(item.value | keyvalue ).length}}</td>
-          <td width="15%"><img (click)="filterTable(item.key)" src="assets/images/tabm.png" alt=""
-              class="img-fluid"><button (click)="filterTable(item.key)" style="color:bluefont-size: small;" mat-stroked-button color="primary" matTooltipPosition="right" aria-tooltip="">
-                {{item.key}}
-             </button>&nbsp;</td>
+          <td class="spaced"><img (click)="filterTable(item.key)" src="assets/images/tabm.png" alt=""
+              class="img-fluid"><button (click)="filterTable(item.key)" style="color:bluefont-size: small;" mat-button
+              color="primary" matTooltipPosition="right" aria-tooltip="">
+              {{item.key}}
+            </button>&nbsp;</td>
         </tr>
       </tbody>
     </table>
@@ -61,12 +85,10 @@
 </div>
 
 <br>
-<span style="margin-left: 5%; margin-right: 10%">
+<span *ngIf="this.tname" >
   <b>{{ this.tname}}</b>&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/tab.png" alt=""
     class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/images/tab.png" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp; <b>{{
-    this.tname}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
   <select class=" " name="columnname" id="columnname" [(ngModel)]="columnname">
     <option *ngFor="let cn of this.colnames" [value]="cn">
       {{convert(cn) }}
@@ -80,105 +102,101 @@
   </span>
 
 </span>
-<div class="row">
+<div style="border:1px solid rgb(216, 214, 214);" class="row">
+ 
+<div class="table-responsive">
+  <table class="table" *ngIf="tablemap">
+   <tr  style="border-bottom:0.2px dotted rgb(215, 212, 212)">
+      <th class="divcs">
+        <div class="divcs">
+          <h4>#</h4>
+        </div>
+      </th>
+     
+      <th class="divcs" *ngFor="let kee  of this.colnames; let zz = index  ">
+        <div class="divcs" *ngIf="convertcheck(kee) == 'src' ">
+          <span style="display:inline-block;">
+            {{convert(kee)}}<img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
 
-  <div class="table-responsive">
-    <table border="3"  class="table table-bordered table-sm">
+          </span>
 
-      <tbody class="a">
+        </div>
+        <div class="divcs" *ngIf="convertcheck(kee) == 'tar' ">
+          <span style="display:inline-block;">
+            {{convert(kee)}}<img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
 
-        <tr class="table-secondary">
-          <th width="30px">#</th>
-          <th width="30px" *ngFor="let kee  of this.colnames; let zz = index  ">
-            <div *ngIf="convertcheck(kee) == 'src' ">
-              <b> {{convert(kee) }}</b><img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
-            </div>
-            <div *ngIf="convertcheck(kee) == 'tar' ">
-              <b> {{convert(kee) }}</b><img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
-            </div>
-            <div *ngIf="convertcheck(kee) == 'srcb' ">
-              <b> {{convert(kee) }}</b>
-            </div>
-            <div *ngIf="convertcheck(kee) == 'tarb' ">
-              <b> {{convert(kee) }}</b>
-            </div>
-            <div *ngIf="convertcheck(kee) == 'rec' ">
-              <b> {{convert(kee) }}</b>
-            </div>
-            <div style="background-color:white" *ngIf="convertcheck(kee) == 'sp' ">
-              &nbsp;
-            </div>
-          </th>
+          </span>
+        </div>
+        <div class="divcs" *ngIf="convertcheck(kee) == 'srcb' ">
+          {{convert(kee) }}
+        </div>
+        <div class="divcs" *ngIf="convertcheck(kee) == 'tarb' ">
+          {{convert(kee) }}
+        </div>
+        <div class="divcs" *ngIf="convertcheck(kee) == 'rec' ">
+          <span style="display:inline-block;">
+            {{convert(kee)}} <img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
 
+          </span>
+        </div>
+        <div class="divcs" *ngIf="convertcheck(kee) == 'tarrec' ">
+          <span style="display:inline-block;">
+            {{convert(kee)}} <img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
 
-        </tr>
-
-        <tr class="table-light" *ngFor="let diffobj  of this.groupednewstructval; let m = index">
-
-          <td width="30px">{{m+1}}</td>
-
-
-
-          <td width="30px" *ngFor="let k  of diffobj | keyvalue">
-            <div *ngIf="k.value != ' ' ">
-              <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.___2')">
-                <button mat-stroked-button color="warn" #tooltip="matTooltip" matTooltip="{{k.value}}"
-                  matTooltipPosition="right" aria-tooltip="">
-                  {{convertmin(k.value)}}
-                </button>
-              </div>
-              <div style="background-color:lightblue" *ngIf="k.key.toString().includes('AAAAAmaintranid') ">
-                <button mat-stroked-button color="primary" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
-                  matTooltipPosition="right" (click)="onMaintrainid(k.value,this.runidselect,this.taskid)"
-                  aria-tooltip="">
-                  {{convertmin(read(k.value))}}
-                </button>
-
-                <!-- <a style="width:96%;text-align: left; vertical-align: middle; color: blue;"
-                  (click)="onMaintrainid(read(k.value),this.runidselect,this.taskid)">
-
-                  <u>{{convertmin(read(k.value))}}</u>
-                </a> -->
-              </div>
-              <div style="background-color:lightblue" *ngIf="k.key.toString().includes('AAAAAnewtranid') ">
-                <button mat-stroked-button color="warn" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
-                  matTooltipPosition="right" (click)="onMaintrainid(k.value,this.runidselect,this.taskid)"
-                  aria-tooltip="">
-                  {{convertmin(read(k.value))}}
-                </button>
+          </span>
+        </div>
+        <div class="divcs" *ngIf="convertcheck(kee) == 'sp' ">
+          &nbsp;
+        </div>
+      </th>
 
 
-              </div>
-              <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.___1')">
-                <button mat-stroked-button color="primary" #tooltip="matTooltip" matTooltip="{{k.value}}"
-                  matTooltipPosition="right" aria-tooltip="">
-                  {{convertmin(k.value)}}
-                </button>
-              </div>
-            </div>
-            <div style="background-color:white" *ngIf="k.value == ' ' ">&nbsp;</div>
+    </tr>
+    <tbody>
+      <tr  style="border-bottom:0.2px dotted rgb(215, 212, 212);" *ngFor="let data of tablemap; let i = index">
+        <td width="30px">{{i+1}}</td>
+         
+        <td class="spaced" *ngFor="let cell of data; let j = index">
 
-          </td>
-          <td width="30px" *ngFor="let kee  of getcolumn(m)">
-            <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'src' ">
-              <button style="color:lightblue" mat-stroked-button   matTooltipPosition="right" aria-tooltip="">
-                ______
+
+          <div *ngIf="cell != ' ' ">
+            <div  style="height: 50%;" *ngIf="j==0">
+              <button   mat-button color="primary" #tooltip="matTooltip" matTooltip="{{read(cell)}}"
+                matTooltipPosition="right" (click)="onMaintrainid(cell,this.runidselect,this.taskid)" aria-tooltip="">
+                <pre style="color: blue;">   {{convertmin(read(cell))}}</pre>
               </button>
             </div>
-            <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'tar' ">
-              <button style="color:lightblue" mat-stroked-button color="primary" matTooltipPosition="right" aria-tooltip="">
-                 ______
+            <div style="height: 50%;" *ngIf="j==1">
+              <button    mat-button color="warn" #tooltip="matTooltip" matTooltip="{{read(cell)}}"
+                matTooltipPosition="right" aria-tooltip="">
+                <pre  style="color: red;">   {{convertmin(read(cell))}}</pre>
+              </button>
+
+
+            </div>
+            <div style="height: 50%;" *ngIf="j>1 && this.colnames[j].toString().includes('.___2')">
+              <button   mat-button color="warn" #tooltip="matTooltip" matTooltip="{{cell}}" matTooltipPosition="right"
+                aria-tooltip="">
+                <pre  style="color: red;">  {{convertmin(read(cell))}}</pre>
               </button>
             </div>
-
-            <div style="background-color:white" *ngIf="convertcheck(kee) == 'sp' ">
-              &nbsp;&nbsp;&nbsp;&nbsp;
+            <div style="width: 50%;" *ngIf="j>1 && this.colnames[j].toString().includes('.___1')">
+              <button    mat-button color="primary" #tooltip="matTooltip" matTooltip="{{cell}}" matTooltipPosition="right"
+                aria-tooltip="">
+              <pre  style="color: blue;">  {{convertmin(read(cell))}}</pre>
+              </button>
             </div>
-          </td>
+          </div>
+          <div  
+            *ngIf="cell == ' ' && this.colnames[j] && (this.colnames[j].toString().includes('.___1') || this.colnames[j].toString().includes('.___2'))">
+            <button style="color:white" mat-button color="primary" matTooltipPosition="right" aria-tooltip="">
 
-        </tr>
-      </tbody>
+            </button>
+          </div>
 
-    </table>
-  </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 </div>

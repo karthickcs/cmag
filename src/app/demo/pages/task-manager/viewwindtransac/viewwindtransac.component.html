@@ -1,32 +1,32 @@
-<select class=" " name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+<!-- <select class=" " name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
   <option value="0" disabled selected>Select Task</option>
   <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
-    {{taskmain.taskname}} ---> {{taskmain.taskid}}
+    {{taskmain.taskname}} -> {{taskmain.taskid}}
   </option>
 </select>
 <select class="" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()">
   <option value="0" disabled selected>Select RunID</option>
   <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
-    Run Id ---> {{dplisten.runid}}
+    Run Id -> {{dplisten.runid}}
   </option>
-</select>
+</select> -->
 <button mat-raised-button color="primary" 
                     matTooltipPosition="right" (click)="goBack(this.runidselect,this.taskid)"
                     aria-tooltip="">
                     Back
                   </button>
-<div style="margin-left: 40%; margin-right: 30%">
+<!-- <div style="margin-left: 40%; margin-right: 30%">
   <b> Oracle OldSYS</b><img src="assets/images/db.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/images/db.svg" alt="" class="img-fluid"> <b>Oracle NewSYS</b>
-</div>
+</div> -->
 <div class="row">
 
    
-  <br>
+ 
 
   <div class="row">
-    <span style="margin-left: 35%; margin-right: 10%">
+    <span style="margin-left: 15%; margin-right: 10%">
       <b>{{read( this.tname)}}</b>&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/tb.svg" alt=""
         class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
       <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
@@ -35,107 +35,98 @@
 
 
     </span>
-    <div style="max-height:490px">
-      <table border="3" *ngFor="let objkeyval  of this.groupednewstructvalObjectTable | keyvalue ; let m = index"
-        class="table caption-top">
-        <caption><b>{{objkeyval.key}}</b></caption>
-
-        <tbody>
-
-          <tr class="table-secondary">
-            <th width="30px">#</th>
-            <th width="30px" *ngFor="let kee  of this.colmaster[objkeyval.key+'']; let zz = index  ">
-              <div  *ngIf="convertcheck(kee) == 'src' ">
-                <b> {{convert(kee) }}</b><img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
-              </div>
-              <div  *ngIf="convertcheck(kee) == 'tar' ">
-                <b> {{convert(kee) }}</b><img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
-              </div>
-              <div *ngIf="convertcheck(kee) == 'srcb' ">
-                <b> {{convert(kee) }}</b>
-              </div>
-              <div *ngIf="convertcheck(kee) == 'tarb' ">
-                <b> {{convert(kee) }}</b>
-              </div>
-              <div  *ngIf="convertcheck(kee) == 'rec' ">
-                <b> {{convert(kee) }}</b>
-              </div>
-              <div style="background-color:white" *ngIf="convertcheck(kee) == 'sp' ">
-                &nbsp;
-              </div>
-            </th>
-
-
-          </tr>
-
-           
-          <tr class="table-light" *ngFor="let innobjk  of objkeyval.value| keyvalue; let n = index">
-
-            <td width="30px">{{n+1}}</td>
-  
-  
-  
-            <td width="30px" *ngFor="let k  of innobjk.value| keyvalue">
-              <div *ngIf="k.value != ' ' ">
-                <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.2')"><button mat-stroked-button color="warn" #tooltip="matTooltip" matTooltip="{{k.value}}"
-                  matTooltipPosition="right" aria-tooltip="">
-                  {{convertmin(k.value)}}
-                </button>
-                </div>
-                <div style="background-color:lightblue" *ngIf="k.key.toString().includes('AAAAAmaintranid') ">
-                  <button mat-stroked-button color="primary" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
-                    matTooltipPosition="right" (click)="onMaintrainid(k.value,this.runidselect,this.taskid)"
-                    aria-tooltip="">
-                    {{convertmin(read(k.value))}}
-                  </button>
-  
-                  <!-- <a style="width:96%;text-align: left; vertical-align: middle; color: blue;"
-                    (click)="onMaintrainid(read(k.value),this.runidselect,this.taskid)">
-  
-                    <u>{{convertmin(read(k.value))}}</u>
-                  </a> -->
-                </div>
-                <div style="background-color:lightblue" *ngIf="k.key.toString().includes('AAAAAnewtranid') ">
-                  <button mat-stroked-button color="warn" #tooltip="matTooltip" matTooltip="{{read(k.value)}}"
-                    matTooltipPosition="right" (click)="onMaintrainid(k.value,this.runidselect,this.taskid)"
-                    aria-tooltip="">
-                    {{convertmin(read(k.value))}}
-                  </button>
-
-
-                </div>
-                <div style="background-color:lightblue" *ngIf="k.key.toString().includes('.1')"> <button mat-stroked-button color="primary" #tooltip="matTooltip" matTooltip="{{k.value}}"
-                  matTooltipPosition="right" aria-tooltip="">
-                  {{convertmin(k.value)}}
-                </button></div>
-  
-              </div>
-              <div style="background-color:white" *ngIf="k.value == ' ' ">&nbsp;</div>
-  
-            </td>
-            <td width="30px" *ngFor="let kee  of getcolumn(objkeyval.key)">
-              <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'src' ">
-                <button style="color:lightblue" mat-stroked-button   matTooltipPosition="right" aria-tooltip="">
-                  ______
-                </button>
-              </div>
-              <div style="background-color:lightblue" *ngIf="convertcheck(kee) == 'tar' ">
-                <button style="color:lightblue" mat-stroked-button color="primary" matTooltipPosition="right" aria-tooltip="">
-                   ______
-                </button>
-              </div>
-  
-              <div style="background-color:white" *ngIf="convertcheck(kee) == 'sp' ">
-                &nbsp;&nbsp;&nbsp;&nbsp;
-              </div>
-            </td>
-  
-          </tr>
+   
+<div class="table-responsive" style="border:1px solid rgb(210, 184, 184);" *ngFor="let table111  of this.groupednewstructvalObjectTable| keyvalue;; let zz = index  ">
+  <b>{{table111.key}}</b>
+  <table  class="table"  *ngIf="tablemapcoll">
+    <tr  style="border-bottom:1px dotted black" >
+      <th >#</th>
+      
+     
+      <th   *ngFor="let kee  of this.colmaster[table111.key]; let zz = index  ">
+        <div class="divcs" *ngIf="convertcheck(kee) == 'src' ">
+          <p style="display:inline-block;">
+            <img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
+            {{convert(kee)}}
+          </p>
+          
+        </div>
+        <div class="divcs" *ngIf="convertcheck(kee) == 'tar' ">
+          <p style="display:inline-block;">
+            <img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
+            {{convert(kee)}}
+          </p>
+        </div>
+        <div class="divcs" *ngIf="convertcheck(kee) == 'srcb' ">
+           {{convert(kee) }}
+        </div>
+        <div class="divcs" *ngIf="convertcheck(kee) == 'tarb' ">
+           {{convert(kee) }}
+        </div>
+        <div class="divcs" *ngIf="convertcheck(kee) == 'rec' ">
+          <p style="display:inline-block;">
+            <img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
+            {{convert(kee)}}
+          </p>
+        </div>
+        <div class="divcs" *ngIf="convertcheck(kee) == 'tarrec' ">
+          <p style="display:inline-block;">
+            <img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
+            {{convert(kee)}}
+          </p>
+        </div>
         
-        </tbody>
+      </th>
 
-      </table>
-    </div>
+
+    </tr>
+    <tbody>
+      <tr  style="border-bottom:0.2px dotted rgb(215, 212, 212)"  *ngFor="let data of tablemapcoll[table111.key]; let i = index">
+        <td width="30px">{{i+1}}</td>
+        
+        <td  class="spaced"  *ngFor="let cell of data; let j = index">
+          
+
+          <div *ngIf="cell != ' ' ">
+            <div   *ngIf="j==0">
+              <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{read(cell)}}"
+                matTooltipPosition="right" (click)="onMaintrainid(cell,this.runidselect,this.taskid)"
+                aria-tooltip="">
+                <pre  style="color: blue;"> {{convertmin(read(cell))}}</pre>
+              </button>             
+            </div>
+            <div  *ngIf="j==1">
+              <button mat-button color="warn" #tooltip="matTooltip" matTooltip="{{read(cell)}}"
+                matTooltipPosition="right"  
+                aria-tooltip="">
+                <pre  style="color: red;"> {{convertmin(read(cell))}}</pre>
+              </button>
+
+
+            </div>
+            <div  *ngIf="j>1 && this.colmaster[table111.key][j].toString().includes('.___2')">
+              <button mat-button color="warn" #tooltip="matTooltip" matTooltip="{{cell}}"
+                matTooltipPosition="right" aria-tooltip="">
+                <pre  style="color: red;">  {{convertmin(cell)}}</pre>
+              </button>
+            </div>
+            <div   *ngIf="j>1 && this.colmaster[table111.key][j].toString().includes('.___1')">
+              <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{cell}}"
+                matTooltipPosition="right" aria-tooltip="">
+                <pre  style="color: blue;">  {{convertmin(cell)}}</pre>
+              </button>
+            </div>
+          </div>
+          <div  *ngIf="cell == ' ' && this.colmaster[table111.key][j] && (this.colmaster[table111.key][j].toString().includes('.___1') || this.colmaster[table111.key][j].toString().includes('.___2'))">
+            <button style="color:white" mat-button color="primary" matTooltipPosition="right" aria-tooltip="">
+               
+           </button></div>
+           
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
     <hr>
     <hr>
     <hr>

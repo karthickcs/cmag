@@ -23,7 +23,7 @@ export class AuthSigninComponent implements OnInit {
       
         localStorage.setItem('token', ""+response.token)
         
-        this.router.navigate(['/task-manager']);
+        this.router.navigate(['/dashboard']);
       },
       (error) => {
         console.log(error);

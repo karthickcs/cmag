@@ -1,37 +1,55 @@
-<div class="auth-wrapper">
-  <div class="auth-content">
-    <div class="card">
-      <div class="row align-items-center text-center">
-        <div class="col-md-12">
-          <div class="card-body">
-            <img src="assets/images/logo-dark-cm.png" alt="hellocs" class="img-fluid mb-4">
-            <h4 class="mb-3 f-w-400">Signin</h4>
-            <form>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="feather icon-user"></i></span>
-              </div>
-              <input type="username" name="username" [(ngModel)]="username" class="form-control" placeholder="User Name">
-            </div>
-            <div class="input-group mb-4">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="feather icon-lock"></i></span>
-              </div>
-              <input type="password" name="password" [(ngModel)]="password" class="form-control" placeholder="Password">
-            </div>
-            <div class="form-group text-left mt-2">
-              <div class="checkbox checkbox-primary d-inline">
-                <input type="checkbox" name="checkbox-fill-1" id="checkbox-fill-a1" checked="">
-                <label for="checkbox-fill-a1" class="cr"> Save credentials</label>
-              </div>
-            </div>
-            <button (click)="login()" class="btn btn-block btn-primary mb-4">Signin</button>
-            <p class="mb-2 text-muted">Forgot password? <a [routerLink]="['/auth/reset-password']" class="f-w-400">Reset</a></p>
-            <p class="mb-0 text-muted">Don’t have an account? <a [routerLink]="['/auth/signup']" class="f-w-400">Signup</a></p>
-          </form>
-          </div>
-        </div>
-      </div>
-    </div>
+<div class="outbox">
+  <div class="boxleft">
+    <hr>
+    <hr>
+    <div><img class="center" src="assets/images/combined.png" alt=""></div>
+    <br>
+    <br> <br>
+    <h1 class="title-rWOBkv">Welcome Back!</h1>
+    <p class="title-rWOBkv" data-id="2313:37">Ready to dive back in? Sign in to access your dashboard.</p>
   </div>
+
+  <div class="boxright">
+    <br> <br> <br>
+    <div class="txtdiv"><img class="centersm" src="assets/images/image-4@2x.png" alt="">
+      <br>
+      <h3 class="title-black">Log In to Your Account</h3>
+      <p class="title-black">Please fill below information to login</p>
+      <p class="title-black"></p>
+    </div>
+
+    <p>
+    <div class="txtdiv">
+      <input type="username" name="username" [(ngModel)]="username" placeholder="User Name" class="text-line" />
+    </div>
+    <hr>
+    <div class="txtdiv">
+      <input type="password" name="password" [(ngModel)]="password" placeholder="Password" class="text-line" />
+    </div>
+
+    <div class="txtdiv">
+      <!-- <div class="frame-21-bC6iQH" (click)="login()" data-id="2313:21"> Login -->
+      <button class="frame-21-bC6iQH" mat-raised-button color="primary" matTooltipPosition="right" (click)="login()"
+        aria-tooltip="">
+        Login
+      </button>
+    </div>
+      <div style="width:90%; ">
+        <span [routerLink]="['/auth/signup']" class="span1-xwX1ta smalltext15bold">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Not an Existing user?SignUp here
+        </span>
+        <span [routerLink]="['/auth/reset-password']" class="span2-xwX1ta smalltext15bold">Forgot password? </span>
+         
+        
+      </div>
+      
+    
+   
+    
+     
+    
+
+
+  </div>
+
 </div>
+ 

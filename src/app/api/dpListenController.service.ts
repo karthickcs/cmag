@@ -56,9 +56,6 @@ export class DpListenControllerService {
     }
 
 
-
-
-    
     /**
      * cleanup
      * 
@@ -95,6 +92,7 @@ export class DpListenControllerService {
             }
         );
     }
+
     /**
      * deletedplisten
      * 
@@ -165,6 +163,48 @@ export class DpListenControllerService {
         ];
 
         return this.httpClient.get<Array<DpListenDTO>>(`${this.basePath}/dptask`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * getRunIdforMeta
+     * 
+     * @param taskid taskid
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getRunIdforMetaUsingGET(taskid: number, observe?: 'body', reportProgress?: boolean): Observable<Array<DpListenDTO>>;
+    public getRunIdforMetaUsingGET(taskid: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<Array<DpListenDTO>>>;
+    public getRunIdforMetaUsingGET(taskid: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<Array<DpListenDTO>>>;
+    public getRunIdforMetaUsingGET(taskid: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (taskid === null || taskid === undefined) {
+            throw new Error('Required parameter taskid was null or undefined when calling getRunIdforMetaUsingGET.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+
+        return this.httpClient.get<Array<DpListenDTO>>(`${this.basePath}/dplistenmeta/${encodeURIComponent(String(taskid))}`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

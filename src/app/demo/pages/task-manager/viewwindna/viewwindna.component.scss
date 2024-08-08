@@ -5,14 +5,31 @@
     max-height:280px;
 }
 th {
+	background-color: #6579CF;
     font-weight: 800;
     // width: 150px;
     position: sticky;
     top: 0;
-    // border: 1px solid black;
+    // border: 1px solid black; background-color: #6579CF;
+    color: white;
+    font-family: Inter;
+    font-weight: Semi Bold;
+    font-size: 14px;
+    height: 60px;
+    text-align: center;
+    padding-bottom: 5px;
+
   }
-  
+ pre  {
+	font-family: Inter;
+    font-weight: 600;
+    font-size: 14px;
+    height: 60px;
+    text-align: center;
+    padding-bottom: 5px;
+ }
  td{
+	background-color:  rgba(245, 241, 237, 0.858);
     text-align: start;
     color: #070707;
     font-size: small;
@@ -28,4 +45,92 @@ table.a {
     table-layout: auto;
     width: 30px;  
   }
+  
+  .custom-filter{
+	position: sticky;
+  width: 80px;
+}
+  .custom-select-pink {
+	position: sticky ;
+  width: 200px;
+
+  
+}
+
+.custom-select-pink select {
+	appearance: none;
+	-webkit-appearance: none;
+	width: 200px;
+	font-size: 16px;
  
+	padding: 5px 10px 5px 10px;
+	background-color: #BBBCFC;
+	border: 2px solid #04347b;
+	border-radius: 15px;
+	color: #1a0101;
+	cursor: pointer;
+	outline: none;
+	box-shadow: 2px 2px 2px 0px #E2E2E2;
+}
+
+.custom-select-pink select:focus {
+	background: #BBBCFC;
+	border: 1px solid #FFFFFF;
+	border-radius: 15px;
+}
+
+.custom-select-pink::after {
+	content: "";
+	position: absolute;
+	pointer-events: none;
+	top: 50%;
+	left: 180px;
+  border: 2px solid #0066cc;
+	transform: translate(0, -50%);
+	width: 14px;
+	height: 14px;
+	background-color: #0b0000;
+	clip-path: polygon(50% 80%, 0 20%, 100% 20%);
+}
+.custom-select-org {
+	position: sticky ;
+  width: 200px;
+
+  
+}
+
+.custom-select-org select {
+	appearance: none;
+	-webkit-appearance: none;
+	width: 200px;
+	font-size: 16px;
+ 
+	padding: 5px 10px 5px 10px;
+	background-color: #F2C479;
+	border: 2px solid #04347b;
+	border-radius: 15px;
+	color: #1a0101;
+	cursor: pointer;
+	outline: none;
+	box-shadow: 2px 2px 2px 0px #E2E2E2;
+}
+
+.custom-select-org select:focus {
+	background: #F2C479;
+	border: 1px solid #FFFFFF;
+	border-radius: 15px;
+}
+
+.custom-select-org::after {
+	content: "";
+	position: absolute;
+	pointer-events: none;
+	top: 50%;
+	left: 180px;
+  border: 2px solid #0066cc;
+	transform: translate(0, -50%);
+	width: 14px;
+	height: 14px;
+	background-color: #0b0000;
+	clip-path: polygon(50% 80%, 0 20%, 100% 20%);
+}

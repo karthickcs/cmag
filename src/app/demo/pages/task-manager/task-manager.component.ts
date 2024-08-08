@@ -16,6 +16,8 @@ import { DbControllerService } from '../../../api/dbController.service';
   styleUrls: ['./task-manager.component.scss']
 })
 export class TaskManagerComponent implements OnInit {
+
+generatemeta: any=[];
 clear2() {
   this.taskMainDTO.starttsOnlinesys2="";
   this.taskMainDTO.endtsOnlinesys2="";
@@ -50,6 +52,8 @@ droptrigger1: any;
     this.taskMainDTO.tablenamesys2 = "LOG_TABLE";
     this.taskMainDTO.dbtypesys1 = "oracle";
     this.taskMainDTO.dbtypesys2 = "oracle";
+    this.taskMainDTO.sys1type = "DB";
+    this.taskMainDTO.sys2type = "DB";
     //alert(JSON.stringify(this.taskMainDTO));
 
   }
@@ -145,24 +149,87 @@ droptrigger1: any;
     this.dplistenentry.tablenameOnlinesys2 = this.taskMainDTO.tablenameOnlinesys2
     this.dplistenentry.starttsOnlinesys2 = this.taskMainDTO.starttsOnlinesys2
     this.dplistenentry.endtsOnlinesys2 = this.taskMainDTO.endtsOnlinesys2
+    this.dplistenentry.generateMetadata ="false"
+    this.dplistenentry.batchtime =0
+    this.dplistenentry.rowsprocessed =0
+    this.dplistenentry.reportgentime =0
+    this.dplistenentry.comparetime =0
+    this.dplistenentry.dataloadtime =0
 
     this.dpListenControllerService.savedplistenUsingPOST(this.dplistenentry).subscribe(
       (response: any) => {
         this.alertService.success('Run created succesful', this.options);
-        setTimeout(() => {
-
-          this.router.navigate(['/reports', { id: this.taskMainDTO.taskid }]);
-        },
-          1000);
+       
 
       },
       (error) => {
         console.log(error);
       }
     );
-
+   // this.generatemeta=[];
 
   }
+
+  onGenerate(id: any) {
+    this.taskMainDTO = this.taskmainArray.find(taskmain => taskmain['taskid'] == id);
+
+    this.dplistenentry.filelocation = this.taskMainDTO.filelocation
+    this.dplistenentry.filelocationt2 = this.taskMainDTO.filelocation2
+    this.dplistenentry.rowcount = this.taskMainDTO.rowcount
+    this.dplistenentry.status = 'CREATED'
+    this.dplistenentry.taskid = this.taskMainDTO.taskid
+    this.dplistenentry.taskname = this.taskMainDTO.taskname
+
+    this.dplistenentry.jdbcurlsys1 = this.taskMainDTO.jdbcurlsys1
+    this.dplistenentry.usernamesys1 = this.taskMainDTO.usernamesys1
+    this.dplistenentry.passwordsys1 = this.taskMainDTO.passwordsys1
+    this.dplistenentry.dbtypesys1 = this.taskMainDTO.dbtypesys1
+    this.dplistenentry.tablenamesys1 = this.taskMainDTO.tablenamesys1
+    this.dplistenentry.starttssys1 = this.taskMainDTO.starttssys1
+    this.dplistenentry.endtssys1 = this.taskMainDTO.endtssys1
+    this.dplistenentry.sys1type = this.taskMainDTO.sys1type
+
+    this.dplistenentry.jdbcurlsys2 = this.taskMainDTO.jdbcurlsys2
+    this.dplistenentry.usernamesys2 = this.taskMainDTO.usernamesys2
+    this.dplistenentry.passwordsys2 = this.taskMainDTO.passwordsys2
+    this.dplistenentry.dbtypesys2 = this.taskMainDTO.dbtypesys2
+    this.dplistenentry.tablenamesys2 = this.taskMainDTO.tablenamesys2
+    this.dplistenentry.starttssys2 = this.taskMainDTO.starttssys2
+    this.dplistenentry.endtssys2 = this.taskMainDTO.endtssys2
+    this.dplistenentry.sys2type = this.taskMainDTO.sys2type
+
+
+    this.dplistenentry.tablenameClobsys1 = this.taskMainDTO.tablenameClobsys1
+    this.dplistenentry.starttsClobsys1 = this.taskMainDTO.starttsClobsys1
+    this.dplistenentry.endtsClobsys1 = this.taskMainDTO.endtsClobsys1
+    this.dplistenentry.tablenameOnlinesys1 = this.taskMainDTO.tablenameOnlinesys1
+    this.dplistenentry.starttsOnlinesys1 = this.taskMainDTO.starttsOnlinesys1
+    this.dplistenentry.endtsOnlinesys1 = this.taskMainDTO.endtsOnlinesys1
+    this.dplistenentry.tablenameClobsys2 = this.taskMainDTO.tablenameClobsys2
+    this.dplistenentry.starttsClobsys2 = this.taskMainDTO.starttsClobsys2
+    this.dplistenentry.endtsClobsys2 = this.taskMainDTO.endtsClobsys2
+    this.dplistenentry.tablenameOnlinesys2 = this.taskMainDTO.tablenameOnlinesys2
+    this.dplistenentry.starttsOnlinesys2 = this.taskMainDTO.starttsOnlinesys2
+    this.dplistenentry.endtsOnlinesys2 = this.taskMainDTO.endtsOnlinesys2
+    this.dplistenentry.generateMetadata ="true"
+    this.dplistenentry.batchtime =0
+    this.dplistenentry.rowsprocessed =0
+    this.dplistenentry.reportgentime =0
+    this.dplistenentry.comparetime =0
+    this.dplistenentry.dataloadtime =0
+
+    this.dpListenControllerService.savedplistenUsingPOST(this.dplistenentry).subscribe(
+      (response: any) => {
+        this.alertService.success('Run created succesful', this.options);
+       
+
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+    this.generatemeta=[];
+    }
   onFileSelected2(event: Event) {
 
     const file: File = event.currentTarget['files'][0];

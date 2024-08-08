@@ -1,32 +1,52 @@
-<label for="exampleFormControlSelect1">Task ID</label>
-    
-<select class="" name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
-  <option value="0" disabled selected >Select Task</option>    
-  <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
-      {{taskmain.taskname}} ---> {{taskmain.taskid}}
-    </option>
-</select>
-<label for="exampleFormControlSelect1">Run ID</label>
-    <select class="" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid(false)" >
-      <option value="0" disabled selected >Select RunID</option>  
-      <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
-         Run Id ---> {{dplisten.runid}}
-        </option>
-    </select>
-    <label for="exampleFormControlSelect1">Transaction ID</label>
+<H2>Reports</H2>
+
+<div class="row">
+  <div class="custom-filter "><img src="assets/images/funnel.svg" alt="" ></div>
+   <div class="custom-select ">
+            <select name="taskid"
+            id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+              <option value="0" disabled selected>Task</option>
+                <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+                  {{taskmain.taskname}}  
+                </option>
+            </select>
+            <div class="select-arrow"></div>
+        </div> 
+         <div class="custom-select-org "> <select   name="runidselect" id="runidselect" [(ngModel)]="runidselect"
+          (ngModelChange)="loadrunid(false)">
+          <option value="0" disabled selected>  RunID</option>
+          <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+            Run Id - {{dplisten.runid}}
+          </option>
+        </select><div class="select-arrow"></div>
+      </div>
        
+      <div class="custom-select ">
+           
       <select   name="tranid" id="tranid" [(ngModel)]="tranid" (ngModelChange)="loadtramdata()">
-          <option value="0" disabled selected >Select TransactionID</option>
+          <option value="0" disabled selected >  TransactionID</option>
           <option *ngFor="let diffval of grouped| keyvalue" [value]="diffval.key">
            {{read(diffval.key)}}
           </option>
       </select>
+      <div class="select-arrow"></div>
+    
+      </div>
+      <div class="custom-filter ">
+      <button mat-raised-button color="primary" 
+      matTooltipPosition="right" (click)="goBack(this.runidselect,this.taskid)"
+      aria-tooltip="">
+      Back
+    </button>
+    </div>
+    </div>
+ 
 
  
     <br>
           <div class="row">
         <div class="col-sm-12">
-            <app-card cardTitle="Comparision" [options]="false">
+            <app-card cardTitle="comparison" [options]="false">
               
                 <div class="row">
                     
@@ -41,18 +61,17 @@
                            
                            
                             <div *ngIf="changeDTOArray.length > 0" class="table-responsive ">
-                              <h4>Difference</h4>
+                              
                               <table class="table table-bordered  table-sm">
                                 <thead>
                                    
-                                  <tr class="table-primary">
-                                    
+                                  <tr>
                                     <th>#</th>
                                     <th>TableName</th>
                                     <th>ColumnName</th>
-                                    <th>Value<img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid"></th>
+                                    <th>Value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbgreen.svg" alt="" class="img-fluid"></th>
                                      
-                                    <th>Value<img src="assets/images/dbredmin.svg" alt="" class="img-fluid"></th>
+                                    <th>Value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbred.svg" alt="" class="img-fluid"></th>
                                   </tr>
                                 </thead>
                                 <tbody>

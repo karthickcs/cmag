@@ -1,24 +1,43 @@
-<select class=" " name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
-  <option value="0" disabled selected>Select Task</option>
-  <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
-    {{taskmain.taskname}} ---> {{taskmain.taskid}}
-  </option>
-</select>
-<select class="" name="runidselect" id="runidselect" [(ngModel)]="runidselect" (ngModelChange)="loadrunid()">
-  <option value="0" disabled selected>Select RunID</option>
-  <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
-    Run Id ---> {{dplisten.runid}}
-  </option>
-</select>
+<div class="row">
+  <div class="custom-filter "><img src="assets/images/funnel.svg" alt="" ></div>
+  <div class="custom-select-pink ">
+    <select name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+      <option value="0" disabled selected>Task</option>
+      <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+        {{taskmain.taskname}}
+      </option>
+    </select>
+    <div class="select-arrow"></div>
+  </div>&nbsp;&nbsp;&nbsp;&nbsp;
+  <div class="custom-select-org "> <select name="runidselect" id="runidselect" [(ngModel)]="runidselect"
+      (ngModelChange)="loadrunid()">
+      <option value="0" disabled selected> RunID</option>
+      <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+        Run Id - {{dplisten.runid}}
+      </option>
+    </select>
+    <div class="select-arrow"></div>
+  </div>
+  &nbsp; &nbsp;
+  <div class="custom-filter ">
+    <button mat-raised-button color="primary" 
+    matTooltipPosition="right" (click)="goBack(this.runidselect,this.taskid)"
+    aria-tooltip="">
+    Back
+  </button>
+  </div>
 
-<div style="margin-left: 40%; margin-right: 30%">
-  <b> Oracle OldSYS</b>&nbsp;&nbsp;&nbsp;<img src="assets/images/dbgreen.svg" alt=""
+</div>
+<hr>
+
+<div  *ngIf="this.changeDTOArray.length >0" style="margin-left: 40%; margin-right: 30%">
+  <b> {{taskMainDTO.usernamesys1}}</b>&nbsp;&nbsp;&nbsp;<img src="assets/images/dbgreen.svg" alt=""
     class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/images/dbred.svg" alt="" class="img-fluid"> <b>Oracle NewSYS</b>
+  <img src="assets/images/dbred.svg" alt="" class="img-fluid"> <b>{{taskMainDTO.usernamesys2}}</b>
 </div>
 
-<div class="row">
+<div *ngIf="this.changeDTOArray.length >0" class="row">
 
   <div class="table-responsive ">
 
@@ -27,13 +46,13 @@
         <tr class="table-secondary">
 
           <th>#</th>
-          <th> Table  <img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid"> ({{tablecount}})</th>
-          <th>Difference   ({{diffcount}})</th>
+          <th> Table <img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid"> ({{tablecount}})</th>
+          <th>Difference ({{diffcount}})</th>
 
           <th>OnlyinSrc</th>
           <th>Identical</th>
-          <th>Difference   ({{diffcount}})</th>
-          <th> Table  <img src="assets/images/dbredmin.svg" alt="" class="img-fluid">  ({{tablecount}})</th>
+          <th>Difference ({{diffcount}})</th>
+          <th> Table <img src="assets/images/dbredmin.svg" alt="" class="img-fluid"> ({{tablecount}})</th>
 
 
         </tr>
@@ -42,7 +61,7 @@
         <tr *ngFor="let item of this.groupedoriginal | keyvalue; let m = index">
           <td width="15%">{{m+1}}</td>
           <td width="15%" align="left"><img (click)="filterTable(item.key)" src="assets/images/tabm.png" alt=""
-              class="img-fluid">&nbsp;<button (click)="filterTable(item.key)" style="color:blue;font-size: small;"
+              class="img-fluid">&nbsp;<button (click)="filterTable(item.key)" style="color:rgb(2, 2, 25);font-size: small;"
               mat-stroked-button color="primary" matTooltipPosition="right" aria-tooltip="">
               {{item.key}}
             </button></td>
@@ -52,7 +71,7 @@
           <td>0</td>
           <td align="center">{{(item.value | keyvalue ).length}}</td>
           <td width="15%"><img (click)="filterTable(item.key)" src="assets/images/tabm.png" alt=""
-              class="img-fluid"><button (click)="filterTable(item.key)" style="color:bluefont-size: small;"
+              class="img-fluid"><button (click)="filterTable(item.key)" style="color:rgb(2, 2, 18);font-size: small;"
               mat-stroked-button color="primary" matTooltipPosition="right" aria-tooltip="">
               {{item.key}}
             </button>&nbsp;</td>
@@ -63,15 +82,18 @@
 </div>
 
 <br>
-<span style="margin-left: 5%; margin-right: 10%">
+<span *ngIf="this.changeDTOArray.length >0" style="margin-left: 5%; margin-right: 10%">
   <b>{{ this.tname}}</b>&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/tab.png" alt=""
     class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/images/garr.svg" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
   <img src="assets/images/tab.png" alt="" class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp; <b>{{
     this.tname}}</b>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
   <select class=" " name="columnname" id="columnname" [(ngModel)]="columnname">
-    <option *ngFor="let cn of this.colnames" [value]="cn">
-      {{convert(cn) }}
+    <option   value="oldval">
+      oldval
+    </option>
+    <option  value="newval">
+      newval
     </option>
   </select>
   <!-- (keydown)="searchchange()" -->
@@ -82,84 +104,98 @@
   </span>
 
 </span>
-
-<div class="table-responsive">
-  <table border="3" class="table table-bordered table-sm" *ngIf="tablemap">
-    <tr class="table-secondary">
-      <th width="30px">#</th>
-      <th width="30px" *ngFor="let kee  of this.colnames; let zz = index  ">
-        <div *ngIf="convertcheck(kee) == 'src' ">
-          <b> {{convert(kee) }}</b><img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
-        </div>
-        <div *ngIf="convertcheck(kee) == 'tar' ">
-          <b> {{convert(kee) }}</b><img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
-        </div>
-        <div *ngIf="convertcheck(kee) == 'srcb' ">
-          <b> {{convert(kee) }}</b>
-        </div>
-        <div *ngIf="convertcheck(kee) == 'tarb' ">
-          <b> {{convert(kee) }}</b>
-        </div>
-        <div *ngIf="convertcheck(kee) == 'rec' ">
-          <b> {{convert(kee) }}</b><img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
-        </div>
-        <div *ngIf="convertcheck(kee) == 'tarrec' ">
-          <b> {{convert(kee) }}</b><img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
-        </div>
-        <div style="background-color:white" *ngIf="convertcheck(kee) == 'sp' ">
-          &nbsp;
-        </div>
-      </th>
-
-
-    </tr>
-    <tbody>
-      <tr *ngFor="let data of tablemap; let i = index">
-        <td width="30px">{{i+1}}</td>
-        <td   *ngFor="let cell of data; let j = index">
-          
-
-          <div *ngIf="cell != ' ' ">
-            <div style="background-color:lightblue" *ngIf="j==0">
-              <button mat-stroked-button color="primary" #tooltip="matTooltip" matTooltip="{{read(cell)}}"
-                matTooltipPosition="right" (click)="onMaintrainid(cell,this.runidselect,this.taskid)"
-                aria-tooltip="">
-                {{convertmin(read(cell))}}
-              </button>             
+ <app-card cardTitle="comparison" [options]="false">
+              
+  <div class="row">
+      
+      <div class="col-md-12">
+          <form action="javascript:">
+            <div class="table-responsive ">
+   
             </div>
-            <div style="background-color:lightblue" *ngIf="j==1">
-              <button mat-stroked-button color="warn" #tooltip="matTooltip" matTooltip="{{read(cell)}}"
-                matTooltipPosition="right"  
-                aria-tooltip="">
-                {{convertmin(read(cell))}}
-              </button>
+      
+      
 
+             
+             
+              <div *ngIf="changeDTOArray.length > 0" class="table-responsive ">
+                
+                <table class="table table-bordered  table-sm">
+                  <thead>
+                     
+                    <tr>
+                      <th>#</th>
+                      <th>RecId</th>
+                      <th>TableName</th>
+                      <th>ColumnName</th>
+                      <th>Value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbgreen.svg" alt="" class="img-fluid"></th>
+                       
+                      <th>Value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbred.svg" alt="" class="img-fluid"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="table-light" *ngFor="let diffobj  of groupednewstructval; let i = index">
+                     
+                      <td>{{i+1}} </td>
+                      <td>
 
-            </div>
-            <div style="background-color:lightblue" *ngIf="j>1 && this.colnames[j].toString().includes('.___2')">
-              <button mat-stroked-button color="warn" #tooltip="matTooltip" matTooltip="{{cell}}"
-                matTooltipPosition="right" aria-tooltip="">
-                {{convertmin(cell)}}
-              </button>
-            </div>
-            <div style="background-color:lightblue"  *ngIf="j>1 && this.colnames[j].toString().includes('.___1')">
-              <button mat-stroked-button color="primary" #tooltip="matTooltip" matTooltip="{{cell}}"
-                matTooltipPosition="right" aria-tooltip="">
-                 {{convertmin(cell)}}
-              </button>
-            </div>
-          </div>
-          <div style="background-color:lightblue" *ngIf="cell == ' ' && this.colnames[j] && (this.colnames[j].toString().includes('.___1') || this.colnames[j].toString().includes('.___2'))">
-            <button style="color:lightblue" mat-stroked-button color="primary" matTooltipPosition="right" aria-tooltip="">
-              ______
-           </button></div>
-           
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+                        <div   >
+                          <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{diffobj.AAAAAmaintranid}}"
+                            matTooltipPosition="right" (click)="onMaintrainid(diffobj.AAAAAmaintranid,this.runidselect,this.taskid)"
+                            aria-tooltip="">
+                            {{convertmin(read(diffobj.AAAAAmaintranid))}}
+                          </button>             
+                        </div>
+
+                      </td>
+                      <td  >
+                        
+                        <div *ngIf="i==0" >
+                          <td> <button mat-button color="primary" 
+                            matTooltipPosition="right" aria-tooltip="">
+                            {{diffobj.tname}}
+                          </button>
+                        </td>
+                        </div>                                   
+                      </td>  
+                      <!-- <td><input type="text" style="width:96%;text-align: left; vertical-align: middle;  " value="{{diffobj.tname}}" readonly></td> -->
+                      
+                      <td> <button mat-button  
+                          matTooltipPosition="right" aria-tooltip="">
+                          {{diffobj.column}}
+                        </button>
+                      </td>
+                      
+                        <td> <button mat-button style="color:green"
+                          matTooltipPosition="right" aria-tooltip="">
+                          {{diffobj.oldval}}
+                        </button>
+                      </td>
+                      
+                        <td> <button mat-button color="warn" 
+                          matTooltipPosition="right" aria-tooltip="">
+                          {{diffobj.newval}}
+                        </button>
+                        </td>
+                      
+                     
+                       
+                       
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              
+             
+               
+         
+          </form>
+      </div>
+  </div>
+
+</app-card>
 <div class="row">
 
-   
+
 </div>

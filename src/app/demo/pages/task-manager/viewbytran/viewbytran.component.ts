@@ -304,7 +304,7 @@ export class ViewbytranComponent implements OnInit {
   //   return field;
   // }
   onMaintrainid(maintranid, runid, taskid) {
-    this.router.navigate(['/reports', {
+    this.router.navigate(['/transactionview', {
       taskid: taskid,
       runid: runid,
       tranid: maintranid

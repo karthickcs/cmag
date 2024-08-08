@@ -19,7 +19,8 @@ File: style.css
         -   Invoice, Full Calender, File Upload,
 =================================================================================
 =================================================================================== */
-
+@import "~ag-grid-community/dist/styles/ag-grid.css";  
+@import "~ag-grid-community/dist/styles/ag-theme-balham.css"; 
 
 // Theme Font
 @import "themes/font/theme-font";

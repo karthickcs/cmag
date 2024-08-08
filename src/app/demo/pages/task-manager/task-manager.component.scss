@@ -19,3 +19,70 @@
 
 // }
  
+.btn1{
+width: 140px;
+font-family: Inter;
+font-weight: 0;
+font-size: 14px;
+color: #0c0000;
+background: linear-gradient(90deg, #bbbcfc 0%, #bbbcfc 100%);
+padding: 10px 30px;
+border: 2px solid #0066cc;
+box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+border-radius: 25px;
+transition : 1000ms;
+transform: translateY(0);
+ 
+align-items: center;
+cursor: pointer;
+}
+
+th {
+    background-color: #6579CF;
+    color: white;
+    font-family: Inter;
+    font-weight: Semi Bold;
+    font-size: 14px;
+    height: 60px;
+    text-align: center;
+    padding-bottom: 5px;
+  }
+
+.btnorg{
+    width: 140px;
+    font-family: Inter;
+    font-weight: 0;
+    font-size: 14px;
+    color: #0c0000;
+    background: linear-gradient(90deg, #F2C479 0%, #F2C479 100%);
+    padding: 10px 30px;
+    border: 2px solid #0066cc;
+    box-shadow: rgb(0, 0, 0) 0px 0px 0px 0px;
+    border-radius: 25px;
+    transition : 1000ms;
+    transform: translateY(0);
+     
+    align-items: center;
+    cursor: pointer;
+    }
+
+    .text-line {
+      background-color: white;
+      color: #0b0101;
+      width: 200px;
+       
+      outline: none;
+      outline-style: none;
+      font-family: inter;
+      font-size: small;
+      font-style: normal;
+      font-weight: 200;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      border-bottom: solid #0e0101 1px;
+      padding: 3px 10px;
+    }
+    
+
+ 

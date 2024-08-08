@@ -283,7 +283,7 @@
         &:focus,
         &:hover {
           > a {
-            font-weight: 500;
+            font-weight: 800;
           }
         }
       }
@@ -655,7 +655,7 @@ body{
 
     &[class*="menu-item-icon-style"] {
       .pcoded-inner-navbar li.pcoded-hasmenu .pcoded-submenu li.active > a:before {
-        color: $primary-color;
+        color: red;
       }
     }
 

@@ -35,7 +35,8 @@ export class ViewwindtransacComponent implements OnInit {
   groupednewstructval: any = {};
   colnames: any = [];
   colnamesdum: any = [];
-
+  tablemap:   String[][];
+  tablemapcoll:any=   {};
   searchtext: any = "";
 
   options = {
@@ -65,10 +66,12 @@ export class ViewwindtransacComponent implements OnInit {
   removefields: any = {};
   tabledata: any = {};
   grouped: any = {};
+  groupedtabtran: any = {};
   groupedoriginal: any = {};
   groupedval: any;
   tranidoriginal: any="";
   groupednewstructvalObjectTable: {};
+anstab: any= {};
   constructor(private taskControllerService: TaskControllerService,
     private diffTableControllerService: DiffTableControllerService,
     private dpListenControllerService: DpListenControllerService,
@@ -104,23 +107,28 @@ export class ViewwindtransacComponent implements OnInit {
   convertmin(arg0) {
     if (arg0) {
 
-      return arg0.substring(0, 10);
+      if(arg0.length<18){
+        return   arg0.padEnd(20," ");;
+      }
+      else{
+      return arg0.substring(0, 18);
+      }
 
     }
     return "";
   }
   convertcheck(arg0) {
     if (arg0) {
-      if (arg0.lastIndexOf("_____.1") > -1) {
+      if (arg0.lastIndexOf("_____.___1") > -1) {
         return "srcb";
       }
-      if (arg0.lastIndexOf("_____.2") > -1) {
+      if (arg0.lastIndexOf("_____.___2") > -1) {
         return "tarb"
       }
-      if (arg0.lastIndexOf(".1") > -1) {
+      if (arg0.lastIndexOf(".___1") > -1) {
         return "src";
       }
-      if (arg0.lastIndexOf(".2") > -1) {
+      if (arg0.lastIndexOf(".___2") > -1) {
         return "tar"
       }
 
@@ -128,7 +136,7 @@ export class ViewwindtransacComponent implements OnInit {
         return "rec";
       }
       if (arg0.lastIndexOf("AAAAAnewtranid") > -1) {
-        return "rec";
+        return "tarrec";
       }
       if (arg0.lastIndexOf(".0") > 0) {
         return "sp";
@@ -139,8 +147,8 @@ export class ViewwindtransacComponent implements OnInit {
   }
   convert(arg0) {
     if (arg0) {
-      let ans = arg0.replace(".1", "");
-      ans = ans.replace(".2", "");
+      let ans = arg0.replace(".___1", "");
+      ans = ans.replace(".___2", "");
       ans = ans.replace("_____", "");
       ans = ans.replace("AAAAAmaintranid", "Recid");
       ans = ans.replace("AAAAAnewtranid", "Tar_Recid");
@@ -264,8 +272,8 @@ export class ViewwindtransacComponent implements OnInit {
             this.addDTO['maintranid'] = diff_entry.maintranid.split("|")[2];;
             this.addDTO['runid'] = diff_entry.runid;
             this.addDTO['taskid'] = diff_entry.taskid;
-            this.newstruct[this.getcolumnname(v1[0]) + ".1"] = "_Missing_";
-            this.newstruct[this.getcolumnname(v1[0]) + ".2"] = v1[1];
+            this.newstruct[this.getcolumnname(v1[0]) + ".___1"] = "_Missing_";
+            this.newstruct[this.getcolumnname(v1[0]) + ".___2"] = v1[1];
             this.newstruct[this.getcolumnname(v1[0]) + ".0"] = " ";
             this.newstruct['AAAAAmaintranid'] = diff_entry.maintranid;
             this.newstruct['AAAAAnewtranid'] = diff_entry.newtranid;
@@ -287,9 +295,9 @@ export class ViewwindtransacComponent implements OnInit {
             this.removeDTO['maintranid'] = diff_entry.maintranid.split("|")[2];;
             this.removeDTO['runid'] = diff_entry.runid;
             this.removeDTO['taskid'] = diff_entry.taskid;
-            this.newstruct[this.getcolumnname(v1[0]) + ".1"] = v1[1];
-            this.newstruct[this.getcolumnname(v1[0]) + ".2"] = "_Missing_";
-            this.newstruct[this.getcolumnname(v1[0]) + ".0"] = " ";
+            this.newstruct[this.getcolumnname(v1[0]) + ".___1"] = v1[1];
+            this.newstruct[this.getcolumnname(v1[0]) + ".___2"] = "_Missing_";
+           this.newstruct[this.getcolumnname(v1[0]) + ".0"] = " ";
             this.newstruct['AAAAAmaintranid'] = diff_entry.maintranid;
             this.newstruct['AAAAAnewtranid'] = diff_entry.newtranid;
             this.tabnewstruct[this.gettname(v1[0])+":"+ diff_entry.maintranid.split("|")[1]+":" + diff_entry.maintranid.split("|")[2]] = this.newstruct
@@ -311,9 +319,9 @@ export class ViewwindtransacComponent implements OnInit {
           this.changeDTO['runid'] = diff_entry.runid;
           this.changeDTO['taskid'] = diff_entry.taskid;
 
-          this.newstruct[this.getcolumnname(val[1]) + ".1"] = val[2][0];
-          this.newstruct[this.getcolumnname(val[1]) + ".2"] = val[2][1];
-          this.newstruct[this.getcolumnname(val[1]) + ".0"] = " ";
+          this.newstruct[this.getcolumnname(val[1]) + ".___1"] = val[2][0];
+          this.newstruct[this.getcolumnname(val[1]) + ".___2"] = val[2][1];
+         this.newstruct[this.getcolumnname(val[1]) + ".0"] = " ";
           this.newstruct['AAAAAmaintranid'] = diff_entry.maintranid;
           this.newstruct['AAAAAnewtranid'] = diff_entry.newtranid;
           this.tabnewstruct[this.gettname(val[1])+":"+ diff_entry.maintranid.split("|")[1]+":" + diff_entry.maintranid.split("|")[2]] = this.newstruct
@@ -398,14 +406,14 @@ export class ViewwindtransacComponent implements OnInit {
     return apendind;
   }
   goBack( runid, taskid) {
-    this.router.navigate(['/windowsna', {
+    this.router.navigate(['/windows', {
       taskid: taskid,
       runid: runid,
       tranid: this.tranidoriginal
     }]);
   }
   onMaintrainid(maintranid, runid, taskid) {
-    this.router.navigate(['/reports', {
+    this.router.navigate(['/transactionview', {
       taskid: taskid,
       runid: runid,
       tranid: maintranid
@@ -460,28 +468,83 @@ export class ViewwindtransacComponent implements OnInit {
   }, {});
 
 
-
-    Object.keys(this.groupednewstructvalObject)
-      .reduce((obj, key) => {
-        let colnames1 = new Set();
+  Object.keys(this.groupednewstructvalObjectTable)
+  .reduce((obj, key) => {
+    let colnames1 = new Set();
+    
+    Object.keys(this.groupednewstructvalObjectTable[key])
+      .reduce((obji, keyi) => {
+        Object.keys(this.groupednewstructvalObjectTable[key][keyi])
+        .reduce((obji, keyj) => {
+  
+          colnames1.add(keyj);
+          return {};
+        }, {});
         
-        Object.keys(this.groupednewstructvalObject[key])
-          .reduce((obji, keyi) => {
-
-            colnames1.add(keyi);
-            return {};
-          }, {});
-        this.colmaster[key.split(":")[0]] = Array.from(colnames1).sort();
-        ;
         return {};
       }, {});
-    for (let key of Object.keys(this.colmaster)) {
-      for (let i = this.colmaster[key].length; i < 30; i = i + 3) {
-        this.colmaster[key][i] = ".0";
-        this.colmaster[key][i + 1] = "_____.1";
-        this.colmaster[key][i + 2] = "_____.2";
+    this.colmaster[key.split(":")[0]] = Array.from(colnames1).sort();
+    ;
+    return {};
+  }, {});
+
+  Object.keys(this.groupednewstructvalObjectTable)
+  .reduce((obj, key) => {
+    this.tablemap = new Array(Object.keys(this.groupednewstructvalObjectTable[key]).length)
+    .fill(" ");
+    Object.keys(this.groupednewstructvalObjectTable[key])
+    .reduce((obji, keyi) => {
+
+      this.tablemap=this.tablemap
+      .map(() =>
+        new Array(this.colmaster[keyi.split(":")[0]].length).fill(" ")
+      );
+       
+        
+      return {};
+    }, {});
+
+    this.tablemapcoll[key] = this.tablemap;
+    return {};
+  }, {});
+
+
+   
+  Object.keys(this.groupednewstructvalObjectTable)
+  .reduce((obj, key) => {
+    let i=0;
+    Object.keys(this.groupednewstructvalObjectTable[key])
+    .reduce((obji, keyi) => {
+      let strkeys = Object.keys(this.groupednewstructvalObjectTable[key][keyi])
+      for (var kk of strkeys) {
+        let fval = this.groupednewstructvalObjectTable[key][keyi][kk];
+        let colindx=this.colmaster[keyi.split(":")[0]].indexOf(kk);
+        this.tablemapcoll[key][i][colindx]=fval;
       }
+      i=i+1;
+      return {};
+    }, {});
+    
+ 
+    return {};
+  }, {}); 
+
+
+  
+     
+
+  
+  for (let i = 0; i < this.groupednewstructval.length; i++) {
+    let strkeys = Object.keys(this.groupednewstructval[i])
+    for (var kk of strkeys) {
+      let fval = this.groupednewstructval[i][kk];
+      let colindx=this.colnames.indexOf(kk);
+      this.tablemap[i][colindx]=fval;
     }
+
+  }
+
+    
     this.tname = tname
 
   }
@@ -490,10 +553,10 @@ export class ViewwindtransacComponent implements OnInit {
     let length = this.clength[tname];
     let collllength = this.colmaster[tname].length;
     this.colnamesdum = [];
-    for (let i = 0; i < collllength - length; i = i + 3) {
-      this.colnamesdum[i] = "c1.0";
-      this.colnamesdum[i + 1] = "c1.1";
-      this.colnamesdum[i + 2] = "c1.2";
+    for (let i = 0; i < collllength - length; i = i + 2) {
+    //  this.colnamesdum[i] = "c1.0";
+      this.colnamesdum[i + 1] = "c1.___1";
+      this.colnamesdum[i + 2] = "c1.___2";
     }
     return this.colnamesdum;
   }

@@ -1,40 +1,52 @@
-<div class="auth-wrapper">
-  <div class="auth-content">
-    <div class="card">
-      <div class="row align-items-center text-center">
-        <div class="col-md-12">
-          <div class="card-body">
-            <img src="assets/images/logo-dark-cm.png" alt="" class="img-fluid mb-4">
-            <h4 class="mb-3 f-w-400">Sign up</h4>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="feather icon-user"></i></span>
-              </div>
-              <input type="text" class="form-control" placeholder="Username">
-            </div>
-            <div class="input-group mb-3">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="feather icon-mail"></i></span>
-              </div>
-              <input type="email" class="form-control" placeholder="Email address">
-            </div>
-            <div class="input-group mb-4">
-              <div class="input-group-prepend">
-                <span class="input-group-text"><i class="feather icon-lock"></i></span>
-              </div>
-              <input type="password" class="form-control" placeholder="Password">
-            </div>
-            <!-- <div class="form-group text-left mt-2">
-              <div class="checkbox checkbox-primary d-inline">
-                <input type="checkbox" name="checkbox-fill-2" id="checkbox-fill-2">
-                <label for="checkbox-fill-2" class="cr">Send me the <a href="javascript:"> Newsletter</a> weekly.</label>
-              </div>
-            </div> -->
-            <button class="btn btn-primary btn-block mb-4">Sign up</button>
-            <p class="mb-2">Already have an account? <a [routerLink]="['/auth/signin']" class="f-w-400">Signin</a></p>
-          </div>
-        </div>
-      </div>
+<div class="outbox">
+  <div class="boxleft">
+    <br>
+    <div><img class="center" src="assets/images/combined.png" alt=""></div>
+    <br>
+    <h1 class="title-rWOBkv">Welcome Back!</h1>
+    <p class="title-rWOBkv" data-id="2313:37">Ready to dive back in? Sign in to access your dashboard.</p>
+  </div>
+
+  <div class="boxright">
+    <br>
+    <div class="txtdiv"><img class="centersm" src="assets/images/image-4@2x.png" alt="">
+      <br>
+      <h1 class="title-black">Sign Up for New Account</h1>
+      <p class="title-black">Please fill below information to Sign Up</p>
+      <p class="title-black"></p>
     </div>
+    <br>
+    <p>
+    <div class="txtdiv">
+      <input type="username" name="username" [(ngModel)]="username" placeholder="User Name" class="text-line" />
+    </div>
+    <br>
+    <div class="txtdiv">
+      <input type="email" name="email" [(ngModel)]="email" placeholder="Email" class="text-line" />
+    </div>
+    <hr>
+    <div class="txtdiv">
+      <input type="password" name="password" [(ngModel)]="password" placeholder="Password" class="text-line" />
+    </div>
+    <hr>
+    <div class="txtdiv">
+      <div class="frame-21-bC6iQH" (click)="login()" data-id="2313:21"> Login
+      </div>
+      <hr>
+      <div>
+
+        <span [routerLink]="['/auth/reset-password']" class="span1-xwX1ta smalltext15bold">Forgot password? </span>
+        &nbsp;&nbsp;&nbsp;
+        <span [routerLink]="['/auth/signin']" class="span2-xwX1ta smalltext15bold">Existing user? Signin here </span>
+      </div>
+
+
+    </div>
+
   </div>
 </div>
+
+<!-- 
+<div class="container-center-horizontal"><div class="success screen " data-id="2320:6"><div class="frame-1171278972-fXsCxd" data-id="2320:7"></div><div class="contact-form-fXsCxd" data-id="2320:8"><div class="log-in-SH92e8 smalltext15bold" data-id="2320:10">Log in</div></div><h1 class="title-fXsCxd valign-text-middle" data-id="2320:11">Your password has been changed successfully.</h1><div class="the-universe-is-full-fXsCxd" data-id="2320:12">Please login to continue</div><img class="frame-4955-fXsCxd" data-id="2320:13" src="https://cdn.animaapp.com/projects/6687e7ede8f6286bacb59e6f/releases/6694034bf1077d330fc11c60/img/frame-4955@2x.png" anima-src="https://cdn.animaapp.com/projects/6687e7ede8f6286bacb59e6f/releases/6694034bf1077d330fc11c60/img/frame-4955@2x.png" alt="Frame 4955"></div></div>
+
+<div class="container-center-horizontal"><div class="login-step-3 screen " data-id="2320:24"><div class="frame-32-NSzYH0" data-id="2320:25"><div class="frame-33-rT9WWt" data-id="2320:26"></div></div><img class="x1-NSzYH0" data-id="2320:27" src="https://cdn.animaapp.com/projects/6687e7ede8f6286bacb59e6f/releases/6693884c33f3fa00d4f46c2f/img/1.svg" anima-src="https://cdn.animaapp.com/projects/6687e7ede8f6286bacb59e6f/releases/6693884c33f3fa00d4f46c2f/img/1.svg" alt="1"><div class="frame-1171278972-NSzYH0" data-id="2320:30"></div><div class="contact-form-NSzYH0" data-id="2320:31"><div class="rectangle-27824-0sWj15" data-id="2320:32"></div><h1 class="title-0sWj15 valign-text-middle" data-id="2320:33">We have sent you one verification email at sakshigedam70@gmail.com</h1><p class="the-universe-is-full-0sWj15" data-id="2320:34">Please check your inbox and click on link provided</p></div></div></div> -->

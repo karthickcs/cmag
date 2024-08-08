@@ -11,13 +11,23 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash'
 declare var $: any;
- 
+
 @Component({
-  selector: 'app-viewwind',
+  selector: 'app-viewwindna',
   templateUrl: './viewwind.component.html',
   styleUrls: ['./viewwind.component.scss']
 })
 export class ViewwindComponent implements OnInit {
+
+
+
+  goBack( runid, taskid) {
+    this.router.navigate(['/dashboard', {
+      taskid: taskid,
+      runid: runid,
+       
+    }]);
+  }
 
   clength: any = {};
   groupednewstructvaloriginal: any = {};
@@ -65,7 +75,10 @@ export class ViewwindComponent implements OnInit {
   grouped: any = {};
   groupedoriginal: any = {};
   groupedval: any;
-  tranidreturn: any="";
+  tranidreturn: any = "";
+  tablemap:   String[][];
+  tablecount: number=0;
+  diffcount: number=0;
   constructor(private taskControllerService: TaskControllerService,
     private diffTableControllerService: DiffTableControllerService,
     private dpListenControllerService: DpListenControllerService,
@@ -78,23 +91,28 @@ export class ViewwindComponent implements OnInit {
 
 
   ngOnInit() {
-    
+
     this.tabledata = require('../../../../../assets/tabledata.json');
-    this.loaddata()
+    
     this.route.params.subscribe(
       (params: Params) => {
         if (params['taskid']) {
           this.taskid = params['taskid'];
           this.runidselect = params['runid'];
           this.tranidreturn = params['tranid'];
+          this.loaddata(true)
           this.loaddifftable();
 
           //  
 
         }
+        else{
+          this.loaddata(false);
+        }
 
       }
     );
+ 
   }
   convert(arg0) {
     if (arg0) {
@@ -102,11 +120,17 @@ export class ViewwindComponent implements OnInit {
       ans = ans.replace(".___2", "");
       ans = ans.replace("_____", "");
       ans = ans.replace("AAAAAmaintranid", "Recid");
-      ans = ans.replace("AAAAAnewtranid", "Tar_Recid");
+      ans = ans.replace("AAAAAnewtranid", "Recid");
       if (ans.lastIndexOf(".___0") > 0) {
         return " ";
       }
+      if(ans.length <10)
+      {
+        return  ans;
+      }
+      else{
       return ans;
+      }
     }
     return "";
   }
@@ -125,8 +149,13 @@ export class ViewwindComponent implements OnInit {
   }
   convertmin(arg0) {
     if (arg0) {
-       
-      return arg0.substring(0, 10);
+
+      if(arg0.length<18){
+        return   arg0.padEnd(18," ");;
+      }
+      else{
+      return arg0.substring(0, 18);
+      }
 
     }
     return "";
@@ -147,12 +176,12 @@ export class ViewwindComponent implements OnInit {
       if (arg0.lastIndexOf(".___2") > -1) {
         return "tar"
       }
-      
+
       if (arg0.lastIndexOf("AAAAAmaintranid") > -1) {
         return "rec";
       }
       if (arg0.lastIndexOf("AAAAAnewtranid") > -1) {
-        return "rec";
+        return "tarrec";
       }
 
       if (arg0.lastIndexOf(".___0") > 0) {
@@ -162,9 +191,7 @@ export class ViewwindComponent implements OnInit {
     }
     return "";
   }
-  filterTabletran(arg0) {
-    throw new Error('Method not implemented.');
-  }
+  
   tabnewstructTran: any = {};
   groupedTran: any = {};
   groupedTranoriginal: any = {};
@@ -178,13 +205,19 @@ export class ViewwindComponent implements OnInit {
 
     }]);
   }
-  loaddata() {
+  loaddata(onload:any) {
     this.taskControllerService.getTasknainUsingGET().subscribe(
       (response: any) => {
 
-        // // alert(response);
+         
         this.taskmainArray = response;
-        this.loadruniddata(true);
+        if(!onload){
+          if( this.taskmainArray[0]){
+            this.taskid=this.taskmainArray[0].taskid;
+            this.taskMainDTO=this.taskmainArray[0]
+          }
+        }
+        this.loadruniddata(onload);
       },
       (error) => {
         console.log(error);
@@ -194,6 +227,7 @@ export class ViewwindComponent implements OnInit {
 
   loadruniddata(onload: boolean) {
     // alert(this.taskid);
+    this.taskMainDTO= this.taskmainArray.filter(x => x['taskid']==this.taskid)[0];
     this.dpListenControllerService.getRunIdsUsingGET(this.taskid).subscribe(
       (response: any) => {
 
@@ -220,7 +254,7 @@ export class ViewwindComponent implements OnInit {
   loaddifftable() {
     this.diffTableDTO.taskid = "" + this.taskid;
     this.diffTableDTO.runid = this.runidselect;
-    // this.diffTableDTOArray =require('../../../../../assets/diff.json');
+    // this.diffTableDTOArray = require('../../../../../assets/diff.json');
     // this.loadDifferenceTableHorizontal();
     this.diffTableControllerService.getDiffDataUsingPOST(this.diffTableDTO).subscribe(
       (response: any) => {
@@ -239,79 +273,7 @@ export class ViewwindComponent implements OnInit {
       }
     );
   }
-  loadDifferenceTable() {
-    this.addDTOArray = [];
-    this.removeDTOArray = [];
-    this.changeDTOArray = [];
-    this.cdr.detectChanges();
-    this.changeDTOArray = [];
-    for (var diff_entry of this.diffTableDTOArray) {
-
-      let a = "";
-      a = diff_entry.difference;
-      a = a.split('(').join('[')
-      a = a.split(')').join(']')
-      try {
-        this.jsondiff = JSON.parse(a);
-      } catch (error) {
-
-      }
-
-      diff_entry.difference = a;
-
-      for (var val of this.jsondiff) {
-
-        if (val[0] == 'add') {
-
-          for (var v1 of val[2]) {
-            this.addDTO = {};
-            this.addDTO['tname'] = this.gettname(v1[0]);
-            this.addDTO['column'] = this.getcolumnname(v1[0]);
-            this.addDTO['oldval'] = "_Missing_";
-            this.addDTO['newval'] = v1[1];
-            this.addDTO['maintranid'] = diff_entry.maintranid;
-            this.addDTO['runid'] = diff_entry.runid;
-            this.addDTO['taskid'] = diff_entry.taskid;
-            this.changeDTOArray.push(this.addDTO);
-          }
-        }
-        if (val[0] == 'remove') {
-          for (var v1 of val[2]) {
-            this.removeDTO = {};
-            this.removeDTO['tname'] = this.gettname(v1[0]);
-            this.removeDTO['oldval'] = v1[1];
-            this.removeDTO['column'] = this.getcolumnname(v1[0]);
-            this.removeDTO['newval'] = "_Missing_";
-            this.removeDTO['maintranid'] = diff_entry.maintranid;
-            this.removeDTO['runid'] = diff_entry.runid;
-            this.removeDTO['taskid'] = diff_entry.taskid;
-            this.changeDTOArray.push(this.removeDTO);
-          }
-        }
-        if (val[0] == 'change') {
-          this.changeDTO = {};
-          this.changeDTO['tname'] = this.gettname(val[1]);
-          this.changeDTO['column'] = this.getcolumnname(val[1]);
-          this.changeDTO['oldval'] = val[2][0];
-          this.changeDTO['newval'] = val[2][1];
-          this.changeDTO['maintranid'] = diff_entry.maintranid;
-          this.changeDTO['runid'] = diff_entry.runid;
-          this.changeDTO['taskid'] = diff_entry.taskid;
-          this.changeDTOArray.push(this.changeDTO);
-        }
-      }
-    }
-    
-
-    // Group by city
-    this.grouped = _.groupBy(this.changeDTOArray, "tname");
- 
-
-    this.tname = Object.keys(this.grouped)[0]
-    this.groupedoriginal = this.grouped;
-    this.groupedval = this.grouped[Object.keys(this.grouped)[0]]
-  }
-
+   
 
   loadDifferenceTableHorizontal() {
     this.addDTOArray = [];
@@ -341,9 +303,9 @@ export class ViewwindComponent implements OnInit {
           for (var v1 of val[2]) {
             this.addDTO = {};
             this.newstruct = {};
-          if (this.tabnewstruct[this.gettname(v1[0]) + ":"+ diff_entry.maintranid.split("|")[1]]) {
-            this.newstruct = this.tabnewstruct[this.gettname(v1[0]) +":"+ diff_entry.maintranid.split("|")[1]]
-          }
+            if (this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]]) {
+              this.newstruct = this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]]
+            }
             this.addDTO['tname'] = this.gettname(v1[0]);
             this.addDTO['column'] = this.getcolumnname(v1[0]);
             this.addDTO['oldval'] = "_Missing_";
@@ -354,9 +316,9 @@ export class ViewwindComponent implements OnInit {
             this.newstruct[this.getcolumnname(v1[0]) + ".___1"] = "_Missing_";
             this.newstruct[this.getcolumnname(v1[0]) + ".___2"] = v1[1];
             this.newstruct[this.getcolumnname(v1[0]) + ".___0"] = " ";
-            this.newstruct['AAAAAmaintranid'] = diff_entry.maintranid ;
+            this.newstruct['AAAAAmaintranid'] = diff_entry.maintranid;
             this.newstruct['AAAAAnewtranid'] = diff_entry.newtranid;
-            this.tabnewstruct[this.gettname(v1[0]) +":"+ diff_entry.maintranid.split("|")[1]] = this.newstruct
+            this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]] = this.newstruct
             this.changeDTOArray.push(this.addDTO);
           }
         }
@@ -364,8 +326,8 @@ export class ViewwindComponent implements OnInit {
           for (var v1 of val[2]) {
             this.removeDTO = {};
             this.newstruct = {};
-            if (this.tabnewstruct[this.gettname(v1[0]) + ":"+diff_entry.maintranid.split("|")[1]]) {
-              this.newstruct = this.tabnewstruct[this.gettname(v1[0]) +":"+ diff_entry.maintranid.split("|")[1]]
+            if (this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]]) {
+              this.newstruct = this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]]
             }
             this.removeDTO['tname'] = this.gettname(v1[0]);
             this.removeDTO['oldval'] = v1[1];
@@ -377,17 +339,17 @@ export class ViewwindComponent implements OnInit {
             this.newstruct[this.getcolumnname(v1[0]) + ".___1"] = v1[1];
             this.newstruct[this.getcolumnname(v1[0]) + ".___2"] = "_Missing_";
             this.newstruct[this.getcolumnname(v1[0]) + ".___0"] = " ";
-            this.newstruct['AAAAAmaintranid'] = diff_entry.maintranid ;
+            this.newstruct['AAAAAmaintranid'] = diff_entry.maintranid;
             this.newstruct['AAAAAnewtranid'] = diff_entry.newtranid;
-            this.tabnewstruct[this.gettname(v1[0]) +":"+ diff_entry.maintranid.split("|")[1]] = this.newstruct
+            this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]] = this.newstruct
             this.changeDTOArray.push(this.removeDTO);
           }
         }
         if (val[0] == 'change') {
           this.changeDTO = {};
           this.newstruct = {};
-          if (this.tabnewstruct[this.gettname(val[1]) +":"+ diff_entry.maintranid.split("|")[1]]) {
-            this.newstruct = this.tabnewstruct[this.gettname(val[1]) +":"+ diff_entry.maintranid.split("|")[1]]
+          if (this.tabnewstruct[this.gettname(val[1]) + ":" + diff_entry.maintranid.split("|")[1]]) {
+            this.newstruct = this.tabnewstruct[this.gettname(val[1]) + ":" + diff_entry.maintranid.split("|")[1]]
           }
 
           this.changeDTO['tname'] = this.gettname(val[1]);
@@ -404,7 +366,7 @@ export class ViewwindComponent implements OnInit {
           this.newstruct['AAAAAmaintranid'] = diff_entry.maintranid;
           this.newstruct['AAAAAnewtranid'] = diff_entry.newtranid;
 
-          this.tabnewstruct[this.gettname(val[1]) +":"+ diff_entry.maintranid.split("|")[1]] = this.newstruct
+          this.tabnewstruct[this.gettname(val[1]) + ":" + diff_entry.maintranid.split("|")[1]] = this.newstruct
           this.changeDTOArray.push(this.changeDTO);
         }
       }
@@ -418,36 +380,47 @@ export class ViewwindComponent implements OnInit {
 
     // Group by city
     this.grouped = _.groupBy(this.changeDTOArray, "tname");
+
+    this.tablecount=Object.keys(this.grouped).length;
+    this.diffcount=0;
+    Object.keys(this.grouped)
+        .reduce((obj, key) => {
+          this.diffcount=this.diffcount+this.grouped[key].length;
+        return obj;
+      }, {});
     // this.tabnewstruct=_.groupBy(this.newstruct, "tname");
 
     // Group by age within each city group
-    if (this.tranidreturn == ""){
-      this.tname = Object.keys(this.grouped)[0]
+    if (this.tranidreturn == "") {
+      this.tname = Object.keys(this.grouped).sort()[0]
     }
-    else{
+    else {
       this.tname = this.gettname(this.tranidreturn.split("|")[0])
     }
-    
+
     this.filterTable(this.tname)
     this.groupedoriginal = this.grouped;
-    this.groupedval = this.grouped[Object.keys(this.grouped)[0]]
+    this.groupedval = this.grouped[Object.keys(this.grouped).sort()[0]]
   }
   gettname(field) {
     if (Array.isArray(field)) {
       field = field[0];
     }
     let a = field.replace('INSERTING on FBNK_', '');
-    a = a.replace('UPDATING on FBNK_', '');
-    a = a.replace('DELETING on FBNK_', '');
-    a = a.replace('INSERTING on F_', '');
-    a = a.replace('UPDATING on F_', '');
-    a = a.replace('DELETING on F_', '');
+    a = a.replace('UPDATING on ', '');
+    a = a.replace('DELETING on ', '');
+    a = a.replace('INSERTING on ', '');
+    a = a.replace('UPDATING on ', '');
+    a = a.replace('DELETING on ', '');
+    a = a.replace('INSERTING on ', '');
+    a = a.replace('UPDATING on ', '');
+    a = a.replace('DELETING on ', '');
     a = a.replace('/row/', '');
     let ans = a.split(":");
     let columnname = "";
     let tname = ans[0].split("_").join(".").replace('001', '')
-    if(ans[2]){
-    let cname = ans[2].split("[")[0]
+    if (ans[2]) {
+      let cname = ans[2].split("[")[0]
     }
     // if (this.tabledata[tname]) {
     //   columnname = this.tabledata[tname][cname.toUpperCase()]
@@ -466,21 +439,25 @@ export class ViewwindComponent implements OnInit {
     a = a.replace('INSERTING on F_', '');
     a = a.replace('UPDATING on F_', '');
     a = a.replace('DELETING on F_', '');
+    a = a.replace('INSERTING on FBSG_', '');
+    a = a.replace('UPDATING on FBSG_', '');
+    a = a.replace('DELETING on FBSG_', '');
     a = a.replace('/row/', '');
     let ans = a.split(":");
     let columnname = "";
     let tname = ans[0].split("_").join(".").replace('001', '')
     let cname = ans[2].split("[")[0]
-    let apendind="";
-    if(ans[2].split("[")[1]){
-      apendind="["+ans[2].split("[")[1];
+    let apendind = "";
+    if (ans[2].split("[")[1]) {
+      apendind = "[" + ans[2].split("[")[1];
+      apendind = processappend(apendind);
     }
     cname = cname.substring(cname.lastIndexOf("/") + 1)
     if (this.tabledata[tname]) {
       columnname = this.tabledata[tname][cname.toUpperCase()]
-      return columnname+apendind;
+      return columnname + apendind;
     }
-    return cname+apendind;
+    return cname + apendind;
   }
 
   onMaintrainid(maintranid, runid, taskid) {
@@ -497,7 +474,21 @@ export class ViewwindComponent implements OnInit {
       .filter(key => key[cname])
       .filter(key => key[cname].includes(this.searchtext.toUpperCase()));
 
+      this.tablemap = new Array(this.groupednewstructval.length)
+      .fill(" ")
+      .map(() =>
+        new Array(this.colnames.length).fill(" ")
+      );
 
+    for (let i = 0; i < this.groupednewstructval.length; i++) {
+      let strkeys = Object.keys(this.groupednewstructval[i])
+      for (var kk of strkeys) {
+        let fval = this.groupednewstructval[i][kk];
+        let colindx=this.colnames.indexOf(kk);
+        this.tablemap[i][colindx]=fval;
+      }
+
+    }
   }
 
   searchchange() {
@@ -515,7 +506,7 @@ export class ViewwindComponent implements OnInit {
   filterTable(tname) {
     this.clength = {};
     let sval = Object.keys(this.tabnewstruct)
-      .filter(key => key.includes(tname+":"))
+      .filter(key => key.split(":")[0]==tname )
       .reduce((obj, key) => {
         let t = key.replace(tname, '')
         obj[t] = this.tabnewstruct[key];
@@ -537,6 +528,23 @@ export class ViewwindComponent implements OnInit {
       }, {});
     this.colnames = Array.from(colnames1).sort();
 
+
+    this.tablemap = new Array(this.groupednewstructval.length)
+      .fill(" ")
+      .map(() =>
+        new Array(this.colnames.length).fill(" ")
+      );
+
+    for (let i = 0; i < this.groupednewstructval.length; i++) {
+      let strkeys = Object.keys(this.groupednewstructval[i])
+      for (var kk of strkeys) {
+        let fval = this.groupednewstructval[i][kk];
+        let colindx=this.colnames.indexOf(kk);
+        this.tablemap[i][colindx]=fval;
+      }
+
+    }
+
     // for (let i = this.colnames.length; i < 30; i = i + 3) {
     //   this.colnames[i] = ".___0";
     //   this.colnames[i + 1] = "_____.___1";
@@ -557,8 +565,8 @@ export class ViewwindComponent implements OnInit {
     let length = this.clength[k];
     let collllength = this.colnames.length;
     this.colnamesdum = [];
-    for (let i = 0; i < collllength - length; i = i + 3) {
-      this.colnamesdum[i] = "c1.___0";
+    for (let i = 0; i < collllength - length; i = i + 2) {
+    //  this.colnamesdum[i] = "c1.___0";
       this.colnamesdum[i + 1] = "c1.___1";
       this.colnamesdum[i + 2] = "c1.___2";
     }
@@ -568,3 +576,12 @@ export class ViewwindComponent implements OnInit {
 
 
 }
+function processappend(apendind: string): string {
+  if (apendind ){
+    if(apendind.length==3){
+      apendind = "[0" + apendind.split("[")[1];
+    }
+  }
+  return apendind;
+}
+

@@ -52,13 +52,14 @@ read(arg0: any) {
   addfields: any ={};
   removefields: any={};
   tabledata: any={};
+  tranidoriginal;
   constructor(private taskControllerService: TaskControllerService,
     private diffTableControllerService: DiffTableControllerService,
     private dpListenControllerService: DpListenControllerService,
     private alertService: AlertService,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute
-
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
 
@@ -71,6 +72,8 @@ read(arg0: any) {
                 this.taskid= params['taskid'];
                 this.runidselect= params['runid'];
                 this.tranid= params['tranid'].split("|")[2];
+                this.tranidoriginal=params['tranid']
+                this.tranidoriginal = this.tranidoriginal.replace("s2.","");
                 this.loadruniddata(true);
                 
                 this.tranid= params['tranid'].split("|")[2];
@@ -81,7 +84,7 @@ read(arg0: any) {
                }
                if (params['id']){
                     this.taskid= params['id'];
-                    this.loadruniddata(false)
+                    this.loadruniddata(false);
                }
       }
     );
@@ -95,6 +98,11 @@ read(arg0: any) {
 
         // // alert(response);
         this.taskmainArray = response;
+        if( this.taskmainArray[0]){
+          this.taskid=this.taskmainArray[0].taskid;
+          this.taskMainDTO=this.taskmainArray[0];
+          this.loadruniddata(false);
+        }
       },
       (error) => {
         console.log(error);
@@ -134,6 +142,7 @@ read(arg0: any) {
       taskid: "" + this.dplistenentry.taskid,
       runid: this.dplistenentry.runid,
     };
+    this.changeDTOArray=[];
     this.diffTableControllerService.getDiffDataUsingPOST(diffTableDTO).subscribe(
       (response: any) => {
 
@@ -247,6 +256,14 @@ read(arg0: any) {
       return columnname + apendind;
     }
     return cname + apendind;
+  }
+
+  goBack( runid, taskid) {
+    this.router.navigate(['/tableview', {
+      taskid: taskid,
+      runid: runid,
+      tranid: this.tranidoriginal
+    }]);
   }
   gettname(field) {
     if (Array.isArray(field)){

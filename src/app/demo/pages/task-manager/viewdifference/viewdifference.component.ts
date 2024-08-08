@@ -231,7 +231,7 @@ export class ViewdifferenceComponent implements OnInit {
     return tname  + "." + cname;;
   }
   onMaintrainid(maintranid,runid,taskid){
-    this.router.navigate(['/reports', { taskid: taskid ,
+    this.router.navigate(['/transactionview', { taskid: taskid ,
       runid: runid ,
       tranid: maintranid 
     }]);

@@ -1,29 +1,30 @@
 
 import { switchMap } from 'rxjs/operators';
-import { interval, Subscription} from 'rxjs';
+import { interval, Subscription } from 'rxjs';
 import * as _ from 'lodash'
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 declare var $: any;
-import {  ViewChild } from "@angular/core";
+import { ViewChild } from "@angular/core";
 import { ChartComponent } from "ng-apexcharts";
-import {formatDate} from '@angular/common';
+import { formatDate } from '@angular/common';
 import {
   ApexNonAxisChartSeries,
   ApexResponsive,
   ApexChart
 } from "ng-apexcharts";
 import {
-  ApexAxisChartSeries,  
-   
+  ApexAxisChartSeries,
+
   ApexDataLabels,
   ApexPlotOptions,
   ApexYAxis,
   ApexAnnotations,
   ApexFill,
-  ApexStroke,ApexXAxis,ApexTitleSubtitle,ApexLegend,
-  ApexGrid,ApexMarkers,ApexTooltip
+  ApexStroke, ApexXAxis, ApexTitleSubtitle, ApexLegend,
+  ApexGrid, ApexMarkers, ApexTooltip
 } from "ng-apexcharts";
- 
+import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
+import { ColDef } from 'ag-grid-community';
 import { TaskControllerService } from '../../../../api/taskController.service';
 import { DpListenControllerService } from '../../../../api/dpListenController.service';
 import { TaskMainDTO } from '../../../../model/taskMainDTO';
@@ -32,38 +33,10 @@ import { DiffTableControllerService } from '../../../../api/diffTableController.
 import { DiffTableDTO } from '../../../../model/diffTableDTO';
 import { AlertService } from '../../../../theme/shared/components';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-export type ChartOptions10 = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  stroke: ApexStroke;
-  fill: ApexFill;
-  tooltip: ApexTooltip;
-  dataLabels: ApexDataLabels;
-  colors: string[];
-};
-export type ChartOptions9 = {
-  series: ApexNonAxisChartSeries;
-  chart: ApexChart;
-  labels: string[];
-  plotOptions: ApexPlotOptions;
-  fill: ApexFill;
-  stroke: ApexStroke;
-};
-export type ChartOptions8 = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  xaxis: ApexXAxis;
-  yaxis: ApexYAxis | ApexYAxis[];
-  labels: string[];
-  stroke: any; // ApexStroke;
-  markers: ApexMarkers;
-  plotOptions: ApexPlotOptions;
-  fill: ApexFill;
-  tooltip: ApexTooltip;
-};
- 
-export type ChartOptions5 = {
+import { AuthService } from '../../../../auth/auth.service';
+import { TableStructControllerService } from '../../../../api/tableStructController.service';
+
+export type ChartOptionsaxis = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
   dataLabels: ApexDataLabels;
@@ -74,40 +47,14 @@ export type ChartOptions5 = {
   fill: ApexFill;
   stroke: ApexStroke;
   grid: ApexGrid;
-};
-export type ChartOptions4 = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
   title: ApexTitleSubtitle;
-  fill: ApexFill;
-  plotOptions: ApexPlotOptions;
+  labels: any;
   legend: ApexLegend;
   colors: string[];
+  tooltip: ApexTooltip;
+
 };
-export type ChartOptions3 = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  fill: ApexFill;
-  dataLabels: ApexDataLabels;
-  grid: ApexGrid;
-  yaxis: ApexYAxis;
-  xaxis: ApexXAxis;
-  plotOptions: ApexPlotOptions;
-};
-export type ChartOptions2 = {
-  series: ApexAxisChartSeries;
-  chart: ApexChart;
-  dataLabels: ApexDataLabels;
-  plotOptions: ApexPlotOptions;
-  yaxis: ApexYAxis;
-  xaxis: any; //ApexXAxis;
-  annotations: ApexAnnotations;
-  fill: ApexFill;
-  stroke: ApexStroke;
-  grid: ApexGrid;
-};
-export type ChartOptions = {
+export type ChartOptionsNonAxis = {
   series: ApexNonAxisChartSeries;
   chart: ApexChart;
   responsive: ApexResponsive[];
@@ -116,42 +63,39 @@ export type ChartOptions = {
   legend: ApexLegend;
   dataLabels: ApexDataLabels;
   colors: string[];
+  tooltip: ApexTooltip;
+  plotOptions: ApexPlotOptions;
+  stroke: ApexStroke;
 };
- 
+
+
 @Component({
   selector: 'app-dashchart',
   templateUrl: './dashchart.component.html',
-  styleUrls: ['./dashchart.component.scss']
+  styleUrls: ['./dashchart.component.scss'],
+
 })
 export class DashchartComponent implements OnInit {
-  
-  ngOnInit(): void {
-    this.tabledata = require('../../../../../assets/tabledata.json');
-    this.loaddata() ; 
-    this.afterInit();
-     
-    this.mySubscription= interval(10000).subscribe((x =>{
-      this.loaddifftable();
-      this.afterInit();
-      
-            }));
-    
-  }
+ 
+
+  gridOptions: any;
+  user: any;
+ 
+
   @ViewChild("chart") chart: ChartComponent;
-  public chartOptions: Partial<ChartOptions>;
-  public chartOptions2: Partial<ChartOptions2>;
-  public chartOptions3: Partial<ChartOptions3>;
-  public chartOptions4: Partial<ChartOptions4>;
-  public chartOptions5: Partial<ChartOptions5>;
-  public chartOptions8: Partial<ChartOptions8>;
-  public chartOptions9: Partial<ChartOptions9>;
-  public chartOptions10: Partial<ChartOptions10>;
-  myDate : any;
+  public chartOptions: Partial<ChartOptionsNonAxis>;
+ 
+  public chartOptions3: Partial<ChartOptionsaxis>;
+  public chartOptions4: Partial<ChartOptionsaxis>;
+  public chartOptions5: Partial<ChartOptionsaxis>;
+   
+  public chartOptions9: Partial<ChartOptionsNonAxis>;
+  public chartOptions10: Partial<ChartOptionsaxis>;
+  myDate: any;
   clength: any = {};
-  groupednewstructvaloriginal: any = {};
+ 
   columnname: any = "";
-  groupednewstructvalObject: any = {};
-  groupednewstructvaloriginalObject: any = {};
+  
   colmaster: any = {};
   mySubscription: Subscription
   tname: any = "";
@@ -159,6 +103,9 @@ export class DashchartComponent implements OnInit {
   groupednewstructval: any = {};
   colnames: any = [];
   colnamesdum: any = [];
+  ColumnDefs;
+  RowData: any;
+  AgLoad: boolean;
 
 
 
@@ -180,10 +127,10 @@ export class DashchartComponent implements OnInit {
   jsondiff: any = {};
   diffTableDTOArray = [];
   taskMainDTO: TaskMainDTO = {};
-  dplistenentry: DpListenDTO = {};
+  dplistenentry: any = {};
   taskmainArray = [];
   taskid: any = 0;
-  dplistenArray = [];
+  dplistenArray: DpListenDTO[] = [];
   runid: any = 0;
   runidselect: any = 0;
   tranid: any = 0;
@@ -194,13 +141,66 @@ export class DashchartComponent implements OnInit {
   groupedoriginal: any = {};
   groupedval: any;
   tranidreturn: any = "";
-  tablemap:   String[][];
-  tablecount: number=0;
-  diffcount: number=0;
-  addcount: number=0;
-  removedcount: number=0; 
+  tablemap: String[][];
+  tablecount: number = 0;
+  diffcount: number = 0;
+  addcount: number = 0;
+  removedcount: number = 0;
+
+  constructor(private taskControllerService: TaskControllerService,
+    private diffTableControllerService: DiffTableControllerService,
+    private dpListenControllerService: DpListenControllerService,
+    private tableStructControllerService: TableStructControllerService,
+    private alertService: AlertService,
+    private cdr: ChangeDetectorRef,
+    private router: Router,
+    private route: ActivatedRoute, private authservice: AuthService
+
+  ) {
+    this.myDate = formatDate(new Date(), 'EEEE, MMMM d, y, ', 'en');
+  }
+
+  ngOnInit(): void {
+    this.user = this.authservice.currentUser();
+    this.user = this.user[0].toUpperCase() + this.user.slice(1);
+    this.tabledata = require('../../../../../assets/tabledata.json');
+
+
+    this.route.params.subscribe(
+      (params: Params) => {
+        if (params['taskid']) {
+          this.taskid = params['taskid'];
+          this.runidselect = params['runid'];
+          this.loaddata(true);
+          this.cdr.detectChanges();
+          this.loaddifftable();
+
+          //  
+
+        }
+        else {
+          this.loaddata(false);
+        }
+
+      }
+    );
+
+    this.afterInit();
+
+    this.mySubscription = interval(30000).subscribe((x => {
+      
+      this.loadrunid();
+      this.loaddifftable();
+      this.loadruniddata(false); 
+       
+      this.afterInit();
+
+    }));
+
+  }
   loadrunid() {
     // alert(this.runidselect);
+   
     this.dplistenentry = this.dplistenArray.find(dplisten => dplisten['runid'] == this.runidselect);
     // alert(JSON.stringify(this.dplistenentry));
     this.loaddifftable();
@@ -208,6 +208,22 @@ export class DashchartComponent implements OnInit {
   loaddifftable() {
     this.diffTableDTO.taskid = "" + this.taskid;
     this.diffTableDTO.runid = this.runidselect;
+   // this.diffTableDTOArray = [];
+    this.diffcount = 0;
+    this.addcount = 0;
+    this.removedcount = 0;
+    this.grouped = {};
+   
+    this.addDTOArray = [];
+    this.removeDTOArray = [];
+    this.changeDTOArray = [];
+ 
+    this.cdr.detectChanges();
+    this.changeDTOArray = [];
+    this.addcount = 0;
+    this.diffcount = 0;
+    this.removedcount = 0;
+   
     // this.diffTableDTOArray = require('../../../../../assets/diff.json');
     // this.loadDifferenceTableHorizontal();
     this.diffTableControllerService.getDiffDataUsingPOST(this.diffTableDTO).subscribe(
@@ -227,18 +243,30 @@ export class DashchartComponent implements OnInit {
       }
     );
   }
-  
 
-
+  goBack() {
+    this.router.navigate(['/windows', {
+      taskid: this.taskid,
+      runid: this.runidselect,
+      tranid: ""
+    }]);
+  }
+  goBackmeta(optionval: any) {
+    this.router.navigate(['/metaData', {
+      taskid: this.taskid,
+      optionval: optionval,
+      runid: this.runidselect
+    }]);
+  }
   loadDifferenceTableHorizontal() {
     this.addDTOArray = [];
     this.removeDTOArray = [];
     this.changeDTOArray = [];
     this.cdr.detectChanges();
     this.changeDTOArray = [];
-    this.addcount=0;
-    this.diffcount=0;
-    this.removedcount=0;
+    this.addcount = 0;
+    this.diffcount = 0;
+    this.removedcount = 0;
     for (var diff_entry of this.diffTableDTOArray) {
 
       let a = "";
@@ -252,12 +280,12 @@ export class DashchartComponent implements OnInit {
 
       }
       diff_entry.difference = a;
-    
+
       for (var val of this.jsondiff) {
         //  console.log(val);
         // console.log(val[0]);
         if (val[0] == 'add') {
-          this.addcount+=1;
+          this.addcount += 1;
           for (var v1 of val[2]) {
             this.addDTO = {};
             this.newstruct = {};
@@ -281,7 +309,7 @@ export class DashchartComponent implements OnInit {
           }
         }
         if (val[0] == 'remove') {
-          this.removedcount+=1;
+          this.removedcount += 1;
           for (var v1 of val[2]) {
             this.removeDTO = {};
             this.newstruct = {};
@@ -305,7 +333,7 @@ export class DashchartComponent implements OnInit {
           }
         }
         if (val[0] == 'change') {
-          this.diffcount+=1;
+          this.diffcount += 1;
           this.changeDTO = {};
           this.newstruct = {};
           if (this.tabnewstruct[this.gettname(val[1]) + ":" + diff_entry.maintranid.split("|")[1]]) {
@@ -331,26 +359,13 @@ export class DashchartComponent implements OnInit {
         }
       }
     }
-    //this.changeDTOArray.sort((a, b) => a.field.localeCompare(b.field));
-    // this.grouped = this.changeDTOArray.reduce(
-    //   (result:any, currentValue:any) => { 
-    //     (result[currentValue['tname']] = result[currentValue['tname']] || []).push(currentValue);
-    //     return result;
-    //   }, {});
+    
 
     // Group by city
     this.grouped = _.groupBy(this.changeDTOArray, "tname");
 
-    this.tablecount=Object.keys(this.grouped).length;
-    // this.diffcount=0;
-    // Object.keys(this.grouped)
-    //     .reduce((obj, key) => {
-    //       this.diffcount=this.diffcount+this.grouped[key].length;
-    //     return obj;
-    //   }, {});
-    // this.tabnewstruct=_.groupBy(this.newstruct, "tname");
-
-    // Group by age within each city group
+    this.tablecount = Object.keys(this.grouped).length;
+    
     if (this.tranidreturn == "") {
       this.tname = Object.keys(this.grouped)[0]
     }
@@ -358,11 +373,11 @@ export class DashchartComponent implements OnInit {
       this.tname = this.gettname(this.tranidreturn.split("|")[0])
     }
 
-    
+
     this.groupedoriginal = this.grouped;
     this.groupedval = this.grouped[Object.keys(this.grouped)[0]]
     this.afterInit();
-   
+
   }
   gettname(field) {
     if (Array.isArray(field)) {
@@ -422,7 +437,20 @@ export class DashchartComponent implements OnInit {
     return cname + apendind;
   }
   loadruniddata(onload: boolean) {
+    this.diffcount = 0;
+    this.addcount = 0;
+    this.removedcount = 0;
+    this.grouped = {};
+    this.afterInit();
+    this.addDTOArray = [];
+    this.removeDTOArray = [];
+    this.changeDTOArray = [];
+    
+    this.changeDTOArray = [];
+    this.cdr.detectChanges();
+    this.taskMainDTO = this.taskmainArray.filter(x => x['taskid'] == this.taskid)[0];
     // alert(this.taskid);
+    this.dplistenArray = [];
     this.dpListenControllerService.getRunIdsUsingGET(this.taskid).subscribe(
       (response: any) => {
 
@@ -440,99 +468,50 @@ export class DashchartComponent implements OnInit {
       }
     );
   }
-  loaddata() {
+  loaddata(onload: any) {
+    this.taskmainArray = [];
     this.taskControllerService.getTasknainUsingGET().subscribe(
       (response: any) => {
 
         // // alert(response);
         this.taskmainArray = response;
-        if( this.taskmainArray[0]){
-          this.taskid=this.taskmainArray[0].taskid;
-          this.taskMainDTO=this.taskmainArray[0]
+        if (!onload) {
+          if (this.taskmainArray[0]) {
+            this.taskid = this.taskmainArray[0].taskid;
+            this.taskMainDTO = this.taskmainArray[0]
+          }
         }
-        
-        this.loadruniddata(false);
+        this.loadruniddata(onload);
+
       },
       (error) => {
         console.log(error);
       }
     );
   }
- 
-  constructor(private taskControllerService: TaskControllerService,
-    private diffTableControllerService: DiffTableControllerService,
-    private dpListenControllerService: DpListenControllerService,
-    private alertService: AlertService,
-    private cdr: ChangeDetectorRef,
-    private router: Router,
-    private route: ActivatedRoute
 
-  ){
-    this.myDate = formatDate(new Date(), 'EEEE, MMMM d, y, ', 'en');
-  }
-    // this.chartOptions = {
-    //   series: [23, 5, 43],
-    //   chart: {
-    //     type: "donut"
-    //   },
-    //   labels: ["Added", "Deleted", "Modified" ],
-    //   fill: {
-    //     type: "gradient"
-    //   },
-    //   responsive: [
-    //     {
-    //       breakpoint: 480,
-    //       options: {
-    //         chart: {
-    //           width: 200
-    //         },
-    //         legend: {
-    //           position: "bottom"
-    //         }
-    //       }
-    //     }
-    //   ]
-    // };
+  
 
-    afterInit() {
-      let arr=[];
-      let dtarr=[];
-      let catarr=[];
-      Object.keys(this.grouped)
-          .reduce((obj, key) => {
-            let ta=[];
-            ta.push(  key )
-            ta.push( this.grouped[key].length)
-            
-            // dtarr.push( this.grouped[key].length)
-            // catarr.push(  key )
-            arr.push(ta);
-          return obj;
-        }, {});
-        arr = arr.sort((a, b) =>  b[1]-a[1] );
-        for (var i=0; i<arr.length; i++) {
-          if(i==10){
-            break;
-          }
-          dtarr.push( arr[i][1]);
-           catarr.push(  arr[i][0] );
-        }
+  afterInit() {
+
     this.chartOptions = {
-      series: [this.addcount, this.removedcount, this.diffcount],
+      series: [this.addDTOArray.length, this.removeDTOArray.length, this.changeDTOArray.length],
       chart: {
         width: 380,
         type: "donut"
       },
       colors: ['#8b89f5', '#FED0A6', '#F49102', '#5A2A27', '#C4BBAF'],
-      labels: ["Added", "Deleted", "Modified" ],
+      labels: ["Tables Added", "Tables Deleted", "Table Modified"],
       dataLabels: {
-        enabled: false
+        formatter: function (val, opts) {
+          return val + " - " + opts.w.globals.series[opts.seriesIndex];
+        }
       },
       fill: {
         type: "gradient"
       },
       legend: {
-        formatter: function(val, opts) {
+        formatter: function (val, opts) {
           return val + " - " + opts.w.globals.series[opts.seriesIndex];
         }
       },
@@ -550,122 +529,112 @@ export class DashchartComponent implements OnInit {
         }
       ]
     };
-    this.chartOptions2 = {
-      series: [
-        {
-          name: "Difference",
-          data: [44, 55, 41, 67, 22, 43, 21, 33, 45, 31 ]
-        }
-      ],
-       
-      chart: {
-        height: 350,
-        type: "bar"
-      },
-     
-      plotOptions: {
-        bar: {
-          
-          endingShape: "rounded"
-        }
-      },
-      dataLabels: {
-        enabled: false,
-        style: {
-          fontSize: "140px",
-          fontFamily: "Helvetica, Arial, sans-serif",
-          fontWeight: "bold"
-        }
-      },
-      stroke: {
-        width: 2
-      },
+    let ann = 0;
+    let arr = [];
+    let dtarr = [];
+    let catarr = [];
+    let dataarr = [];
 
-      grid: {
-        row: {
-          colors: ["#fff", "#f2f2f2"]
-        }
-      },
-      xaxis: {
-        labels: {
-          rotate: -45
-        },
-        style: {
-          fontSize: "140px",
-          fontFamily: "Helvetica, Arial, sans-serif",
-          fontWeight: "bold"
-        },
-        categories: [
-            "FBNK_CATEG_ENT_LWOR000",
-    "FBNK_CONSOLIDATE_AS000",
-    "FBNK_CONSOLIDATE_PR000",
-    "FBNK_AA_ARRANGEMENT006",
-    "FBNK_CATEG_ENT_TODAY",
-    "FBNK_CONSOL_UPDATE_000",
-    "FBNK_EB_CONTRACT_BA001",
-    "FBNK_PV_ASSET_DETAIL",
-    "FBNK_RE_CONSOL_PROFIT",
-    "FBNK_SC_PERF_DETAIL"
-        ],
-        tickPlacement: "on"
-      },
-      yaxis: {
-        title: {
-          text: ""
-        }
-      },
-      fill: {
-        colors : ["#F49102"],
-        type: "gradient",
-        gradient: {
-          shade: "light",
-          type: "horizontal",
-          shadeIntensity: 0.25,
-          gradientToColors: undefined,
-          inverseColors: true,
-          opacityFrom: 0.85,
-          opacityTo: 0.85,
-          stops: [50, 0, 100]
-        }
+    
+      Object.keys(this.grouped)
+      .reduce((obj, key) => {
+        let ta = [];
+        ta.push(key)
+        ta.push(this.grouped[key].length)
+
+        // dtarr.push( this.grouped[key].length)
+        // catarr.push(  key )
+        arr.push(ta);
+        return obj;
+      }, {});
+    arr = arr.sort((a, b) => b[1] - a[1]);
+    for (var i = 0; i < arr.length; i++) {
+      if (i == 10) {
+        break;
       }
-    };
+      dtarr.push(arr[i][1]);
+      catarr.push(arr[i][0]);
+      
+    }
+   
+    for (var i = 0; i < arr.length; i++) {
+      if (i == 10) {
+        break;
+      }
+      let aobj = {};
+      aobj['x'] = arr[i][0];
+      aobj['y'] = arr[i][1];
+      aobj['fillColor'] = "#8b89f5";
+      dataarr.push(aobj);
 
+    }
+
+    try {
+      ann = (this.dplistenentry.rowsprocessed * 100) / this.dplistenentry.rowcount;
+      if (ann > 100) {
+        ann = 100;
+      }
+      if (isNaN(ann)) {
+        ann = 0;
+      }
+      if (this.dplistenentry.status == 'DONE') {
+        ann = 100
+      }
+    } catch (error) {
+      ann = 1;
+    }
+    
+   
+    var dataloadtime=0;
+    var batchtime=0;
+    var comparetime =0;
+    var reportgentime=0;
+
+    if(this.dplistenentry){
+      
+      batchtime=this.dplistenentry.batchtime;
+      comparetime =this.dplistenentry.comparetime;
+      reportgentime=this.dplistenentry.reportgentime;
+      dataloadtime=this.dplistenentry.dataloadtime;
+    }
+
+    
     this.chartOptions3 = {
-      series:  [
+      series: [
         {
           data: [
             {
               x: "DataLoad",
               y: [
-                5,
-                15
+                0,
+                dataloadtime
               ],
-              
-              fillColor: "#6200EE"
+
+              fillColor: "#4C5EF6"
             },
             {
               x: "Batch Analysis",
               y: [
-                15,
-                33
+                dataloadtime ,
+                dataloadtime + batchtime  
               ],
-              fillColor: "#9C27B0"
+              fillColor: "#F49102"
             },
             {
-              x: "Comparision",
+              x: "comparison",
               y: [
-                33,
-                88
+                dataloadtime + batchtime,
+                dataloadtime + batchtime + comparetime
               ],
-               fillColor: "#D81B60"
+              fillColor: "#F49102"
             },
             {
               x: "ReportGeneration",
               y: [
-                88,
-                95
+                dataloadtime + batchtime + comparetime,
+                dataloadtime + batchtime + comparetime + reportgentime
               ],
-               fillColor: "#FF9800"
+              fillColor: "#4C5EF6"
             }
           ]
         }
@@ -684,19 +653,6 @@ export class DashchartComponent implements OnInit {
         type: "category"
       }
     };
-    let dataarr=[];
-
-    for (var i=0; i<arr.length; i++) {
-      if(i==10){
-        break;
-      }
-      let aobj={};
-      aobj['x']=arr[i][0] ;
-      aobj['y']=arr[i][1];
-      aobj['fillColor']="#8b89f5";
-      dataarr.push(aobj);
-        
-    }
     this.chartOptions4 = {
       series: [
         {
@@ -704,7 +660,7 @@ export class DashchartComponent implements OnInit {
         }
       ],
       fill: {
-        colors : ["#8b89f5"],
+        colors: ["#8b89f5"],
         opacity: [0.85, 0.25, 1],
         gradient: {
           inverseColors: false,
@@ -723,298 +679,35 @@ export class DashchartComponent implements OnInit {
         text: ""
       }
     };
-    // this.chartOptions4 = {
-    //   series: [
-    //     {
-    //       data: [
-    //         {
-    //           x: "FBNK_CATEG_ENT_LWOR000",
-    //           y: 218
-              
-    //         },
-    //         {
-    //           x: "FBNK_CONSOLIDATE_AS000",
-    //           y: 149
-    //         },
-    //         {
-    //           x: "FBNK_CONSOLIDATE_PR000",
-    //           y: 184
-    //         },
-    //         {
-    //           x: "FBNK_AA_ARRANGEMENT006",
-    //           y: 55
-    //         },
-    //         {
-    //           x: "FBNK_CATEG_ENT_TODAY",
-    //           y: 84
-    //         },
-    //         {
-    //           x: "FBNK_CONSOL_UPDATE_000",
-    //           y: 31
-    //         },
-    //         {
-    //           x: "FBNK_EB_CONTRACT_BA001",
-    //           y: 70
-    //         },
-    //         {
-    //           x: "FBNK_PV_ASSET_DETAIL",
-    //           y: 30
-    //         },
-    //         {
-    //           x: "FBNK_RE_CONSOL_PROFIT",
-    //           y: 44
-    //         },
-    //         {
-    //           x: "FBNK_SC_PERF_DETAIL",
-    //           y: 68
-    //         } 
-    //       ]
-    //     }
-    //   ],
-    //   legend: {
-    //     show: false
-    //   },
-    //   chart: {
-    //     height: 350,
-    //     type: "treemap"
-    //   },
-    //   title: {
-    //     text: "Distibuted Treemap (different color for each cell)",
-    //     align: "center"
-    //   },
-  
-    //   plotOptions: {
-    //     treemap: {
-          
-    //       enableShades: false
-    //     }
-    //   }
-    // };
-    // this.chartOptions5 = {
-    //   series: [
-    //     {
-    //       name: "basic",
-    //       data: [44, 55, 41, 67, 22, 43, 21, 33, 45, 31 ]
-    //     }
-    //   ],
-    //   chart: {
-    //     type: "bar",
-    //     height: 350
-    //   },
-    //   plotOptions: {
-    //     bar: {
-    //       horizontal: true
-          
-    //     }
-    //   },
-      
-    //   dataLabels: {
-    //     enabled: false,
-    //     style: {
-    //       fontSize: "12px",
-    //       colors: ["green"]
-    //     }
-    //   },
-    //   xaxis: {
-    //     categories: [
-    //       "FBNK_CATEG_ENT_LWOR000",
-    //       "FBNK_CONSOLIDATE_AS000",
-    //       "FBNK_CONSOLIDATE_PR000",
-    //       "FBNK_AA_ARRANGEMENT006",
-    //       "FBNK_CATEG_ENT_TODAY",
-    //       "FBNK_CONSOL_UPDATE_000",
-    //       "FBNK_EB_CONTRACT_BA001",
-    //       "FBNK_PV_ASSET_DETAIL",
-    //       "FBNK_RE_CONSOL_PROFIT",
-    //       "FBNK_SC_PERF_DETAIL"
-    //     ]
-    //   },
-    //   fill: {
-    //     colors: ['#7E36AF']
-    //   }
-    // };
+
+     
     this.chartOptions5 = {
-      series: [
-        {
-          data: [
-            {
-              x: "jjj",
-              y: 218,
-              fillColor: "#8b89f5"              
-            },
-            {
-              x: "FBNK_CONSOLIDATE_AS000",
-              y: 149,
-              fillColor: "#8b89f5"              
-            },
-            {
-              x: "FBNK_CONSOLIDATE_PR000",
-              y: 184,
-              fillColor: "#8b89f5"              
-            },
-            {
-              x: "FBNK_AA_ARRANGEMENT006",
-              y: 55,
-              fillColor: "#8b89f5"              
-            },
-            {
-              x: "FBNK_CATEG_ENT_TODAY",
-              y: 84,
-              fillColor: "#8b89f5"              
-            },
-            {
-              x: "FBNK_CONSOL_UPDATE_000",
-              y: 31,
-              fillColor: "#8b89f5"              
-            },
-            {
-              x: "FBNK_EB_CONTRACT_BA001",
-              y: 70,
-              fillColor: "#8b89f5"              
-            },
-            {
-              x: "FBNK_PV_ASSET_DETAIL",
-              y: 30,
-              fillColor: "#8b89f5"              
-            },
-            {
-              x: "FBNK_RE_CONSOL_PROFIT",
-              y: 44,
-              fillColor: "#8b89f5"              
-            },
-            {
-              x: "FBNK_SC_PERF_DETAIL",
-              y: 68,
-              fillColor: "#8b89f5"              
-            } 
-          ]
-        }
-      ],
-      
-      chart: {
-        height: 350,
-        type: "bar"
-      },
-    
-       
-      plotOptions: {
-        bar: {
-          horizontal: true
-        }
-      }
-    };
-
-
-    this.chartOptions8 = {
-      series: [
-        {
-          name: "Added",
-          type: "column",
-          data: [13, 11, 12, 17, 13, 12, 27, 21, 24, 12, 10]
-        },
-        {
-          name: "Modified",
-          type: "area",
-          data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
-        },
-        {
-          name: "Modified",
-          type: "line1",
-          data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30]
-        }
-      ],
-      chart: {
-        height: 350,
-        type: "line",
-        stacked: false
-      },
-      stroke: {
-        width: [0, 2, 5],
-        curve: "smooth"
-      },
-      plotOptions: {
-        bar: {
-          columnWidth: "50%"
-        }
-      },
-
-      fill: {
-        colors : ["#8b89f5"],
-        opacity: [0.85, 0.25, 1],
-        gradient: {
-          inverseColors: false,
-          shade: "dark",
-          type: "vertical",
-          opacityFrom: 0.85,
-          opacityTo: 0.55,
-          stops: [0, 100, 100, 100]
-        }
-      },
-      labels: [
-        "FBNK_CATEG_ENT_LWOR000",
-          "FBNK_CONSOLIDATE_AS000",
-          "FBNK_CONSOLIDATE_PR000",
-          "FBNK_AA_ARRANGEMENT006",
-          "FBNK_CATEG_ENT_TODAY",
-          "FBNK_CONSOL_UPDATE_000",
-          "FBNK_EB_CONTRACT_BA001",
-          "FBNK_PV_ASSET_DETAIL",
-          "FBNK_RE_CONSOL_PROFIT",
-          "FBNK_SC_PERF_DETAIL"
-      ],
-      markers: {
-        size: 0
-      },
-      xaxis: {
-        type: "category"
-      },
-      yaxis: {
-        title: {
-          text: "Points"
-        },
-        min: 0
-      },
-      tooltip: {
-        shared: true,
-        intersect: false,
-        y: {
-          formatter: function(y) {
-            if (typeof y !== "undefined") {
-              return y.toFixed(0) + " points";
-            }
-            return y;
-          }
-        }
-      }
-    };
-  
-    this.chartOptions5= {
       series: [
         {
           name: "Difference",
           data: dtarr
         }
       ],
-       
+
       chart: {
         height: 350,
         type: "bar"
       },
-     
+
       plotOptions: {
         bar: {
           horizontal: true,
           endingShape: "rounded"
         }
       },
-       dataLabels: {
-              enabled: false,
-              style: {
-                fontSize: "140px",
-                fontFamily: "Inter",
-                fontWeight: "bold"
-              }
-            },
+      dataLabels: {
+        enabled: false,
+        style: {
+          fontSize: "140px",
+          fontFamily: "Inter",
+          fontWeight: "bold"
+        }
+      },
       stroke: {
         width: 2
       },
@@ -1037,7 +730,7 @@ export class DashchartComponent implements OnInit {
         }
       },
       fill: {
-        colors : ["#8b89f5"],
+        colors: ["#8b89f5"],
         type: "gradient",
         gradient: {
           shade: "light",
@@ -1050,9 +743,13 @@ export class DashchartComponent implements OnInit {
           stops: [50, 0, 100]
         }
       }
-    }; 
+    };
+   
+   
+
     this.chartOptions9 = {
-      series: [75],
+
+      series: [ann],
       chart: {
         height: 350,
         type: "radialBar",
@@ -1100,7 +797,7 @@ export class DashchartComponent implements OnInit {
               fontSize: "17px"
             },
             value: {
-              formatter: function(val) {
+              formatter: function (val) {
                 return parseInt(val.toString(), 10).toString();
               },
               color: "#111",
@@ -1111,7 +808,7 @@ export class DashchartComponent implements OnInit {
         }
       },
       fill: {
-        colors : ["#F49102"],
+        colors: ["#F49102"],
         type: "gradient",
         gradient: {
           shade: "dark",
@@ -1129,60 +826,14 @@ export class DashchartComponent implements OnInit {
       },
       labels: ["Percent"]
     };
-    this.chartOptions10 = {
-      chart: {
-        height: 330,
-        type: "area"
-      },
-      dataLabels: {
-        enabled: false
-      },
-      series: [
-        {
-          name: "Series 1",
-          data: [15, 32, 35, 45, 35, 43, 42]
-        },
-        
-        {
-          name: "Series 2",
-          data: [45, 52, 45, 55, 25, 33, 22]
-        }
-        
-      ],
-      fill: {
-        colors : ["#F49102"],
-        type: "gradient",
-        gradient: {
-          shade: "dark",
-          type: "horizontal",
-          shadeIntensity: 0.5,
-          gradientToColors: ["#F49102"],
-          inverseColors: true,
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [0, 100]
-        }
-      },
-      colors: ['#8b89f5', '#FED0A6', '#F49102', '#5A2A27', '#C4BBAF'],
-      xaxis: {
-        categories: [
-          "01 Jan",
-          "02 Jan",
-          "03 Jan",
-          "04 Jan",
-          "05 Jan",
-          "06 Jan",
-          "07 Jan"
-        ]
-      }
-    };
+    
 
-    this.chartOptions10 ={
+    this.chartOptions10 = {
       series: [
         {
           name: "Difference",
           data: dtarr
-        } 
+        }
       ],
       colors: ['#4C5EF6', '#F49102', '#F49102', '#5A2A27', '#C4BBAF'],
       chart: {
@@ -1197,9 +848,9 @@ export class DashchartComponent implements OnInit {
       },
       xaxis: {
         type: "category",
-        categories:  catarr,
-       
+        categories: catarr,
+
       }
     };
-      }
-}
+  }
+  }

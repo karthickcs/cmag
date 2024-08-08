@@ -606,11 +606,11 @@
 .pcoded-navbar {
     display: block;
     z-index: 1028;
-    position: absolute;
+    position: fixed;
     box-shadow: 0 1px 3px 0 rgba(54, 80, 138, 0.30);
     transition: all 0.3s ease-in-out;
     width: $Menu-width;
-    height: calc(100% - #{$header-height});
+    height: 2000px;
     margin-top: $header-height;
     top: 0;
     background: $menu-dark-background;
@@ -837,8 +837,8 @@
 
             &.pcoded-menu-caption {
                 font-size: 10px;
-                font-weight: 600;
-                color: $primary-color;
+                font-weight: 800;
+                color: white;
                 padding: 18px 28px 5px 28px;
                 text-transform: uppercase;
                 position: relative;
