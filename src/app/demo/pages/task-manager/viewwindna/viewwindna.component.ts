@@ -10,6 +10,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash'
+import { AuthService } from '../../../../auth/auth.service';
 declare var $: any;
 
 @Component({
@@ -83,7 +84,7 @@ export class ViewwindnaComponent implements OnInit {
     private diffTableControllerService: DiffTableControllerService,
     private dpListenControllerService: DpListenControllerService,
     private alertService: AlertService,
-    private cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,private authservice: AuthService,
     private router: Router,
     private route: ActivatedRoute
 
@@ -239,6 +240,7 @@ export class ViewwindnaComponent implements OnInit {
   loaddifftable() {
     this.diffTableDTO.taskid = "" + this.taskid;
     this.diffTableDTO.runid = this.runidselect;
+    this.diffTableDTO.role= this.authservice.getRole();
     // this.diffTableDTOArray = require('../../../../../assets/diff.json');
     // this.loadDifferenceTableHorizontal();
     this.diffTableDTOArray = [];

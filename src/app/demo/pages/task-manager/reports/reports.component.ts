@@ -9,6 +9,7 @@ import { AlertService } from '../../../../theme/shared/components';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash'
+import { AuthService } from '../../../../auth/auth.service';
 @Component({
   selector: 'app-reports',
   templateUrl: './reports.component.html',
@@ -58,7 +59,7 @@ read(arg0: any) {
     private dpListenControllerService: DpListenControllerService,
     private alertService: AlertService,
     private cdr: ChangeDetectorRef,
-    private route: ActivatedRoute,
+    private route: ActivatedRoute,private authservice: AuthService,
     private router: Router
   ) { }
 
@@ -141,7 +142,9 @@ read(arg0: any) {
     let diffTableDTO: DiffTableDTO = {
       taskid: "" + this.dplistenentry.taskid,
       runid: this.dplistenentry.runid,
+
     };
+    diffTableDTO.role= this.authservice.getRole();
     this.changeDTOArray=[];
     this.diffTableControllerService.getDiffDataUsingPOST(diffTableDTO).subscribe(
       (response: any) => {

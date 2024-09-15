@@ -12,6 +12,7 @@
 
 
 export interface UserDTO { 
+    id?: number;
     password?: string;
     roles?: string;
     username?: string;

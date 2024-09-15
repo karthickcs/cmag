@@ -18,6 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable } from 'rxjs';
 
+import { FileDto } from '../model/fileDto';
 import { ResponseEntity } from '../model/responseEntity';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
@@ -136,15 +137,96 @@ export class FileControllerService {
     }
 
     /**
+     * getfiletrun
+     * 
+     * @param taskid taskid
+     * @param runid runid
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getfiletrunUsingGET(taskid: string, runid: string, observe?: 'body', reportProgress?: boolean): Observable<ResponseEntity>;
+    public getfiletrunUsingGET(taskid: string, runid: string, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ResponseEntity>>;
+    public getfiletrunUsingGET(taskid: string, runid: string, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ResponseEntity>>;
+    public getfiletrunUsingGET(taskid: string, runid: string, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (taskid === null || taskid === undefined) {
+            throw new Error('Required parameter taskid was null or undefined when calling getfiletrunUsingGET.');
+        }
+
+        if (runid === null || runid === undefined) {
+            throw new Error('Required parameter runid was null or undefined when calling getfiletrunUsingGET.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+          // to determine the Content-Type header
+          const consumes: string[] = [
+            'blob' as 'json'
+         ];
+         return this.httpClient.get<ResponseEntity>(`${this.basePath}/download/${encodeURIComponent(String(taskid))}/${encodeURIComponent(String(runid))}`,{headers, responseType: 'blob' as 'json'}) ;
+ 
+    }
+
+    /**
+     * getlogfile
+     * 
+     * @param linecount linecount
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public getlogfileUsingGET(linecount: number, observe?: 'body', reportProgress?: boolean): Observable<string>;
+    public getlogfileUsingGET(linecount: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
+    public getlogfileUsingGET(linecount: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public getlogfileUsingGET(linecount: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        if (linecount === null || linecount === undefined) {
+            throw new Error('Required parameter linecount was null or undefined when calling getlogfileUsingGET.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            '*/*'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set('Accept', httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+       
+        return this.httpClient.get<ResponseEntity>(`${this.basePath}/logfile/${encodeURIComponent(String(linecount))}`,{headers, responseType: 'text' as 'json'}) ;
+        // return this.httpClient.get<string>(`${this.basePath}/logfile/${encodeURIComponent(String(linecount))}`,
+        //     {
+        //         withCredentials: this.configuration.withCredentials,
+        //         headers: headers,
+        //         observe: observe,
+        //         reportProgress: reportProgress
+        //     }
+        // );
+    }
+
+    /**
      * uploadFile
      * 
      * @param file file
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public uploadFileUsingPOST(file: Blob, observe?: 'body', reportProgress?: boolean): Observable<string>;
-    public uploadFileUsingPOST(file: Blob, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<string>>;
-    public uploadFileUsingPOST(file: Blob, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<string>>;
+    public uploadFileUsingPOST(file: Blob, observe?: 'body', reportProgress?: boolean): Observable<FileDto>;
+    public uploadFileUsingPOST(file: Blob, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<FileDto>>;
+    public uploadFileUsingPOST(file: Blob, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<FileDto>>;
     public uploadFileUsingPOST(file: Blob, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         if (file === null || file === undefined) {
@@ -185,7 +267,7 @@ export class FileControllerService {
             formParams = formParams.append('file', <any>file) || formParams;
         }
 
-        return this.httpClient.post<string>(`${this.basePath}/upload`,
+        return this.httpClient.post<FileDto>(`${this.basePath}/upload`,
             convertFormParamsToString ? formParams.toString() : formParams,
             {
                 withCredentials: this.configuration.withCredentials,

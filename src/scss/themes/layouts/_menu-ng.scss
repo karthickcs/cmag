@@ -31,7 +31,7 @@
         &:hover {
           > a {
             &:before {
-              background: #fff;
+              background: rgba(78,84,194,1);;
             }
           }
         }
@@ -76,6 +76,7 @@
 
         .pcoded-submenu > app-nav-item > li > a {
           padding: 7px 7px 7px 80px;
+          background-color:rgba(78,84,194,1);
         }
       }
     }
@@ -577,9 +578,9 @@ body{
       display: flex;
       align-items: center;
     }
-
+// i did change csk
     .sidenav-horizontal-wrapper {
-      height: $header-height;
+      height:50px;
       flex: 0 1 100%;
       width: 0;
 
@@ -736,7 +737,7 @@ body{
                 &.pcoded-trigger,
                 &:hover {
                   > a {
-                    color: nth($color-active-color,$i);
+                    color: white;
                   }
                 }
               }

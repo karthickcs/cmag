@@ -46,4 +46,10 @@ export class AuthService {
     const user = (JSON.parse(atob(this.strtoken.split('.')[1]))).sub;
     return user;
   }
+  public getRole() {
+    const token = localStorage.getItem('token');
+    this.strtoken=""+token;
+    const role = (JSON.parse(atob(this.strtoken.split('.')[1]))).role;
+    return role;
+  }
 }

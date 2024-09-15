@@ -50,4 +50,5 @@ export interface TaskMainDTO {
     updatets?: Date;
     usernamesys1?: string;
     usernamesys2?: string;
+    tablewildcard?: string;
 }

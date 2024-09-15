@@ -31,7 +31,7 @@ import { FileControllerService } from './api/fileController.service';
 import { JwtAuthenticationControllerService } from './api/jwtAuthenticationController.service';
 import { TaskControllerService } from './api/taskController.service';
 import { DbControllerService } from './api/dbController.service';
- 
+import { UserControllerService } from './api/userController.service'; 
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { AgGridModule } from 'ag-grid-angular';   
   
@@ -68,7 +68,7 @@ import { NgxJsonViewerModule } from 'ngx-json-viewer';
   providers: [  DiffTableControllerService,TableStructControllerService,
     DpListenControllerService,
     FileControllerService,DbControllerService,
-    JwtAuthenticationControllerService,
+    JwtAuthenticationControllerService,UserControllerService,
     TaskControllerService,NavigationItem,AuthGuardService,AuthService, 
     {
       provide: HTTP_INTERCEPTORS,

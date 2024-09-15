@@ -18,8 +18,13 @@ export interface DiffTableDTO {
     insertts?: Date;
     maintranid?: string;
     newtranid?: string;
+    oracletname?: string;
+    role?: string;
+    runid?: number;
     sequence?: number;
     taskid?: string;
     threadid?: string;
-    runid?: number;
+    tval?: string;
+    ttype?: string;
+    userId?: number;
 }

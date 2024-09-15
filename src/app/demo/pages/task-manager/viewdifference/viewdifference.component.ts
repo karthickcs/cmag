@@ -8,6 +8,7 @@ import { DiffTableDTO } from '../../../../model/diffTableDTO';
 import { AlertService } from '../../../../theme/shared/components';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
+import { AuthService } from '../../../../auth/auth.service';
 
 @Component({
   selector: 'app-viewdifference',
@@ -44,7 +45,7 @@ export class ViewdifferenceComponent implements OnInit {
   constructor(private taskControllerService: TaskControllerService,
     private diffTableControllerService: DiffTableControllerService,
     private dpListenControllerService: DpListenControllerService,
-    private alertService: AlertService,
+    private alertService: AlertService,private authservice: AuthService,
     private cdr: ChangeDetectorRef,
     private router: Router
 
@@ -106,6 +107,7 @@ export class ViewdifferenceComponent implements OnInit {
   loaddifftable() {
     this.diffTableDTO.taskid = "" + this.dplistenentry.taskid;
     this.diffTableDTO.runid = this.dplistenentry.runid;
+    this.diffTableDTO.role= this.authservice.getRole();
     this.diffTableControllerService.getDiffDataUsingPOST(this.diffTableDTO).subscribe(
       (response: any) => {
 

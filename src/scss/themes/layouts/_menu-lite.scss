@@ -1104,7 +1104,7 @@
 
                             li {
                                 a {
-                                    color: inherit;
+                                    color: white;
                                 }
                             }
 
@@ -1232,14 +1232,15 @@
 /* ===  scroll bar End  ===== */
 /* menu [ vartical ] css end */
 /* menu[ horizontal ] css start */
+// i did change csk
 .pcoded-navbar {
     &.theme-horizontal {
         display: block;
-        height: $header-height;
+        height: 60px;
         width: 100%;
         z-index: 1023;
         position: fixed;
-        top: $header-height;
+        top: 0px;
         margin-top: 0;
 
         .pcoded-badge {
@@ -1387,6 +1388,7 @@
                             > a {
                                 &:before {
                                     background-color: $primary-color;
+                                    color: white;;
                                 }
                             }
                         }
@@ -1421,8 +1423,9 @@
                     }
 
                     a {
-                        color: $menu-dark-background;
+                        color: white;
                         padding: 10px 20px 10px 30px;
+                        background-color: rgba(78,84,194,1);;
 
                         &:before {
                             left: 5px;
@@ -1445,7 +1448,7 @@
                         &.pcoded-trigger,
                         &:hover {
                             > a {
-                                color: $primary-color;
+                                color: white;
                             }
                         }
                     }

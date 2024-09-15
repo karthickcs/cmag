@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="custom-select-pink ">
+    
+
+    <select class="form-select" name="taskid" id="taskid" [(ngModel)]="taskid"
+      (ngModelChange)="loadruniddata(false)">
+      <option value="0" disabled selected>Select Task</option>
+      <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+        {{taskmain.taskname}} ---> {{taskmain.taskid}}
+      </option>
+    </select>
+  </div>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+  <div class="custom-select-org ">
+    
+    <select class="form-select" name="runidselect" id="runidselect" [(ngModel)]="runidselect"
+      (ngModelChange)="loadrunid()">
+      <option value="0" disabled selected>Select RunID</option>
+      <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+        Run Id ---> {{dplisten.runid}}
+      </option>
+    </select>
+  </div>
+</div>
+
+
+<div class="row">
+
+  <br>
+  <div class="row">
+    <div class="col-sm-12">
+      <app-card cardTitle="comparison" [options]="false">
+
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="input-group">
+              <input type="text" (keydown)="searchchange()" id="m-search" class="form-control" name="searchtext" id="searchtext" [(ngModel)]="searchtext" placeholder="Search . . ." [style.width]="'330px'">
+              <span class="input-group-append search-btn btn btn-primary">
+                <i (click)="search()" class="feather icon-search input-group-text"></i>
+              </span>
+            </div>
+            <!-- activeIds="static-1" -->
+            <ngb-accordion [closeOthers]="true"  class="next-accordion">
+              <ngb-panel *ngFor="let item of this.grouped | keyvalue; let m = index" id="static-{{m+1}}">
+                <ng-template ngbPanelTitle>
+                  <h5><a href="javascript:">{{item.key}}-->{{gettnameList(item.value)}}</a></h5>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <table *ngFor="let iteminner of item.value | keyvalue; let k = index" style="margin-bottom: 0px;"
+                    class="table table-bordered table-sm">
+                    <ng-template [ngIf]="k==0">
+                      <thead>
+                        <tr >
+                          
+                          <th  >Base System</th>
+                           
+                          <th  >Updated System</th>
+                        </tr>
+                      </thead>
+                    </ng-template>
+                    <tbody>
+                      <tr class="table-success">
+                         
+                        <td><b>{{genTname($any(iteminner).value)}}</b>&nbsp;&nbsp;&nbsp;&nbsp;
+                         <a style="width:96%;text-align: left; vertical-align: middle; color: blue;"
+                             ><u>{{iteminner.key.split("|")[1]}}</u></a>
+                        </td>
+                      
+ 
+                         
+                        <td><b>{{genTname($any(iteminner).value)}}</b>&nbsp;&nbsp;&nbsp;&nbsp;
+                         <span style="  color: red;"
+                             ><u>{{genTargetid($any(iteminner).value)}}</u></span>
+                        </td>
+                      
+
+                      </tr>
+                       
+                      <!-- <tr  *ngFor="let diffobj  of $any(iteminner).value; let i = index"> -->
+                     <tr> 
+                        <td> <textarea style="  color: blue;"class="text-area" name="tnamewclist" value = "{{genxmlold($any(iteminner).value)}}" id="tnamewclist" rows="5" readonly></textarea>      </td>
+                        <td> <textarea style="  color: red;" class="text-area" name="tnamewclist" value= "{{genxmlnew($any(iteminner).value)}} " id="tnamewclist" rows="5" readonly></textarea>     </td>
+                        
+                       
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </ng-template>
+              </ngb-panel>
+
+            </ngb-accordion>
+
+
+
+          </div>
+        </div>
+
+      </app-card>
+    </div>
+  </div>

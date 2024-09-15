@@ -12,4 +12,6 @@ export * from './tableStructController.service';
 import { TableStructControllerService } from './tableStructController.service'; 
 export * from './taskController.service';
 import { TaskControllerService } from './taskController.service';
-export const APIS = [DbControllerService, DiffTableControllerService, DpListenControllerService, FileControllerService, JwtAuthenticationControllerService, MyErrorControllerService, TaskControllerService];
+export * from './userController.service';
+import { UserControllerService } from './userController.service';
+export const APIS = [UserControllerService,DbControllerService, DiffTableControllerService, DpListenControllerService, FileControllerService, JwtAuthenticationControllerService, MyErrorControllerService, TaskControllerService];

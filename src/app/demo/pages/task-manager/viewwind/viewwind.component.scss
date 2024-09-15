@@ -12,8 +12,15 @@ th {
     top: 0;
     // border: 1px solid black;
   }
-  
+  .img-radius {
+    border-radius: 55%;
+    width: 50px;
+    height: 50px;
+}  
  
+td.spaced {
+	margin-left: 20px;
+  }
   td{
 	z-index: 10;
 	background-color:  rgba(245, 241, 237, 0.858);
@@ -169,6 +176,75 @@ table {
   }
   td{
 	 
-	border :0.2px  solid rgb(231, 215, 215);
+	border :0.2px  solid #e7d7d7;
   }
-  
+  .i-circle {
+    display: inline-block;
+    background-color: #6579CF;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 21px;
+    line-height: 45px; /* set to same size as width, height */
+    width: 45px;
+    height: 45px;
+    text-align: center;
+	vertical-align: bottom;
+}
+.i-circlered {
+    display: inline-block;
+    background-color: #6579CF;
+    color: #fff;
+    border-radius: 50%;
+    font-size: 21px;
+    line-height: 45px; /* set to same size as width, height */
+    width: 45px;
+    height: 45px;
+    text-align: center;
+	vertical-align: bottom;
+}
+.inlii {
+	display: inline-block;
+   
+    line-height: 45px; /* set to same size as width, height */
+     
+    
+}
+.accorsize {
+  max-height:480px;
+}
+.i-circlered0 {
+  display: inline-block;
+  background-color: #de620f;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 21px;
+  line-height: 45px; /* set to same size as width, height */
+  width: 45px;
+  height: 45px;
+  text-align: center;
+vertical-align: bottom;
+}
+.i-circlered1 {
+  display: inline-block;
+  background-color: #65cf7e;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 21px;
+  line-height: 45px; /* set to same size as width, height */
+  width: 45px;
+  height: 45px;
+  text-align: center;
+vertical-align: bottom;
+}
+.i-circlered2 {
+  display: inline-block;
+  background-color: #c4dc0e;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 21px;
+  line-height: 45px; /* set to same size as width, height */
+  width: 45px;
+  height: 45px;
+  text-align: center;
+vertical-align: bottom;
+}

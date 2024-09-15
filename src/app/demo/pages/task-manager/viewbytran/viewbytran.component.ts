@@ -9,6 +9,7 @@ import { AlertService } from '../../../../theme/shared/components';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash'
+import { AuthService } from '../../../../auth/auth.service';
 declare var $: any;
 //************************************** */
 // $('.collapse').not(':first').collapse(); // Collapse all but the first row on the page.
@@ -54,7 +55,7 @@ export class ViewbytranComponent implements OnInit {
     private diffTableControllerService: DiffTableControllerService,
     private dpListenControllerService: DpListenControllerService,
     private alertService: AlertService,
-    private cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,private authservice: AuthService,
     private router: Router
 
   ) { }
@@ -115,6 +116,7 @@ export class ViewbytranComponent implements OnInit {
   loaddifftable() {
     this.diffTableDTO.taskid = "" + this.dplistenentry.taskid;
     this.diffTableDTO.runid = this.dplistenentry.runid;
+    this.diffTableDTO.role= this.authservice.getRole();
     this.diffTableControllerService.getDiffDataUsingPOST(this.diffTableDTO).subscribe(
       (response: any) => {
 
@@ -163,6 +165,7 @@ export class ViewbytranComponent implements OnInit {
             this.addDTO['oldval'] = "Missing Tags";
             this.addDTO['newval'] = v1[1];
             this.addDTO['maintranid'] = diff_entry.maintranid;
+            this.addDTO['newtranid'] = diff_entry.newtranid;
             this.addDTO['runid'] = diff_entry.runid;
             this.addDTO['taskid'] = diff_entry.taskid;
             this.changeDTOArray.push(this.addDTO);
@@ -176,6 +179,7 @@ export class ViewbytranComponent implements OnInit {
             this.removeDTO['column'] = this.getcolumnname(v1[0]);
             this.removeDTO['newval'] = "Missing Tags";
             this.removeDTO['maintranid'] = diff_entry.maintranid;
+            this.removeDTO['newtranid'] = diff_entry.newtranid;
             this.removeDTO['runid'] = diff_entry.runid;
             this.removeDTO['taskid'] = diff_entry.taskid;
             this.changeDTOArray.push(this.removeDTO);
@@ -188,6 +192,7 @@ export class ViewbytranComponent implements OnInit {
           this.changeDTO['oldval'] = val[2][0];
           this.changeDTO['newval'] = val[2][1];
           this.changeDTO['maintranid'] = diff_entry.maintranid;
+          this.changeDTO['newtranid'] = diff_entry.newtranid;
           this.changeDTO['runid'] = diff_entry.runid;
           this.changeDTO['taskid'] = diff_entry.taskid;
           let f=val[1]

@@ -1,0 +1,251 @@
+
+ <p-colorPicker [style]="{'width':'300px'}"  
+    [(ngModel)]="color" 
+    [inline]="true" ></p-colorPicker> 
+<div class="col-xl-12">
+  <div class="row">
+    
+    
+
+    
+    <button type="button" class="btn1" data-toggle="modal" (click)="onApply() ">Apply</button>
+    <input type="text" name="cc" [(ngModel)]="colorrgb" class="text-line">
+    <button type="button" class="btn1" data-toggle="modal" (click)="onrgb() ">Rgb</button>
+    </div>
+    <hr>
+    <button type="button" class="btn1" data-toggle="modal" (click)="oncreate(); popUser.show()">CreateUser</button>
+    <app-card cardTitle="User" blockClass="table-border-style">
+
+
+      <div class="table-responsive ">
+        <table   class="table table-bordered table-sm thcc">
+          <thead>
+            <tr class="table-secondary">
+              <th>#</th>
+              <th>User </th>
+
+              <th>Role</th>
+              <th>Action</th>
+
+
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of userArray; let i = index">
+
+              <td>{{i+1}}</td>
+
+
+              <td>{{user.username}}</td>
+              <td>{{user.roles}}</td>
+
+              <td>
+                <div class="row">
+                  <section>
+
+                    <button (click)="onEdit(user.id); popUser.show()" #tooltip="matTooltip" matTooltip="Edit Task"
+                      mat-icon-button color="primary" matTooltipPosition="right" aria-tooltip="">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button (click)="ondelete(user.id)" #tooltip="matTooltip" matTooltip="Delete Task" mat-icon-button
+                      color="warn" matTooltipPosition="right" aria-tooltip="">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+
+
+
+                  </section>
+                </div>
+              </td>
+
+
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+
+
+
+  <div class="col-xl-12">
+    <button type="button" class="btn1" data-toggle="modal" (click)="oncreateRole(); popRole.show()">CreateRole</button>
+    <app-card cardTitle="Roles" blockClass="table-border-style">
+
+
+      <div class="table-responsive ">
+        <table   class="table table-bordered table-sm ">
+          <thead >
+            <tr   >
+              <th   >#</th>
+              <th>Roles </th>
+
+              <th>TableList</th>
+              <th>Action</th>
+
+
+
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let role of roleArray; let i = index">
+
+              <td>{{i+1}}</td>
+
+
+              <td>{{role.roles}}</td>
+              <td>{{role.tablelist}}</td>
+              <td>
+                <div class="row">
+                  <section>
+
+                    <button (click)="onedit(role.id );popRole.show() " #tooltip="matTooltip" matTooltip="Edit Task" mat-icon-button
+                      color="primary" matTooltipPosition="right" aria-tooltip="">
+                      <mat-icon>edit</mat-icon>
+                    </button>
+                    <button (click)="ondelete(role.id )" #tooltip="matTooltip" matTooltip="Delete Task" mat-icon-button
+                      color="warn" matTooltipPosition="right" aria-tooltip="">
+                      <mat-icon>delete</mat-icon>
+                    </button>
+
+
+
+                  </section>
+                </div>
+              </td>
+
+
+
+
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </app-card>
+  </div>
+
+  <div class="col-xl-8 col-md-12">
+
+
+    <app-ui-modal #popUser [dialogClass]="'modal-lg'">
+      <div class="app-modal-header">
+
+        <h2> <span class=" ">Create/Edit User</span></h2>
+        <hr>
+        <hr>
+        <div class="container">
+
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <label>UserName</label>&nbsp;&nbsp;&nbsp;
+                <input type="text" name="username" [(ngModel)]="userDto.username" class="text-line"
+                  placeholder="Enter User Name">
+              </div>
+
+            </div>
+            <br>
+            <div class="row">
+              <div class="col">
+                <label>Password</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="password" name="password" [(ngModel)]="userDto.password" class="text-line"
+                  placeholder="Enterpassword">
+              </div>
+
+            </div>
+            <br>
+            <div class="row">
+              <div class="col">
+                <label>Role</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <select class="text-line" name="roles" id="roles" [(ngModel)]="userDto.roles">
+                  <option value="0" disabled selected>Select Task</option>
+                  <option *ngFor="let role of roleArray" [value]="role.roles">
+                    {{role.roles}}
+                  </option>
+                </select>
+              </div>
+
+            </div>
+            <br>
+          </div>
+
+
+
+
+        </div>
+      </div>
+
+
+
+
+      <button type="button" #myModalClose class="close basic-close" data-dismiss="modal" aria-label="Close"
+        (click)="popUser.hide()"><span aria-hidden="true">&times;</span></button>
+
+      <div class="app-modal-body">
+
+
+      </div>
+      <div class="app-modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="popUser.hide()">Close</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="submitData()">Submit</button>
+      </div>
+    </app-ui-modal>
+    </div>
+
+    
+
+    <app-ui-modal #popRole [dialogClass]="'modal-lg'">
+      <div class="app-modal-header">
+
+        <h2> <span class=" ">Create/Edit Role</span></h2>
+        <hr>
+        <hr>
+        <div class="container">
+
+          <div class="container">
+            <div class="row">
+              <div class="col">
+                <label>Role</label>&nbsp;&nbsp;&nbsp;
+                <input type="text" name="role" [(ngModel)]="roleDto.roles" class="text-line"
+                  placeholder="EnterRole">
+              </div>
+
+            </div>
+            <br>
+            <div class="row">
+              <div class="col">
+                <label>TableList</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                <input type="tablelist" name="tablelist" [(ngModel)]="roleDto.tablelist" class="text-line"
+                  placeholder="EnterTablelist">
+              </div>
+
+            </div>
+         
+          </div>
+
+
+
+
+        </div>
+      </div>
+
+
+
+
+      <button type="button" #myModalRoleClose class="close basic-close" data-dismiss="modal" aria-label="Close"
+        (click)="popRole.hide()"><span aria-hidden="true">&times;</span></button>
+
+      <div class="app-modal-body">
+
+
+      </div>
+      <div class="app-modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"
+          (click)="popRole.hide()">Close</button>&nbsp;
+        <button type="button" class="btn btn-primary" (click)="submitDataRole()">Submit</button>
+      </div>
+    </app-ui-modal>
+   

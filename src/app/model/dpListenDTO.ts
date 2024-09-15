@@ -9,7 +9,12 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-
+export interface diffElement {
+    difference: string;
+    maintran: string;
+    newtran: string;
+    
+  };
 
 export interface DpListenDTO { 
     batchtime?: number;
@@ -57,4 +62,5 @@ export interface DpListenDTO {
     updatets?: Date;
     usernamesys1?: string;
     usernamesys2?: string;
+    tablewildcard?: string;
 }

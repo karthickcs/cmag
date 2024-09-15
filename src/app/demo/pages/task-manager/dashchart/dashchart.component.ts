@@ -26,6 +26,7 @@ import {
 import { AgGridAngular } from 'ag-grid-angular'; // Angular Data Grid Component
 import { ColDef } from 'ag-grid-community';
 import { TaskControllerService } from '../../../../api/taskController.service';
+import { FileControllerService } from '../../../../api/fileController.service';
 import { DpListenControllerService } from '../../../../api/dpListenController.service';
 import { TaskMainDTO } from '../../../../model/taskMainDTO';
 import { DpListenDTO } from '../../../../model/dpListenDTO';
@@ -146,6 +147,11 @@ export class DashchartComponent implements OnInit {
   diffcount: number = 0;
   addcount: number = 0;
   removedcount: number = 0;
+  role: any;
+blobText: any;
+  groupedmlevel: { [x: string]: { [x: string]: _.Dictionary<never[]>; }; };
+  staticcount: any=0;
+  transactcount: any=0;
 
   constructor(private taskControllerService: TaskControllerService,
     private diffTableControllerService: DiffTableControllerService,
@@ -154,8 +160,8 @@ export class DashchartComponent implements OnInit {
     private alertService: AlertService,
     private cdr: ChangeDetectorRef,
     private router: Router,
-    private route: ActivatedRoute, private authservice: AuthService
-
+    private route: ActivatedRoute, private authservice: AuthService,
+    private fileControllerService: FileControllerService
   ) {
     this.myDate = formatDate(new Date(), 'EEEE, MMMM d, y, ', 'en');
   }
@@ -163,6 +169,7 @@ export class DashchartComponent implements OnInit {
   ngOnInit(): void {
     this.user = this.authservice.currentUser();
     this.user = this.user[0].toUpperCase() + this.user.slice(1);
+    this.role= this.authservice.getRole();
     this.tabledata = require('../../../../../assets/tabledata.json');
 
 
@@ -174,24 +181,25 @@ export class DashchartComponent implements OnInit {
           this.loaddata(true);
           this.cdr.detectChanges();
           this.loaddifftable();
-
+          
           //  
 
         }
         else {
           this.loaddata(false);
+          
         }
 
       }
     );
 
     this.afterInit();
-
-    this.mySubscription = interval(30000).subscribe((x => {
+    
+    this.mySubscription = interval(60000).subscribe((x => {
       
       this.loadrunid();
       this.loaddifftable();
-      this.loadruniddata(false); 
+      this.loadruniddata(true); 
        
       this.afterInit();
 
@@ -200,14 +208,16 @@ export class DashchartComponent implements OnInit {
   }
   loadrunid() {
     // alert(this.runidselect);
-   
+    this.loadfile();
     this.dplistenentry = this.dplistenArray.find(dplisten => dplisten['runid'] == this.runidselect);
     // alert(JSON.stringify(this.dplistenentry));
     this.loaddifftable();
   }
   loaddifftable() {
+
     this.diffTableDTO.taskid = "" + this.taskid;
     this.diffTableDTO.runid = this.runidselect;
+    this.diffTableDTO.role= this.authservice.getRole();
    // this.diffTableDTOArray = [];
     this.diffcount = 0;
     this.addcount = 0;
@@ -248,7 +258,24 @@ export class DashchartComponent implements OnInit {
     this.router.navigate(['/windows', {
       taskid: this.taskid,
       runid: this.runidselect,
-      tranid: ""
+      tranid: "",
+      type: "ALL"
+    }]);
+  }
+  goBacktran() {
+    this.router.navigate(['/windows', {
+      taskid: this.taskid,
+      runid: this.runidselect,
+      tranid: "",
+      type : "T"
+    }]);
+  }
+  goBackstatic() {
+    this.router.navigate(['/windows', {
+      taskid: this.taskid,
+      runid: this.runidselect,
+      tranid: "",
+      type : "S"
     }]);
   }
   goBackmeta(optionval: any) {
@@ -292,7 +319,9 @@ export class DashchartComponent implements OnInit {
             if (this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]]) {
               this.newstruct = this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]]
             }
-            this.addDTO['tname'] = this.gettname(v1[0]);
+            this.addDTO['tname'] = diff_entry.oracletname;
+            this.addDTO['type'] = this.gettype(diff_entry.tval);
+            this.addDTO['product'] = diff_entry.ttype;
             this.addDTO['column'] = this.getcolumnname(v1[0]);
             this.addDTO['oldval'] = "_Missing_";
             this.addDTO['newval'] = v1[1];
@@ -316,7 +345,9 @@ export class DashchartComponent implements OnInit {
             if (this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]]) {
               this.newstruct = this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]]
             }
-            this.removeDTO['tname'] = this.gettname(v1[0]);
+            this.removeDTO['tname'] = diff_entry.oracletname;
+            this.removeDTO['type'] = this.gettype(diff_entry.tval);
+            this.removeDTO['product'] = diff_entry.ttype;
             this.removeDTO['oldval'] = v1[1];
             this.removeDTO['column'] = this.getcolumnname(v1[0]);
             this.removeDTO['newval'] = "_Missing_";
@@ -340,7 +371,9 @@ export class DashchartComponent implements OnInit {
             this.newstruct = this.tabnewstruct[this.gettname(val[1]) + ":" + diff_entry.maintranid.split("|")[1]]
           }
 
-          this.changeDTO['tname'] = this.gettname(val[1]);
+          this.changeDTO['tname'] = diff_entry.oracletname;
+          this.changeDTO['type'] = this.gettype(diff_entry.tval);
+            this.changeDTO['product'] = diff_entry.ttype;
           this.changeDTO['column'] = this.getcolumnname(val[1]);
           this.changeDTO['oldval'] = val[2][0];
           this.changeDTO['newval'] = val[2][1];
@@ -373,7 +406,19 @@ export class DashchartComponent implements OnInit {
       this.tname = this.gettname(this.tranidreturn.split("|")[0])
     }
 
-
+    const groupbytype = _.groupBy(this.changeDTOArray, "type"); 
+     
+    // Group by age within each city group
+    const groupbyproduct = _.mapValues(groupbytype, (maintranidgr) => {
+      return _.groupBy(maintranidgr, "product");
+    });
+    if(groupbytype['Static']){
+      this.staticcount=  Object.keys( groupbytype['Static']).length;
+    }
+    if(groupbyproduct['Transactional']){
+      this.transactcount= Object.keys( groupbytype['Transactional']).length;
+    }
+    
     this.groupedoriginal = this.grouped;
     this.groupedval = this.grouped[Object.keys(this.grouped)[0]]
     this.afterInit();
@@ -462,6 +507,7 @@ export class DashchartComponent implements OnInit {
           }, 0);
         }
         this.loadrunid();
+
       },
       (error) => {
         console.log(error);
@@ -853,4 +899,33 @@ export class DashchartComponent implements OnInit {
       }
     };
   }
+
+  gettype(tval: any): any {
+      
+    if (tval=='TR' ){
+      return "Transactional";
+    }
+    return "Static";
+}
+  loadfile() {
+    this.fileControllerService.getfiletrunUsingGET(this.taskid,this.runidselect).subscribe(
+      (response: any) => {
+
+        // // alert(response);
+       let res = response;
+       const blob = new Blob([response], { type: 'text/csv' });
+       blob.text().then(text => {
+        this.blobText = text.substring(3,20000);
+ 
+       
+              })
+  
+       
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
   }

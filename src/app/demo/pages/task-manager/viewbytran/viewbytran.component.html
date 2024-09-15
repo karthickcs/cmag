@@ -1,12 +1,7 @@
-<ngb-accordion [closeOthers]="true" activeIds="static-1" class="next-accordion">
-  <ngb-panel id="static-1">
-    <ng-template ngbPanelTitle>
-      <h5><a href="javascript:">SEARCH PANEL</a></h5>
-    </ng-template>
-    <ng-template ngbPanelContent>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="exampleFormControlSelect1">Task ID</label>
+ 
+      <div class="row">
+        <div class="custom-select-pink ">
+          
 
           <select class="form-select" name="taskid" id="taskid" [(ngModel)]="taskid"
             (ngModelChange)="loadruniddata(false)">
@@ -17,10 +12,9 @@
           </select>
         </div>
 
-      </div>
-      <div class="col-md-6">
-        <div class="form-group">
-          <label for="exampleFormControlSelect2">Run ID</label>
+      
+        <div class="custom-select-org ">
+          
           <select class="form-select" name="runidselect" id="runidselect" [(ngModel)]="runidselect"
             (ngModelChange)="loadrunid()">
             <option value="0" disabled selected>Select RunID</option>
@@ -29,13 +23,12 @@
             </option>
           </select>
         </div>
-
       </div>
- 
+      
       <div class="table-responsive ">
         <table class="table table-bordered table-sm">
           <thead>
-            <tr class="table-secondary">
+            <tr >
 
               <th>TaskName</th>
               <th>TaskId</th>
@@ -57,7 +50,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="table-light">
+            <tr >
               
               <td>{{dplistenentry.taskname}}</td>
               <td>{{dplistenentry.taskid}}</td>
@@ -81,9 +74,7 @@
           </tbody>
         </table>
       </div>
-    </ng-template>
-  </ngb-panel>
-</ngb-accordion>
+ 
 
 
 <div class="row">
@@ -118,13 +109,16 @@
                          
                         <table   style="margin-bottom: 0px;"
                         class="table table-bordered table-sm">
-                        <ng-template [ngIf]="k==0">
+                        <ng-template [ngIf]="k>=0">
                           <thead>
-                            <tr class="table-secondary">
+                            <tr>
                               <th>#</th>
-                              <th colspan="3">Base System</th>
-                              <th>#</th>
-                              <th colspan="3">Updated System</th>
+                              <th>TableName</th>
+                              <th>ColumnName</th>
+                              <th>Value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbgreen.svg" alt="" class="img-fluid"></th>
+                               
+                              <th>Value&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/dbred.svg" alt="" class="img-fluid"></th>
+                              <th>Tar recid</th>
                             </tr>
                           </thead>
                         </ng-template>
@@ -135,19 +129,45 @@
                                 (click)="onMaintrainid(iteminner.key,dplistenentry.runid,dplistenentry.taskid)"><u>{{iteminner.key.split("|")[1]}}</u></a>
                             </td>
                           </tr> -->
-                          <tr class="table-light" *ngFor="let diffobj  of $any(iteminner).value; let i = index">                         
+                          <tr  *ngFor="let diffobj  of $any(iteminner).value; let i = index">                         
                             <!-- <td></td> -->
                             <td>{{i+1}}</td>
-                            <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;"
-                                value="{{diffobj.column}}" readonly></td>
-                            <td><input type="text"
-                                style="width:96%;text-align: left; vertical-align: middle; color: rgb(5, 92, 57);"
-                                value="{{diffobj.oldval}}" readonly></td>
-                            <td>{{i+1}}</td>
-                            <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;"
-                                value="{{diffobj.column}}" readonly></td>
-                            <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: red;"
-                                value="{{diffobj.newval}}" readonly></td>
+                            <td  >
+                               
+                              <div *ngIf="i==0" >
+                                <td> <button mat-button color="primary" style=" border: 0cap;"
+                                  matTooltipPosition="right" aria-tooltip="">
+                                  {{diffobj.tname}}
+                                </button>
+                              </td>
+                              </div>                                   
+                            </td>  
+                            <!-- <td><input type="text" style="width:96%;text-align: left; vertical-align: middle;  " value="{{diffobj.tname}}" readonly></td> -->
+                            
+                            <td> <button mat-button  style="color:blue;border: 0cap;"
+                                matTooltipPosition="right" aria-tooltip="">
+                                {{diffobj.column}}
+                              </button>
+                            </td>
+                            
+                              <td> <button mat-button style="color:green;border: 0cap;"
+                                matTooltipPosition="right" aria-tooltip="">
+                                {{diffobj.oldval}}
+                              </button>
+                            </td>
+                            
+                              <td> <button mat-button style="color:red;border: 0cap;"
+                                matTooltipPosition="right" aria-tooltip="">
+                                {{diffobj.newval}}
+                              </button>
+                              </td>
+                              <td> <button mat-button style="color:red;border: 0cap;"
+                                matTooltipPosition="right" aria-tooltip="">
+                                {{diffobj.newtranid.split("|")[1]}}
+                              </button>
+                              </td>
+                           
+                            
                           </tr>
                         </tbody>
                       </table>

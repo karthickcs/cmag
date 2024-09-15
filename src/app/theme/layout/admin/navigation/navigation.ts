@@ -108,19 +108,98 @@ const NavigationItems = [
         icon: 'feather icon-layout'
       }
       ,
+      // {
+      //   id: 'TranView',
+      //   title: ' TranView',
+      //   type: 'item',
+      //   url: '/windowstran',
+        
+      //   icon: 'feather icon-layout'
+      // } ,
+      // {
+      //   id: 'MetaData-Diff',
+      //   title: 'MetaData-Diff',
+      //   type: 'item',
+      //   url: '/metaData',
+        
+      //   icon: 'feather icon-layout'
+      // } ,
+      // {
+      //   id: 'another-view',
+      //   title: 'another-view',
+      //   type: 'item',
+      //   url: '/another-view',
+        
+      //   icon: 'feather icon-layout'
+      // },
+      // {
+      //   id: 'accordian',
+      //   title: 'accordian',
+      //   type: 'item',
+      //   url: '/accordian',
+        
+      //   icon: 'feather icon-layout'
+      // },
+      // {
+      //   id: 'difference',
+      //   title: 'difference',
+      //   type: 'item',
+      //   url: '/difference',
+        
+      //   icon: 'feather icon-layout'
+      // },
       {
-        id: 'TranView',
-        title: ' TranView',
+        id: 'Other Views',
+        title: 'Other Views',
+        type: 'collapse',
+        children: [
+          {
+            id: 'TranView',
+            title: 'TranView',
+            type: 'item',
+            url: '/transactionview',
+           
+          },
+          {
+            id: 'XmlView',
+        title: 'XmlView',
         type: 'item',
-        url: '/windowstran',
+        url: '/xmlview',
+        
+       
+          }
+        ],
+        icon: 'feather icon-layout'
+      },
+      {
+        id: 'usermanager',
+        title: 'User Manager',
+        type: 'item',
+        url: '/usermanager',
         
         icon: 'feather icon-layout'
-      } ,
+      },
+      // {
+      //   id: 'TransactionView',
+      //   title: 'TransactionView',
+      //   type: 'item',
+      //   url: '/transactionview',
+        
+      //   icon: 'feather icon-layout'
+      // },
+      // {
+      //   id: 'XmlView',
+      //   title: 'XmlView',
+      //   type: 'item',
+      //   url: '/xmlview',
+        
+      //   icon: 'feather icon-layout'
+      // },
       {
-        id: 'MetaData-Diff',
-        title: 'MetaData-Diff',
+        id: 'Log View',
+        title: 'Logview',
         type: 'item',
-        url: '/metaData',
+        url: '/fileview',
         
         icon: 'feather icon-layout'
       }

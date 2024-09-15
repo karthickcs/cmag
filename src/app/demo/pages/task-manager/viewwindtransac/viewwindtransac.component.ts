@@ -9,6 +9,7 @@ import { AlertService } from '../../../../theme/shared/components';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash'
+import { AuthService } from '../../../../auth/auth.service';
 declare var $: any;
 //************************************** */
 // $('.collapse').not(':first').collapse(); // Collapse all but the first row on the page.
@@ -77,7 +78,8 @@ anstab: any= {};
     private dpListenControllerService: DpListenControllerService,
     private alertService: AlertService,
     private cdr: ChangeDetectorRef,
-    private router: Router,
+    private router: Router,private authservice: AuthService,
+    
     private route: ActivatedRoute
 
   ) { }
@@ -214,6 +216,7 @@ anstab: any= {};
   loaddifftable(tid: any) {
     this.diffTableDTO.taskid = "" + this.taskid;
     this.diffTableDTO.runid = this.runidselect;
+    this.diffTableDTO.role= this.authservice.getRole();
     this.diffTableControllerService.getDiffDataUsingPOST(this.diffTableDTO).subscribe(
       (response: any) => {
 

@@ -9,3 +9,6 @@ export * from './responseEntity';
 export * from './tableStructDTO';
 export * from './taskMainDTO';
 export * from './userDTO';
+export * from './rolemasterDTO';
+export * from './fileDto';
+

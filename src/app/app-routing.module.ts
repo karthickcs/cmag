@@ -51,10 +51,10 @@ const routes: Routes = [
         path: 'metaData',
         loadChildren: () => import('./demo/pages/task-manager/managetask/managetask.module').then(module => module.ManagetaskModule)
       },
-      {
-        path: 'transactionview',
-        loadChildren: () => import('./demo/pages/task-manager/reports/reports.module').then(module => module.ReportsModule)
-      },
+      // {
+      //   path: 'transactionview',
+      //   loadChildren: () => import('./demo/pages/task-manager/reports/reports.module').then(module => module.ReportsModule)
+      // },
       {
         path: 'windows',
         loadChildren: () => import('./demo/pages/task-manager/viewwind/viewwind.module').then(module => module.ViewwindModule)
@@ -70,8 +70,24 @@ const routes: Routes = [
       {
         path: 'difference',
         loadChildren: () => import('./demo/pages/task-manager/viewdifference/viewdifference.module').then(module => module.ViewdifferenceModule)
+      },
+      {
+        path: 'usermanager',
+        loadChildren: () => import('./demo/pages/task-manager/usermanager/usermanager.module').then(module => module.UsermanagerModule)
+      },
+      {
+        path: 'transactionview',
+        loadChildren: () => import('./demo/pages/task-manager/tranview/tranview.module').then(module => module.TranviewModule)
+      },
+      {
+        path: 'xmlview',
+        loadChildren: () => import('./demo/pages/task-manager/xmlview/xmlview.module').then(module => module.XmlviewModule)
+      },
+      {
+        path: 'fileview',
+        loadChildren: () => import('./demo/pages/task-manager/fileview/fileview.module').then(module => module.FileviewModule)
       }
-
+      
     ]
   },
   {

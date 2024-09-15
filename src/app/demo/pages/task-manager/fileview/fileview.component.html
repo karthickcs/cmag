@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="custom-filter "><img src="assets/images/funnel.svg" alt=""></div>
+  <div class="custom-select-pink ">
+    <select name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+      <option value="0" disabled selected>Task</option>
+      <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+        {{taskmain.taskname}}--{{taskmain.taskid}}
+      </option>
+    </select>
+    <div class="select-arrow"></div>
+  </div>&nbsp;&nbsp;&nbsp;&nbsp;
+  <div class="custom-select-org "> <select name="runidselect" id="runidselect" [(ngModel)]="runidselect"
+      (ngModelChange)="loadrunid()">
+      <option value="0" disabled selected> RunID</option>
+      <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+        Run Id - {{dplisten.runid}}
+      </option>
+    </select>
+    <div class="select-arrow"></div>
+  </div>
+  &nbsp; &nbsp;
+  <div class="custom-filter ">
+    <button mat-raised-button color="primary" matTooltipPosition="right" (click)="loadfile()"
+      aria-tooltip="">
+      Preview
+    </button>
+  </div>
+  &nbsp; &nbsp; &nbsp;
+  <div class="custom-filter ">
+    <button mat-raised-button color="primary" matTooltipPosition="right" (click)="downloadloadfile()"
+      aria-tooltip="">
+      Download
+    </button>
+  </div>
+  &nbsp; &nbsp; &nbsp;
+  <div class="custom-select-org "> <select name="linecount" id="linecount" [(ngModel)]="linecount"
+    (ngModelChange)="loadrunid()">
+    <option value="1000"   selected> 1000  - LINES</option>
+    <option value="2000"    > 2000 - LINES</option>
+    <option value="3000"    > 3000 - LINES</option>
+    <option value="5000"    > 5000 - LINES</option>
+  </select>
+  <div class="select-arrow"></div>
+  </div>
+  &nbsp; &nbsp; &nbsp;
+  <div class="custom-filter ">
+    <button mat-raised-button color="primary" matTooltipPosition="right" (click)="viewlog()"
+      aria-tooltip="">
+      View Log
+    </button>
+  </div>
+</div>
+
+<br> 
+<label><B>File Preview</B></label>
+<div>
+
+<textarea  style="width: 1300px;"  name="blobText" [(ngModel)] = "blobText" id="blobText" rows="50" readonly></textarea>
+</div>
+
+
+ 

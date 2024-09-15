@@ -16,8 +16,23 @@ import { DbControllerService } from '../../../api/dbController.service';
   styleUrls: ['./task-manager.component.scss']
 })
 export class TaskManagerComponent implements OnInit {
+cleartext() {
+  this.taskMainDTO.tablewildcard="";
+  this.tnamewc="";
+}
+addtext() {
+ 
+  if(this.tnamewc!=""){
+    if(this.taskMainDTO.tablewildcard.split('\r\n').length  <16){
+      this.taskMainDTO.tablewildcard= this.taskMainDTO.tablewildcard+'\r\n'+this.tnamewc;
+    }
+  
+  }
+}
 
 generatemeta: any=[];
+tnamewc: any="";
+tnamewclist: any="";
 clear2() {
   this.taskMainDTO.starttsOnlinesys2="";
   this.taskMainDTO.endtsOnlinesys2="";
@@ -54,6 +69,7 @@ droptrigger1: any;
     this.taskMainDTO.dbtypesys2 = "oracle";
     this.taskMainDTO.sys1type = "DB";
     this.taskMainDTO.sys2type = "DB";
+    this.taskMainDTO.tablewildcard = "";
     //alert(JSON.stringify(this.taskMainDTO));
 
   }
@@ -76,7 +92,8 @@ droptrigger1: any;
 
 
   ngOnInit() {
-
+  this.test1="";
+  this.test2="";
     this.loaddata();
   }
   loaddata() {
@@ -155,7 +172,7 @@ droptrigger1: any;
     this.dplistenentry.reportgentime =0
     this.dplistenentry.comparetime =0
     this.dplistenentry.dataloadtime =0
-
+    this.dplistenentry.tablewildcard =this.taskMainDTO.tablewildcard;
     this.dpListenControllerService.savedplistenUsingPOST(this.dplistenentry).subscribe(
       (response: any) => {
         this.alertService.success('Run created succesful', this.options);
@@ -217,7 +234,7 @@ droptrigger1: any;
     this.dplistenentry.reportgentime =0
     this.dplistenentry.comparetime =0
     this.dplistenentry.dataloadtime =0
-
+    this.dplistenentry.tablewildcard =this.taskMainDTO.tablewildcard;
     this.dpListenControllerService.savedplistenUsingPOST(this.dplistenentry).subscribe(
       (response: any) => {
         this.alertService.success('Run created succesful', this.options);
@@ -313,7 +330,7 @@ droptrigger1: any;
     );
   }
   craetetriggersys2() {
-    this.createtrigger2="";
+    this.test2="";
     this.dbtest.jdbcurlsys1 = this.taskMainDTO.jdbcurlsys2
     this.dbtest.usernamesys1 = this.taskMainDTO.usernamesys2
     this.dbtest.passwordsys1 = this.taskMainDTO.passwordsys2
@@ -323,15 +340,15 @@ droptrigger1: any;
     this.dbtest.endtssys1 = this.taskMainDTO.endtssys2
     this.dbtestService.createtriggerUsingPOST(this.dbtest).subscribe(
       (response: any) => {
-        this.createtrigger2=response.status;
+        this.test2=response.status;
       },
       (error) => {
-        this.createtrigger2="Failed";
+        this.test2="Failed";
       }
     );
     }
     droptriggersys2() {
-      this.droptrigger2="";
+      this.test2="";
       this.dbtest.jdbcurlsys1 = this.taskMainDTO.jdbcurlsys2
       this.dbtest.usernamesys1 = this.taskMainDTO.usernamesys2
       this.dbtest.passwordsys1 = this.taskMainDTO.passwordsys2
@@ -341,17 +358,17 @@ droptrigger1: any;
       this.dbtest.endtssys1 = this.taskMainDTO.endtssys2
       this.dbtestService.droptriggerUsingPOST(this.dbtest).subscribe(
         (response: any) => {
-          this.droptrigger2=response.status;
+          this.test2=response.status;
         },
         (error) => {
-          this.droptrigger2="Failed";
+          this.test2="Failed";
         }
       );
     }
     createtrigger2: any;
     droptrigger2: any;
     droptriggersys1() {
-      this.droptrigger1="";
+      this.test1="";
       this.dbtest.jdbcurlsys1 = this.taskMainDTO.jdbcurlsys1
       this.dbtest.usernamesys1 = this.taskMainDTO.usernamesys1
       this.dbtest.passwordsys1 = this.taskMainDTO.passwordsys1
@@ -361,16 +378,16 @@ droptrigger1: any;
       this.dbtest.endtssys1 = this.taskMainDTO.endtssys1
       this.dbtestService.droptriggerUsingPOST(this.dbtest).subscribe(
         (response: any) => {
-          this.droptrigger1=response.status;
+          this.test1=response.status;
         },
         (error) => {
           console.log(error)
-          this.droptrigger1="Failed";
+          this.test1="Failed";
         }
       );
     }
     createtriggersys1() {
-      this.createtrig1="";
+      this.test1="";
       this.dbtest.jdbcurlsys1 = this.taskMainDTO.jdbcurlsys1
       this.dbtest.usernamesys1 = this.taskMainDTO.usernamesys1
       this.dbtest.passwordsys1 = this.taskMainDTO.passwordsys1
@@ -380,11 +397,11 @@ droptrigger1: any;
       this.dbtest.endtssys1 = this.taskMainDTO.endtssys1
       this.dbtestService.createtriggerUsingPOST(this.dbtest).subscribe(
         (response: any) => {
-          this.createtrig1=response.status;
+          this.test1=response.status;
         },
         (error) => {
           console.log(error)
-          this.createtrig1="Failed";
+          this.test1="Failed";
         }
       );
     }

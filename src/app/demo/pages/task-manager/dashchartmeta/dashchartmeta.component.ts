@@ -208,7 +208,7 @@ getrunid(arg0: number) {
 
     this.afterInit();
 
-    this.mySubscription = interval(10000).subscribe((x => {
+    this.mySubscription = interval(60000).subscribe((x => {
       this.loadrunid();
      
       this.loadruniddata(false); 
@@ -739,11 +739,16 @@ getrunid(arg0: number) {
     return cname;
   }
   getPercentTstruct() {
-    if (this.processedTstruct > 8000)
-      return 100;
-    else {
-      return Math.round((this.processedTstruct / 8000) * 100)
+    try {
+      if (this.processedTstruct > 8000)
+        return 100;
+      else {
+        return Math.round((this.processedTstruct / this.dplistenentry.rowcount) * 100)
+      }
+    } catch (error) {
+      return 0;
     }
+   
 
   }
 }

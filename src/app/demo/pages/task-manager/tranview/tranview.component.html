@@ -1,0 +1,248 @@
+<div class="row">
+  <div class="custom-select-pink ">
+    
+
+    <select class="form-select" name="taskid" id="taskid" [(ngModel)]="taskid"
+      (ngModelChange)="loadruniddata(false)">
+      <option value="0" disabled selected>Select Task</option>
+      <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+        {{taskmain.taskname}} ---> {{taskmain.taskid}}
+      </option>
+    </select>
+  </div>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+
+  <div class="custom-select-org ">
+    
+    <select class="form-select" name="runidselect" id="runidselect" [(ngModel)]="runidselect"
+      (ngModelChange)="loadrunid()">
+      <option value="0" disabled selected>Select RunID</option>
+      <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+        Run Id ---> {{dplisten.runid}}
+      </option>
+    </select>
+  </div>
+</div>
+
+<!-- 
+<div style="border:1px solid rgb(216, 190, 190);" class="row">
+
+  <div class="table-responsive ">
+
+    <table   style="height:250px" class="table">
+      <col width='40px' />
+      <thead>
+        <tr style="border-bottom:0.2px dotted rgb(215, 212, 212)">
+
+          <th class="divcsfull">#</th>
+          <th class="divcsfull"> Table <img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
+            ({{tablecount}})</th>
+          <th class="divcsfull">Difference ({{diffcount}})</th>
+
+          <th class="divcsfull">OnlyinSrc</th>
+          <th class="divcsfull">Identical</th>
+          <th class="divcsfull">Difference ({{diffcount}})</th>
+          <th class="divcsfull"> Table <img src="assets/images/dbredmin.svg" alt="" class="img-fluid"> ({{tablecount}})
+          </th>
+
+
+        </tr>
+      </thead>
+      <tbody>
+        <tr style="border-bottom:0.2px dotted rgb(215, 212, 212)"
+          *ngFor="let item of this.groupedtname | keyvalue; let m = index">
+          <td class="spaced">{{m+1}}</td>
+          <td class="spaced" align="left"><img (click)="filterTable(item.key)" src="assets/images/tabm.png" alt=""
+              class="img-fluid">&nbsp;<button (click)="filterTable(item.key)" style="color:blue;font-size: small;"
+              mat-button color="primary" matTooltipPosition="right" aria-tooltip="">
+              {{item.key}}
+            </button></td>
+          <td class="spaced" align="center">{{(item.value | keyvalue ).length}}</td>
+
+          <td class="spaced">0</td>
+          <td class="spaced">0</td>
+          <td align="center">{{(item.value | keyvalue ).length}}</td>
+          <td class="spaced"><img (click)="filterTable(item.key)" src="assets/images/tabm.png" alt=""
+              class="img-fluid"><button (click)="filterTable(item.key)" style="color:bluefont-size: small;" mat-button
+              color="primary" matTooltipPosition="right" aria-tooltip="">
+              {{item.key}}
+            </button>&nbsp;</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div> -->
+<div  class="input-group"> 
+  <input type="text" (input)="searchchangeproduct()" id="m-searchproduct" 
+  class="form-control" name="searchtextproduct" id="searchtextproduct" [(ngModel)]="searchtextproduct" 
+  placeholder="Search . . ." [style.width]="'330px'">
+  <span class="input-group-append search-btn btn btn-primary">
+    <i (click)="searchchangeproduct()" class="feather icon-search input-group-text"></i>
+  </span>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <span  (click)="onclick('')" class="i-circlered">ALL</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  
+  <span *ngFor="let iteminner of this.groupedmleveloriginal['Transactional'] | keyvalue"> 
+  <span  (click)="onclick((iteminner.key+'').split('-')[0])" class="i-circlered">{{(iteminner.key+'').split('-')[0]}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+</span>
+ 
+</div>
+<div  >
+  <ngb-accordion  [closeOthers]="true" activeIds="static-1"  class="next-accordion bg-success">
+    <ngb-panel *ngFor="let item of this.groupedmlevel | keyvalue; let m = index" id="static-{{m+1}}">
+      <ng-template ngbPanelTitle>
+        <span class="i-circle">{{(item.key+'').substring(0,1)}}</span> &nbsp;&nbsp;
+   
+        <h5><a href="javascript:">{{item.key}}</a></h5>
+      </ng-template>
+      <ng-template ngbPanelContent>
+  
+        <ngb-accordion    [closeOthers]="true"  activeIds="staticl1-1"  class="next-accordion bg-success">
+          <ngb-panel  *ngFor="let iteminner of item.value | keyvalue; let k = index" id="staticl1-{{k+1}}">
+            <ng-template    ngbPanelTitle>
+              <span class="i-circle">{{iteminner.key.split('-')[0]}}</span>&nbsp;&nbsp;
+              <h5><a href="javascript:">{{iteminner.key.split('-')[1]}}</a></h5> 
+            </ng-template>
+            <ng-template    ngbPanelContent>
+               
+              <table     class="table">
+                <col width='40px' />
+                <thead>
+                  <tr style="border-bottom:0.2px dotted rgb(215, 212, 212)">
+          
+                    <th class="divcsfull">#</th>
+                    <th class="divcsfull"> Table <img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
+                      ({{(iteminner.value | keyvalue ).length}})</th>
+                    <th class="divcsfull">Difference ({{calculateDiffFull(iteminner.value ) }}) </th>
+          
+                    <th class="divcsfull">OnlyinSrc</th>
+                    <th class="divcsfull">Identical</th>
+                    <th class="divcsfull">Difference ({{calculateDiffFull(iteminner.value ) }})</th>
+                    <th class="divcsfull"> Table <img src="assets/images/dbredmin.svg" alt="" class="img-fluid"> ({{tablecount}})
+                    </th>
+          
+          
+                  </tr>
+                </thead>
+                <tbody >
+                   
+                  <tr  *ngFor="let upitem of iteminner.value | keyvalue; let n = index" style="border-bottom:0.2px dotted rgb(215, 212, 212)"
+                     >
+                    <td >{{n+1}}</td>
+                    <td  align="left"><img (click)="filterTable(upitem.key)" src="assets/images/tabm.png" alt=""
+                        class="img-fluid">&nbsp;<button (click)="filterTable(upitem.key)" style="color:blue;font-size: small;"
+                        mat-button color="primary" matTooltipPosition="right" aria-tooltip="">
+                        {{upitem.key}}
+                      </button></td>
+                    <td  align="center">{{calculateDiff(upitem.value ) }}</td>
+          
+                    <td >0</td>
+                    <td >0</td>
+                    <td align="center">{{calculateDiff(upitem.value ) }}</td>
+                    <td ><img (click)="filterTable(upitem.key)" src="assets/images/tabm.png" alt=""
+                        class="img-fluid"><button (click)="filterTable(upitem.key)" style="color:bluefont-size: small;" mat-button
+                        color="primary" matTooltipPosition="right" aria-tooltip="">
+                        {{upitem.key}}
+                      </button>&nbsp;</td>
+                  </tr>
+                </tbody>
+              </table>
+            </ng-template>
+          </ngb-panel>
+  
+        </ngb-accordion>
+        
+  
+      </ng-template>
+    </ngb-panel>
+  
+  </ngb-accordion>
+  </div> 
+<br>
+<div class="row">
+
+  <br>
+  <div class="row">
+    <div class="col-sm-12">
+      <app-card cardTitle="comparison" [options]="false">
+
+        <div class="row">
+
+          <div class="col-md-12">
+            <div class="input-group">
+              <input type="text" (keydown)="searchchange()" id="m-search" class="form-control" name="searchtext" id="searchtext" [(ngModel)]="searchtext" placeholder="Search . . ." [style.width]="'330px'">
+              <span class="input-group-append search-btn btn btn-primary">
+                <i (click)="search()" class="feather icon-search input-group-text"></i>
+              </span>
+            </div>
+            <!-- activeIds="static-1" -->
+            <ngb-accordion [closeOthers]="true"  class="next-accordion">
+              <ngb-panel *ngFor="let item of this.grouped | keyvalue; let m = index" id="static-{{m+1}}">
+                <ng-template ngbPanelTitle>
+                  <h5><a href="javascript:">{{item.key}}</a></h5>&nbsp;&nbsp;&nbsp;&nbsp;<span    class="i-circlered">{{gettnameList(item.value).split("-")[0].split("|")[1]}} </span><h5>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{gettnameList(item.value)}}</h5>
+                </ng-template>
+                <ng-template ngbPanelContent>
+                  <table *ngFor="let iteminner of item.value | keyvalue; let k = index" style="margin-bottom: 0px;"
+                    class="table table-bordered table-sm">
+                    <ng-template [ngIf]="k==0">
+                      <thead>
+                        <tr >
+                          <th colspan="1">#</th>
+                          
+                            <th colspan="2" >Base System</th>
+                             
+                            <th colspan="2" >Updated System</th>
+                          </tr>
+                         
+                      </thead>
+                    </ng-template>
+                    <tbody>
+                      <tr ><td colspan="5"> ..</td></tr>
+                      <tr class="table-success">
+                        <td colspan="1"><b>Table</b> </td>
+                        <td colspan="2"> <b> {{genTname($any(iteminner).value)}}</b>&nbsp;&nbsp;&nbsp;&nbsp;
+                         <a style="width:96%;text-align: left; vertical-align: middle; color: blue;"
+                            (click)="onMaintrainid(iteminner.key,dplistenentry.runid,dplistenentry.taskid)"><u>{{iteminner.key.split("|")[1]}}</u></a>
+                        </td>
+                        <td colspan="2"><b> {{genTname($any(iteminner).value)}}</b>&nbsp;&nbsp;&nbsp;&nbsp;
+                          <span style="width:96%;text-align: left; vertical-align: middle; color: red;"
+                             (click)="onMaintrainid(iteminner.key,dplistenentry.runid,dplistenentry.taskid)"><u>{{genTargetid($any(iteminner).value)}}</u></span>
+                         </td>
+                         </tr>
+                         <tr>
+                          <th><b></b></th>  
+                       
+                        
+                        <th><b>Column Name</b></th>
+                        <th><b>Src Val</b></th>
+                         
+                        <th><b>Column Name</b></th>
+                        <th><b>Target Val</b></th>
+
+                      </tr>
+                      <tr  *ngFor="let diffobj  of $any(iteminner).value; let i = index">
+                        
+                        <td>{{i+1}}</td>
+                       
+                        <td  style="color: blue;"> {{diffobj.column}}</td> 
+                        <td  style="color: green;">{{diffobj.oldval}} </td>
+                         
+                        <td style="color: blue;"> {{diffobj.column}} </td>
+                        <td style="color: red;">  {{diffobj.newval}} </td>
+                      </tr>
+                    </tbody>
+                  </table>
+
+                </ng-template>
+              </ngb-panel>
+
+            </ngb-accordion>
+
+
+
+          </div>
+        </div>
+
+      </app-card>
+    </div>
+  </div>

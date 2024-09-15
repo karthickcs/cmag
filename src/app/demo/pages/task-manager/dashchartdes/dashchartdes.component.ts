@@ -32,6 +32,7 @@ import { DiffTableControllerService } from '../../../../api/diffTableController.
 import { DiffTableDTO } from '../../../../model/diffTableDTO';
 import { AlertService } from '../../../../theme/shared/components';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import { AuthService } from '../../../../auth/auth.service';
 export type ChartOptions10 = {
   series: ApexAxisChartSeries;
   chart: ApexChart;
@@ -211,6 +212,7 @@ export class DashchartdesComponent implements OnInit {
     this.diffTableDTO.runid = this.runidselect;
     this.diffTableDTO.taskid = "" + this.taskid;
     this.diffTableDTO.runid = this.runidselect;
+    this.diffTableDTO.role= this.authservice.getRole();
     this.diffTableDTOArray = [];
     this.diffcount=0;
     this.addcount=0;
@@ -477,7 +479,7 @@ export class DashchartdesComponent implements OnInit {
     private dpListenControllerService: DpListenControllerService,
     private alertService: AlertService,
     private cdr: ChangeDetectorRef,
-    private router: Router,
+    private router: Router,private authservice: AuthService,
     private route: ActivatedRoute
 
   ){

@@ -9,12 +9,12 @@ import { ViewwindComponent } from './viewwind.component';
 import { SharedModule } from '../../../../theme/shared/shared.module';
 import { AlertModule } from '../../../../theme/shared/components';
 import {NgbAccordionModule, NgbCollapseModule} from '@ng-bootstrap/ng-bootstrap';
-
+import {MatIconModule} from '@angular/material/icon';
 @NgModule({
   declarations: [ViewwindComponent ],
   imports: [
     CommonModule,AlertModule,MatTooltipModule,MatButtonModule,
-    ViewwindRoutingModule,
+    ViewwindRoutingModule,MatIconModule,
     SharedModule,
     NgbCollapseModule,
     NgbAccordionModule

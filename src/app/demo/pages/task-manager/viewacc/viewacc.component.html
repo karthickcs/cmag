@@ -37,7 +37,7 @@
       <div class="table-responsive ">
         <table class="table table-bordered table-sm">
           <thead>
-            <tr class="table-secondary">
+            <tr >
 
               <th>TaskName</th>
             <th>TaskId</th>
@@ -59,7 +59,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="table-light">
+            <tr >
               
             <td>{{dplistenentry.taskname}}</td>
             <td>{{dplistenentry.taskid}}</td>
@@ -115,7 +115,7 @@
                     class="table table-bordered table-sm">
                     <ng-template [ngIf]="k==0">
                       <thead>
-                        <tr class="table-secondary">
+                        <tr >
                           <th>#</th>
                           <th colspan="3">Base System</th>
                           <th>#</th>
@@ -130,7 +130,7 @@
                             (click)="onMaintrainid(iteminner.key,dplistenentry.runid,dplistenentry.taskid)"><u>{{iteminner.key.split("|")[1]}}</u></a>
                         </td>
                       </tr>
-                      <tr class="table-light" *ngFor="let diffobj  of $any(iteminner).value; let i = index">
+                      <tr  *ngFor="let diffobj  of $any(iteminner).value; let i = index">
                         <td></td>
                         <td>{{i+1}}</td>
                         <td><input type="text" style="width:96%;text-align: left; vertical-align: middle; color: blue;"

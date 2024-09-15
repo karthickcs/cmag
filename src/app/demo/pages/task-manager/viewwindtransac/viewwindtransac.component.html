@@ -9,7 +9,7 @@
   <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
     Run Id -> {{dplisten.runid}}
   </option>
-</select> -->
+</select> --> 
 <button mat-raised-button color="primary" 
                     matTooltipPosition="right" (click)="goBack(this.runidselect,this.taskid)"
                     aria-tooltip="">
@@ -90,7 +90,7 @@
           <div *ngIf="cell != ' ' ">
             <div   *ngIf="j==0">
               <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{read(cell)}}"
-                matTooltipPosition="right" (click)="onMaintrainid(cell,this.runidselect,this.taskid)"
+                matTooltipPosition="right"  
                 aria-tooltip="">
                 <pre  style="color: blue;"> {{convertmin(read(cell))}}</pre>
               </button>             

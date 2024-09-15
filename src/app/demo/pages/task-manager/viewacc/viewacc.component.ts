@@ -9,6 +9,7 @@ import { AlertService } from '../../../../theme/shared/components';
 import { ActivatedRoute, Params, Router } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash'
+import { AuthService } from '../../../../auth/auth.service';
 declare var $: any;
 //************************************** */
 // $('.collapse').not(':first').collapse(); // Collapse all but the first row on the page.
@@ -56,7 +57,7 @@ export class ViewaccComponent implements OnInit {
     private diffTableControllerService: DiffTableControllerService,
     private dpListenControllerService: DpListenControllerService,
     private alertService: AlertService,
-    private cdr: ChangeDetectorRef,
+    private cdr: ChangeDetectorRef,private authservice: AuthService,
     private router: Router
 
   ) { }
@@ -117,6 +118,7 @@ export class ViewaccComponent implements OnInit {
   loaddifftable() {
     this.diffTableDTO.taskid = "" + this.dplistenentry.taskid;
     this.diffTableDTO.runid = this.dplistenentry.runid;
+    this.diffTableDTO.role= this.authservice.getRole();
     this.diffTableControllerService.getDiffDataUsingPOST(this.diffTableDTO).subscribe(
       (response: any) => {
 

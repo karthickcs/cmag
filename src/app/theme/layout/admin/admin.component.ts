@@ -8,6 +8,7 @@ import { Location } from '@angular/common';
   styleUrls: ['./admin.component.scss']
 })
 export class AdminComponent implements OnInit {
+color: any="#red";
 onchangev() {
   this.navCollapsed = !this.navCollapsed;
   this.changedetectionref.detectChanges;

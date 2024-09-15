@@ -10,6 +10,7 @@ import { ActivatedRoute, Params, Router } from '@angular/router';
 
 import { switchMap } from 'rxjs/operators';
 import * as _ from 'lodash'
+import { AuthService } from '../../../../auth/auth.service';
 declare var $: any;
 
 @Component({
@@ -18,9 +19,30 @@ declare var $: any;
   styleUrls: ['./viewwind.component.scss']
 })
 export class ViewwindComponent implements OnInit {
+  type: any;
+onclick(arg0: string) {
+  this.searchtextproduct=arg0;
+  this.searchchangeproduct();
+}
+
+searchtextproduct: any ="";
+
+tablemapcoll: any={};
+groupednewstructvalObjectTable: {};
+  groupedmlevel: any={};
+  groupedmleveloriginal: any={};
 
 
-
+  mapper = {
+    "AA": "Arrangement Architecture",
+    "PP": "Payments",
+    "FT": "Payments",
+    "ENTRY": "Accounting",
+    "SC": "Securities",
+    "DX": "Derivatives",
+    "MM": "Money Market",
+    "FX": "Forex",
+  }
   goBack( runid, taskid) {
     this.router.navigate(['/dashboard', {
       taskid: taskid,
@@ -35,9 +57,10 @@ export class ViewwindComponent implements OnInit {
   groupednewstructvalObject: any = {};
   groupednewstructvaloriginalObject: any = {};
   colmaster: any = {};
-
+  colmastertran: any = {};
   tname: any = "";
   tabnewstruct: any = {};
+  tabnewstructdetail: any = {};
   groupednewstructval: any = {};
   colnames: any = [];
   colnamesdum: any = [];
@@ -77,12 +100,13 @@ export class ViewwindComponent implements OnInit {
   groupedval: any;
   tranidreturn: any = "";
   tablemap:   String[][];
+  tablemaptran:   String[][];
   tablecount: number=0;
   diffcount: number=0;
   constructor(private taskControllerService: TaskControllerService,
     private diffTableControllerService: DiffTableControllerService,
     private dpListenControllerService: DpListenControllerService,
-    private alertService: AlertService,
+    private alertService: AlertService,private authservice: AuthService,
     private cdr: ChangeDetectorRef,
     private router: Router,
     private route: ActivatedRoute
@@ -100,6 +124,7 @@ export class ViewwindComponent implements OnInit {
           this.taskid = params['taskid'];
           this.runidselect = params['runid'];
           this.tranidreturn = params['tranid'];
+          this.type = params['type'];
           this.loaddata(true)
           this.loaddifftable();
 
@@ -254,6 +279,7 @@ export class ViewwindComponent implements OnInit {
   loaddifftable() {
     this.diffTableDTO.taskid = "" + this.taskid;
     this.diffTableDTO.runid = this.runidselect;
+    this.diffTableDTO.role= this.authservice.getRole();
     // this.diffTableDTOArray = require('../../../../../assets/diff.json');
     // this.loadDifferenceTableHorizontal();
     this.diffTableControllerService.getDiffDataUsingPOST(this.diffTableDTO).subscribe(
@@ -303,22 +329,25 @@ export class ViewwindComponent implements OnInit {
           for (var v1 of val[2]) {
             this.addDTO = {};
             this.newstruct = {};
-            if (this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]]) {
-              this.newstruct = this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]]
+            if (this.tabnewstruct[diff_entry.oracletname + ":" + diff_entry.maintranid.split("|")[1]]) {
+              this.newstruct = this.tabnewstruct[diff_entry.oracletname + ":" + diff_entry.maintranid.split("|")[1]]
             }
-            this.addDTO['tname'] = this.gettname(v1[0]);
-            this.addDTO['column'] = this.getcolumnname(v1[0]);
+            this.addDTO['tname'] = diff_entry.oracletname;
+            this.addDTO['type'] = this.gettype(diff_entry.tval);
+            this.addDTO['product'] = diff_entry.ttype;
+            this.addDTO['column'] = this.getcolumnname(v1[0], diff_entry.oracletname);
             this.addDTO['oldval'] = "_Missing_";
             this.addDTO['newval'] = v1[1];
             this.addDTO['maintranid'] = diff_entry.maintranid.split("|")[2];;
             this.addDTO['runid'] = diff_entry.runid;
             this.addDTO['taskid'] = diff_entry.taskid;
-            this.newstruct[this.getcolumnname(v1[0]) + ".___1"] = "_Missing_";
-            this.newstruct[this.getcolumnname(v1[0]) + ".___2"] = v1[1];
-            this.newstruct[this.getcolumnname(v1[0]) + ".___0"] = " ";
+            this.newstruct[this.getcolumnname(v1[0], diff_entry.oracletname) + ".___1"] = "_Missing_";
+            this.newstruct[this.getcolumnname(v1[0], diff_entry.oracletname) + ".___2"] = v1[1];
+            this.newstruct[this.getcolumnname(v1[0], diff_entry.oracletname) + ".___0"] = " ";
             this.newstruct['AAAAAmaintranid'] = diff_entry.maintranid;
             this.newstruct['AAAAAnewtranid'] = diff_entry.newtranid;
-            this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]] = this.newstruct
+            this.tabnewstruct[diff_entry.oracletname + ":" + diff_entry.maintranid.split("|")[1]] = this.newstruct
+            this.tabnewstructdetail[diff_entry.oracletname +":"+ diff_entry.maintranid.split("|")[1]+":" + diff_entry.maintranid.split("|")[2]] = this.newstruct
             this.changeDTOArray.push(this.addDTO);
           }
         }
@@ -326,61 +355,86 @@ export class ViewwindComponent implements OnInit {
           for (var v1 of val[2]) {
             this.removeDTO = {};
             this.newstruct = {};
-            if (this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]]) {
-              this.newstruct = this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]]
+            if (this.tabnewstruct[diff_entry.oracletname + ":" + diff_entry.maintranid.split("|")[1]]) {
+              this.newstruct = this.tabnewstruct[diff_entry.oracletname + ":" + diff_entry.maintranid.split("|")[1]]
+               
             }
-            this.removeDTO['tname'] = this.gettname(v1[0]);
+            this.removeDTO['tname'] = diff_entry.oracletname;
+            this.removeDTO['type'] = this.gettype(diff_entry.tval);
+            this.removeDTO['product'] = diff_entry.ttype;
+
             this.removeDTO['oldval'] = v1[1];
-            this.removeDTO['column'] = this.getcolumnname(v1[0]);
+            this.removeDTO['column'] = this.getcolumnname(v1[0],diff_entry.oracletname);
             this.removeDTO['newval'] = "_Missing_";
             this.removeDTO['maintranid'] = diff_entry.maintranid.split("|")[2];;
             this.removeDTO['runid'] = diff_entry.runid;
             this.removeDTO['taskid'] = diff_entry.taskid;
-            this.newstruct[this.getcolumnname(v1[0]) + ".___1"] = v1[1];
-            this.newstruct[this.getcolumnname(v1[0]) + ".___2"] = "_Missing_";
-            this.newstruct[this.getcolumnname(v1[0]) + ".___0"] = " ";
+            this.newstruct[this.getcolumnname(v1[0], diff_entry.oracletname) + ".___1"] = v1[1];
+            this.newstruct[this.getcolumnname(v1[0], diff_entry.oracletname) + ".___2"] = "_Missing_";
+            this.newstruct[this.getcolumnname(v1[0], diff_entry.oracletname) + ".___0"] = " ";
             this.newstruct['AAAAAmaintranid'] = diff_entry.maintranid;
             this.newstruct['AAAAAnewtranid'] = diff_entry.newtranid;
-            this.tabnewstruct[this.gettname(v1[0]) + ":" + diff_entry.maintranid.split("|")[1]] = this.newstruct
+            this.tabnewstruct[diff_entry.oracletname + ":" + diff_entry.maintranid.split("|")[1]] = this.newstruct
+            this.tabnewstructdetail[diff_entry.oracletname+":"+ diff_entry.maintranid.split("|")[1]+":" + diff_entry.maintranid.split("|")[2]] = this.newstruct
             this.changeDTOArray.push(this.removeDTO);
           }
         }
         if (val[0] == 'change') {
           this.changeDTO = {};
           this.newstruct = {};
-          if (this.tabnewstruct[this.gettname(val[1]) + ":" + diff_entry.maintranid.split("|")[1]]) {
-            this.newstruct = this.tabnewstruct[this.gettname(val[1]) + ":" + diff_entry.maintranid.split("|")[1]]
+          if (this.tabnewstruct[diff_entry.oracletname + ":" + diff_entry.maintranid.split("|")[1]]) {
+            this.newstruct = this.tabnewstruct[diff_entry.oracletname + ":" + diff_entry.maintranid.split("|")[1]]
+            
           }
 
-          this.changeDTO['tname'] = this.gettname(val[1]);
-          this.changeDTO['column'] = this.getcolumnname(val[1]);
+          this.changeDTO['tname'] = diff_entry.oracletname;
+          this.changeDTO['type'] = this.gettype(diff_entry.tval);
+          this.changeDTO['product'] = diff_entry.ttype;
+          this.changeDTO['column'] = this.getcolumnname(val[1], diff_entry.oracletname);
           this.changeDTO['oldval'] = val[2][0];
           this.changeDTO['newval'] = val[2][1];
           this.changeDTO['AAAAAmaintranid'] = diff_entry.maintranid;
           this.changeDTO['runid'] = diff_entry.runid;
           this.changeDTO['taskid'] = diff_entry.taskid;
 
-          this.newstruct[this.getcolumnname(val[1]) + ".___1"] = val[2][0];
-          this.newstruct[this.getcolumnname(val[1]) + ".___2"] = val[2][1];
-          this.newstruct[this.getcolumnname(val[1]) + ".___0"] = " ";
+          this.newstruct[this.getcolumnname(val[1], diff_entry.oracletname) + ".___1"] = val[2][0];
+          this.newstruct[this.getcolumnname(val[1], diff_entry.oracletname) + ".___2"] = val[2][1];
+          this.newstruct[this.getcolumnname(val[1], diff_entry.oracletname) + ".___0"] = " ";
           this.newstruct['AAAAAmaintranid'] = diff_entry.maintranid;
           this.newstruct['AAAAAnewtranid'] = diff_entry.newtranid;
 
-          this.tabnewstruct[this.gettname(val[1]) + ":" + diff_entry.maintranid.split("|")[1]] = this.newstruct
+          this.tabnewstruct[diff_entry.oracletname + ":" + diff_entry.maintranid.split("|")[1]] = this.newstruct
+          this.tabnewstructdetail[diff_entry.oracletname+":"+ diff_entry.maintranid.split("|")[1]+":" + diff_entry.maintranid.split("|")[2]] = this.newstruct
           this.changeDTOArray.push(this.changeDTO);
         }
       }
     }
-    //this.changeDTOArray.sort((a, b) => a.field.localeCompare(b.field));
-    // this.grouped = this.changeDTOArray.reduce(
-    //   (result:any, currentValue:any) => { 
-    //     (result[currentValue['tname']] = result[currentValue['tname']] || []).push(currentValue);
-    //     return result;
-    //   }, {});
-
-    // Group by city
+     
     this.grouped = _.groupBy(this.changeDTOArray, "tname");
+    const groupbytype = _.groupBy(this.changeDTOArray, "type"); 
+     
+    // Group by age within each city group
+    const groupbyproduct = _.mapValues(groupbytype, (maintranidgr) => {
+      return _.groupBy(maintranidgr, "product");
+    });
+    this.groupedmlevel = _.mapValues(groupbyproduct, (maintranidgr) => {
+      return  _.mapValues(maintranidgr, (level2) =>  {
+        return _.groupBy(level2, "tname");
+      });
+      
+    });
+    if (!this.groupedmlevel['Static']){
+      this.groupedmlevel['Static']={};
+    }
+    if(this.type=='S'){
+      this.groupedmlevel = _.omit(this.groupedmlevel,'Transactional');
+    }
+    if(this.type=='T'){
+      this.groupedmlevel = _.omit(this.groupedmlevel,'Static');
+    }
 
+   
+    this.groupedmleveloriginal=this.groupedmlevel ;
     this.tablecount=Object.keys(this.grouped).length;
     this.diffcount=0;
     Object.keys(this.grouped)
@@ -401,6 +455,14 @@ export class ViewwindComponent implements OnInit {
     this.filterTable(this.tname)
     this.groupedoriginal = this.grouped;
     this.groupedval = this.grouped[Object.keys(this.grouped).sort()[0]]
+  }
+  
+  gettype(tval: any): any {
+      
+      if (tval=='TR' ){
+        return "Transactional";
+      }
+      return "Static";
   }
   gettname(field) {
     if (Array.isArray(field)) {
@@ -429,7 +491,7 @@ export class ViewwindComponent implements OnInit {
     return tname;
   }
 
-  getcolumnname(field) {
+  getcolumnname(field,tnameorac) {
     if (Array.isArray(field)) {
       field = field[0];
     }
@@ -450,11 +512,12 @@ export class ViewwindComponent implements OnInit {
     let apendind = "";
     if (ans[2].split("[")[1]) {
       apendind = "[" + ans[2].split("[")[1];
-      apendind = processappend(apendind);
+      apendind = this.processappend(apendind);
     }
     cname = cname.substring(cname.lastIndexOf("/") + 1)
-    if (this.tabledata[tname]) {
-      columnname = this.tabledata[tname][cname.toUpperCase()]
+    let tnameval=tnameorac.substring( tnameorac.indexOf("_")+1)
+    if (this.tabledata[tnameval]) {
+      columnname = this.tabledata[tnameval][cname.toUpperCase()]
       return columnname + apendind;
     }
     return cname + apendind;
@@ -506,7 +569,7 @@ export class ViewwindComponent implements OnInit {
   filterTable(tname) {
     this.clength = {};
     let sval = Object.keys(this.tabnewstruct)
-      .filter(key => key.split(":")[0]==tname )
+      .filter(key => key.split(":")[0]==tname  )
       .reduce((obj, key) => {
         let t = key.replace(tname, '')
         obj[t] = this.tabnewstruct[key];
@@ -573,15 +636,176 @@ export class ViewwindComponent implements OnInit {
     return this.colnamesdum;
   }
 
-
-
-}
-function processappend(apendind: string): string {
-  if (apendind ){
-    if(apendind.length==3){
-      apendind = "[0" + apendind.split("[")[1];
+    processappend(apendind: string): string {
+    if (apendind ){
+      if(apendind.length==3){
+        apendind = "[0" + apendind.split("[")[1];
+      }
     }
+    return apendind;
   }
-  return apendind;
+  lodtrandata(tranid) {
+    let tname = tranid.split("|")[2];
+    this.clength = {};
+    let sval = Object.keys(this.tabnewstructdetail)
+      .filter(key => key.includes(tname))
+      .reduce((obj, key) => {
+        let t = key.replace(tname, '')
+        obj[key] = this.tabnewstructdetail[key];
+        this.clength[t] = Object.keys(this.tabnewstructdetail[key]).length;
+        return obj;
+      }, {});
+    this.colmaster = {}
+ 
+    this.groupednewstructvalObject = sval
+    this.groupednewstructvaloriginalObject = sval
+    this.groupednewstructvalObjectTable={};
+    this.groupednewstructvalObjectTable = Object.entries(this.groupednewstructvalObject).reduce((r, [k, v]) => {
+      var key = k.split(":")[0] ;
+      (r[key] = r[key] || {})[k] = v;
+      return r;
+  }, {});
+
+
+  Object.keys(this.groupednewstructvalObjectTable)
+  .reduce((obj, key) => {
+    let colnames1 = new Set();
+    
+    Object.keys(this.groupednewstructvalObjectTable[key])
+      .reduce((obji, keyi) => {
+        Object.keys(this.groupednewstructvalObjectTable[key][keyi])
+        .reduce((obji, keyj) => {
+  
+          colnames1.add(keyj);
+          return {};
+        }, {});
+        
+        return {};
+      }, {});
+    this.colmaster[key.split(":")[0]] = Array.from(colnames1).sort();
+    ;
+    return {};
+  }, {});
+
+  Object.keys(this.groupednewstructvalObjectTable)
+  .reduce((obj, key) => {
+    this.tablemaptran = new Array(Object.keys(this.groupednewstructvalObjectTable[key]).length)
+    .fill(" ");
+    Object.keys(this.groupednewstructvalObjectTable[key])
+    .reduce((obji, keyi) => {
+
+      this.tablemaptran=this.tablemaptran
+      .map(() =>
+        new Array(this.colmaster[keyi.split(":")[0]].length).fill(" ")
+      );
+       
+        
+      return {};
+    }, {});
+
+    this.tablemapcoll[key] = this.tablemaptran;
+    return {};
+  }, {});
+
+
+   
+  Object.keys(this.groupednewstructvalObjectTable)
+  .reduce((obj, key) => {
+    let i=0;
+    Object.keys(this.groupednewstructvalObjectTable[key])
+    .reduce((obji, keyi) => {
+      let strkeys = Object.keys(this.groupednewstructvalObjectTable[key][keyi])
+      for (var kk of strkeys) {
+        let fval = this.groupednewstructvalObjectTable[key][keyi][kk];
+        let colindx=this.colmaster[keyi.split(":")[0]].indexOf(kk);
+        this.tablemapcoll[key][i][colindx]=fval;
+      }
+      i=i+1;
+      return {};
+    }, {});
+    
+ 
+    return {};
+  }, {}); 
+
+
+  
+     
+
+  
+  for (let i = 0; i < this.groupednewstructval.length; i++) {
+    let strkeys = Object.keys(this.groupednewstructval[i])
+    for (var kk of strkeys) {
+      let fval = this.groupednewstructval[i][kk];
+      let colindx=this.colnames.indexOf(kk);
+     // this.tablemaptran[i][colindx]=fval;
+    }
+
+  }
+
+    
+    this.tname = tname
+
+  }
+
+
+  searchchangeproduct() {
+    this.groupedmlevel=JSON.parse(JSON.stringify(this.groupedmleveloriginal));
+    if(this.searchtextproduct.trim()==""){
+     
+      return;
+    }
+   
+     
+    if(this.groupedmlevel['Transactional']){
+    let tmap = Object.keys(this.groupedmlevel['Transactional'])
+    .filter(key => key.includes(this.searchtextproduct.toUpperCase()))
+    .reduce((obj, key) => {
+      obj[key] = this.groupedmlevel['Transactional'][key];
+      return obj;
+    }, {});
+    this.groupedmlevel['Transactional']= tmap;
+    }
+    let tempstatic=this.groupedmlevel['Static'];
+    if(this.groupedmlevel['Static']){
+    let tstaticmap = Object.keys(this.groupedmlevel['Static'])
+    .filter(key => key.includes(this.searchtextproduct.toUpperCase()))
+    .reduce((obj, key) => {
+      obj[key] = this.groupedmlevel['Static'][key];
+      return obj;
+    }, {});
+    this.groupedmlevel['Static']= tstaticmap;
+  }
+  }
+
+  calculateDiff(arg0: any) {
+    try {
+      let gp=  _.groupBy(arg0, "AAAAAmaintranid");
+      return Object.keys(gp).length;
+    } catch (error) {
+      return 0;
+    }
+    
+    }
+    calculateDiffFull(arg0: any) {
+      let count=0;
+      
+        Object.keys(arg0)    
+    .reduce((obj, key) => {
+      try {
+        let gp=  _.groupBy(arg0[key], "AAAAAmaintranid");
+        count =count+Object.keys(gp).length;
+      } catch (error) {
+        
+      }
+    
+      return obj;
+    }, {});
+         
+       return count ; 
+     
+      
+      }
 }
+
 
