@@ -1,0 +1,407 @@
+<div class="row">
+  <div class="custom-filter "><img src="assets/images/funnel.svg" alt=""></div>
+  <div class="custom-select-pink ">
+    <select name="taskid" id="taskid" [(ngModel)]="taskid" (ngModelChange)="loadruniddata(false)">
+      <option value="0" disabled selected>Task</option>
+      <option *ngFor="let taskmain of taskmainArray" [value]="taskmain.taskid">
+        {{taskmain.taskname}}--{{taskmain.taskid}}
+      </option>
+    </select>
+    <div class="select-arrow"></div>
+  </div>&nbsp;&nbsp;&nbsp;&nbsp;
+  <div class="custom-select-org "> <select name="runidselect" id="runidselect" [(ngModel)]="runidselect"
+      (ngModelChange)="loadrunid()">
+      <option value="0" disabled selected> RunID</option>
+      <option *ngFor="let dplisten of dplistenArray" [value]="dplisten.runid">
+        Run Id - {{dplisten.runid}}
+      </option>
+    </select>
+    <div class="select-arrow"></div>
+  </div>
+  &nbsp;
+  <div class="custom-filter ">
+    <button mat-raised-button color="primary" matTooltipPosition="right" (click)="goBack(this.runidselect,this.taskid)"
+      aria-tooltip="">
+      Back
+    </button>
+  </div>
+
+</div>
+<br>
+
+
+<div class="input-group">
+  <input type="text" (input)="searchchangeproduct()" id="m-searchproduct" class="form-control" name="searchtextproduct"
+    id="searchtextproduct" [(ngModel)]="searchtextproduct" placeholder="Search . . ." [style.width]="'330px'">
+  <span class="input-group-append search-btn btn ">
+    <i (click)="searchchangeproduct()" class="feather icon-search input-group-text"></i>
+  </span>
+  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  <span (click)="onclick('')" class="i-circle">ALL</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+  <span *ngFor="let iteminner of this.groupedmleveloriginal['Transactional'] | keyvalue; let z = index">
+    <span (click)="onclick((iteminner.key+'').split('-')[0])"
+      class="i-circle">{{(iteminner.key+'').split('-')[0]}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+  </span>
+
+</div>
+<div>
+  <div class="card">
+    <div class="card-body">
+
+      <p-accordion class="w-full22" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
+        <p-accordionTab *ngFor="let item of this.groupedmlevel | keyvalue; let m = index" id="static-{{m+1}}">
+          <ng-template pTemplate="header">
+            <span class="flex align-items-center gap-2 w-full">
+              &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="i-circle">{{(item.key+'').substring(0,1)}}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <span class="font-bold white-space-nowrap">
+                {{item.key + ' Data'}}
+              </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              <p-badge value="{{getinsidecount(item.value  )}}" size="large" class="ml-auto mr-2"></p-badge>
+            </span>
+          </ng-template>
+          <p class="m-0">
+            <p-accordion class="w-full" expandIcon="pi pi-plus" collapseIcon="pi pi-minus">
+              <p-accordionTab *ngFor="let iteminner of item.value | keyvalue; let k = index" id="static-{{m+1}}">
+                <ng-template pTemplate="header">
+                  <span class="flex align-items-center gap-2 w-full">
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="i-circle">{{iteminner.key.split('-')[0]}}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <span class="font-bold white-space-nowrap">
+                      {{iteminner.key.split('-')[1]}}
+                    </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <p-badge value="{{(iteminner.value | keyvalue ).length}}" size="large"
+                      class="ml-auto mr-2"></p-badge>
+                  </span>
+                </ng-template>
+                <table class="table">
+                  <col width='40px' />
+                  <thead>
+                    <tr style="border-bottom:0.2px dotted rgb(215, 212, 212)">
+
+                      <th class="divcsfull">#</th>
+                      <th class="divcsfull"> Table <img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
+                        ({{(iteminner.value | keyvalue ).length}})</th>
+                      <th class="divcsfull">Difference ({{calculateDiffFull(iteminner.value ) }}) </th>
+
+                      <th class="divcsfull">OnlyinSrc</th>
+                      <th class="divcsfull">Identical</th>
+                      <th class="divcsfull">Difference ({{calculateDiffFull(iteminner.value ) }})</th>
+                      <th class="divcsfull"> Table <img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
+                        ({{(iteminner.value | keyvalue ).length}})
+                      </th>
+
+
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr *ngFor="let upitem of iteminner.value | keyvalue; let n = index"
+                      style="border-bottom:0.2px dotted rgb(215, 212, 212)">
+                      <td>{{n+1}}</td>
+                      <td align="left"><img (click)="popOver.show();showtable=true;showtran=false;filterTable(upitem.key)"
+                          src="assets/images/tabm.png" alt="" class="img-fluid">&nbsp;<button
+                          (click)="popOver.show();showtable=true;showtran=false;filterTable(upitem.key)" style="color:blue;font-size: small;"
+                          mat-button color="primary" matTooltipPosition="right" aria-tooltip="">
+                          {{upitem.key}}
+                        </button></td>
+                      <td align="center">{{calculateDiff(upitem.value ) }}</td>
+
+                      <td>0</td>
+                      <td>0</td>
+                      <td align="center">{{calculateDiff(upitem.value ) }}</td>
+                      <td><img (click)="popOver.show();showtable=true;showtran=false;filterTable(upitem.key)" src="assets/images/tabm.png" alt=""
+                          class="img-fluid"><button (click)="popOver.show();showtable=true;showtran=false;filterTable(upitem.key)"
+                          style="color:bluefont-size: small;" mat-button color="primary" matTooltipPosition="right"
+                          aria-tooltip="">
+                          {{upitem.key}}
+                        </button>&nbsp;</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </p-accordionTab>
+
+
+            </p-accordion>
+          </p>
+        </p-accordionTab>
+
+
+      </p-accordion>
+    </div>
+  </div>
+</div>
+
+<br>
+
+
+
+<div class="col-xl-8 col-md-12">
+
+
+  <app-ui-modal #popOver [dialogClass]="'modal-xl'">
+    <div class="app-modal-header">
+
+       
+
+      <div class="container">
+
+
+
+        <div   *ngIf="showtable">
+          <hr><hr>
+          <h3>Table Details</h3> <button style="align-self: right;" type="button" class="btn btn-primary" (click)="popOver.hide()"
+          aria-tooltip="">
+          close
+        </button>
+        <hr><hr>
+          <span *ngIf="this.tname">
+            <b>{{ this.tname}}</b>&nbsp;&nbsp;&nbsp;&nbsp;<img src="assets/images/tab.png" alt=""
+              class="img-fluid">&nbsp;&nbsp;&nbsp;&nbsp;
+
+            <select class=" " name="columnname" id="columnname" [(ngModel)]="columnname">
+              <option *ngFor="let cn of this.colnames" [value]="cn">
+                {{convert(cn) }}
+              </option>
+            </select>
+            <!-- (keydown)="searchchange()" -->
+            <input type="text" id="m-search" class="" name="searchtext" id="searchtext" [(ngModel)]="searchtext"
+              placeholder="Search . . ." [style.width]="'330px'">
+            <span class="input-group-append search-btn btn ">
+              <i (click)="search()" class="feather icon-search input-group-text"></i>
+            </span>
+
+          </span>
+           
+
+            <div class="table-responsive">
+              <table class="table" *ngIf="tablemap">
+                <tr style="border-bottom:0.2px dotted rgb(215, 212, 212)">
+                  <th class="divcs">
+                    <div class="divcs">
+                      <h4>#</h4>
+                    </div>
+                  </th>
+
+
+                  <th class="divcs" *ngFor="let kee  of this.colnames; let zz = index  ">
+                    <div class="divcs" *ngIf="convertcheck(kee) == 'src' ">
+                      <span style="display:inline-block;">
+                        {{convert(kee)}}<img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
+
+                      </span>
+
+                    </div>
+                    <div class="divcs" *ngIf="convertcheck(kee) == 'tar' ">
+                      <span style="display:inline-block;">
+                        {{convert(kee)}}<img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
+
+                      </span>
+                    </div>
+                    <div class="divcs" *ngIf="convertcheck(kee) == 'srcb' ">
+                      {{convert(kee) }}
+                    </div>
+                    <div class="divcs" *ngIf="convertcheck(kee) == 'tarb' ">
+                      {{convert(kee) }}
+                    </div>
+                    <div class="divcs" *ngIf="convertcheck(kee) == 'rec' ">
+                      <span style="display:inline-block;">
+                        {{convert(kee)}} <img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
+
+                      </span>
+                    </div>
+                    <div class="divcs" *ngIf="convertcheck(kee) == 'tarrec' ">
+                      <span style="display:inline-block;">
+                        {{convert(kee)}} <img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
+
+                      </span>
+                    </div>
+                    <div class="divcs" *ngIf="convertcheck(kee) == 'sp' ">
+                      &nbsp;
+                    </div>
+                  </th>
+
+
+                </tr>
+                <tbody>
+                  <tr style="border-bottom:0.2px dotted rgb(215, 212, 212);"
+                    *ngFor="let data of tablemap; let i = index">
+                    <td width="30px">{{i+1}} </td>
+
+                    <td class="spaced" *ngFor="let cell of data; let j = index">
+
+
+                      <div *ngIf="cell != ' ' ">
+                        <div style="height: 50%;" *ngIf="j==0">
+                          <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{read(cell)}}"
+                            matTooltipPosition="right" (click)="popOver.show();;showtable=false;showtran=true;lodtrandata(cell)" aria-tooltip="">
+                            <pre style="color: blue;">   {{convertmin(read(cell))}}</pre>
+                          </button>
+                        </div>
+                        <div style="height: 50%;" *ngIf="j==1">
+                          <button mat-button color="warn" #tooltip="matTooltip" matTooltip="{{read(cell)}}"
+                            matTooltipPosition="right" aria-tooltip="">
+                            <pre style="color: red;">   {{convertmin(read(cell))}}</pre>
+                          </button>
+
+
+                        </div>
+                        <div style="height: 50%;" *ngIf="j>1 && this.colnames[j].toString().includes('.___2')">
+                          <button mat-button color="warn" #tooltip="matTooltip" matTooltip="{{cell}}"
+                            matTooltipPosition="right" aria-tooltip="">
+                            <pre style="color: red;">  {{convertmin(read(cell))}}</pre>
+                          </button>
+                        </div>
+                        <div style="width: 50%;" *ngIf="j>1 && this.colnames[j].toString().includes('.___1')">
+                          <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{cell}}"
+                            matTooltipPosition="right" aria-tooltip="">
+                            <pre style="color: blue;">  {{convertmin(read(cell))}}</pre>
+                          </button>
+                        </div>
+                      </div>
+                      <div
+                        *ngIf="cell == ' ' && this.colnames[j] && (this.colnames[j].toString().includes('.___1') || this.colnames[j].toString().includes('.___2'))">
+                        <button style="color:white" mat-button color="primary" matTooltipPosition="right"
+                          aria-tooltip="">
+
+                        </button>
+                      </div>
+
+                    </td>
+
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+           
+
+        </div>
+        <div   *ngIf="showtran">
+
+          <h3>Transaction</h3> <button type="button" class="btn btn-primary"  (click)="showtable=true;showtran=false"
+          aria-tooltip="">
+          Back
+        </button>
+          <hr><hr>
+
+          <div class="table-responsive" style="border:1px solid rgb(210, 184, 184);"
+            *ngFor="let table111  of this.groupednewstructvalObjectTable| keyvalue;; let zz = index  ">
+            <b>{{table111.key}}</b>  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp;  &nbsp;&nbsp; <button type="button" class="btn btn-primary"  (click)="showtable=true;showtran=false"
+            aria-tooltip="">
+            Back
+          </button>
+            <table class="table" *ngIf="tablemapcoll">
+              <tr style="border-bottom:1px dotted black">
+                <th>
+                  <div class="divcs">#</div>
+                </th>
+
+
+                <th *ngFor="let kee  of this.colmaster[table111.key]; let zz = index  ">
+                  <div class="divcs" *ngIf="convertcheck(kee) == 'src' ">
+                    <p style="display:inline-block;">
+                      <img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
+                      {{convert(kee)}}
+                    </p>
+
+                  </div>
+                  <div class="divcs" *ngIf="convertcheck(kee) == 'tar' ">
+                    <p style="display:inline-block;">
+                      <img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
+                      {{convert(kee)}}
+                    </p>
+                  </div>
+                  <div class="divcs" *ngIf="convertcheck(kee) == 'srcb' ">
+                    {{convert(kee) }}
+                  </div>
+                  <div class="divcs" *ngIf="convertcheck(kee) == 'tarb' ">
+                    {{convert(kee) }}
+                  </div>
+                  <div class="divcs" *ngIf="convertcheck(kee) == 'rec' ">
+                    <p style="display:inline-block;">
+                      <img src="assets/images/dbgreenmin.svg" alt="" class="img-fluid">
+                      {{convert(kee)}}
+                    </p>
+                  </div>
+                  <div class="divcs" *ngIf="convertcheck(kee) == 'tarrec' ">
+                    <p style="display:inline-block;">
+                      <img src="assets/images/dbredmin.svg" alt="" class="img-fluid">
+                      {{convert(kee)}}
+                    </p>
+                  </div>
+                  <div class="divcs" *ngIf="convertcheck(kee) == 'sp' ">
+
+                  </div>
+                </th>
+
+
+              </tr>
+              <tbody>
+                <tr style="border-bottom:0.2px dotted rgb(215, 212, 212)"
+                  *ngFor="let data of tablemapcoll[table111.key]; let i = index">
+                  <td width="30px">{{i+1}}</td>
+
+                  <td class="spaced" *ngFor="let cell of data; let j = index">
+
+
+                    <div *ngIf="cell != ' ' ">
+                      <div *ngIf="j==0">
+                        <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{read(cell)}}"
+                          matTooltipPosition="right" aria-tooltip="">
+                          <pre style="color: blue;"> {{convertmin(read(cell))}}</pre>
+                        </button>
+                      </div>
+                      <div *ngIf="j==1">
+                        <button mat-button color="warn" #tooltip="matTooltip" matTooltip="{{read(cell)}}"
+                          matTooltipPosition="right" aria-tooltip="">
+                          <pre style="color: red;"> {{convertmin(read(cell))}}</pre>
+                        </button>
+
+
+                      </div>
+                      <div *ngIf="j>1 && this.colmaster[table111.key][j].toString().includes('.___2')">
+                        <button mat-button color="warn" #tooltip="matTooltip" matTooltip="{{cell}}"
+                          matTooltipPosition="right" aria-tooltip="">
+                          <pre style="color: red;">  {{convertmin(cell)}}</pre>
+                        </button>
+                      </div>
+                      <div *ngIf="j>1 && this.colmaster[table111.key][j].toString().includes('.___1')">
+                        <button mat-button color="primary" #tooltip="matTooltip" matTooltip="{{cell}}"
+                          matTooltipPosition="right" aria-tooltip="">
+                          <pre style="color: blue;">  {{convertmin(cell)}}</pre>
+                        </button>
+                      </div>
+                    </div>
+                    <div
+                      *ngIf="cell == ' ' && this.colmaster[table111.key][j] && (this.colmaster[table111.key][j].toString().includes('.___1') || this.colmaster[table111.key][j].toString().includes('.___2'))">
+                      <button style="color:white" mat-button color="primary" matTooltipPosition="right" aria-tooltip="">
+
+                      </button>
+                    </div>
+
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+           
+          </div>
+        </div>
+
+
+
+      </div>
+    </div>
+    <button type="button" #myModalClose class="close basic-close" data-dismiss="modal" aria-label="Close"
+      (click)="popOver.hide()"><span aria-hidden="true">&times;</span></button>
+
+    <div class="app-modal-body">
+
+
+    </div>
+    <div class="app-modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="popOver.hide()">Close</button>&nbsp;
+
+    </div>
+  </app-ui-modal>
+</div>
